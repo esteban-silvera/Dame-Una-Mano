@@ -1,6 +1,6 @@
 import 'package:dame_una_mano/features/authentication/screens/login_screen.dart';
 import 'package:dame_una_mano/features/authentication/widgets/costum_text.dart';
-import 'package:dame_una_mano/features/utils/custom_button.dart';
+import 'package:dame_una_mano/features/authentication/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 
 class FirstScreen extends StatelessWidget {
