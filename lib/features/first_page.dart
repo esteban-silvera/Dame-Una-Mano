@@ -4,7 +4,7 @@ import 'package:dame_una_mano/features/utils/custom_button.dart';
 import 'package:flutter/material.dart';
 
 class FirstScreen extends StatelessWidget {
-  const FirstScreen({Key? key}) : super(key: key);
+  const FirstScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +32,7 @@ class FirstScreen extends StatelessWidget {
                     textAlign: TextAlign.center,
                   ),
                 ),
-                SizedBox(height: 8),
+                const SizedBox(height: 8),
                 const Icon(
                   Icons.handshake_rounded,
                   size: 64,
@@ -57,7 +57,7 @@ class FirstScreen extends StatelessWidget {
                     child: CustomButton(
                       text: "¿Qué estás buscando?",
                       icon: const Icon(Icons.search),
-                      color: Color(0xFF43c7ff),
+                      color: const Color(0xFF43c7ff),
                       fontSize: 24,
                       onPressed: () {
                         // Agregar lógica para el botón de búsqueda aquí
@@ -65,7 +65,7 @@ class FirstScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
@@ -75,13 +75,13 @@ class FirstScreen extends StatelessWidget {
                             .withOpacity(0.5),
                         spreadRadius: 2,
                         blurRadius: 5,
-                        offset: Offset(0, 2),
+                        offset: const Offset(0, 2),
                       ),
                     ],
                   ),
                   child: CustomButton(
                     text: "Ofrezco servicio",
-                    color: Color.fromARGB(128, 67, 199, 255),
+                    color: const Color.fromARGB(128, 67, 199, 255),
                     fontSize: 18,
                     onPressed: () {
                       // Agregar lógica para el botón de oferta de servicio aquí

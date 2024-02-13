@@ -9,11 +9,11 @@ class AuthenticationTabs extends StatefulWidget {
   final bool isLoginForm;
 
   const AuthenticationTabs({
-    Key? key,
+    super.key,
     required this.onLogin,
     this.onRegister,
     required this.isLoginForm,
-  }) : super(key: key);
+  });
 
   @override
   _AuthenticationTabsState createState() => _AuthenticationTabsState();
@@ -53,7 +53,7 @@ class _AuthenticationTabsState extends State<AuthenticationTabs>
           padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
           child: Container(
             decoration: BoxDecoration(
-              border: Border.all(color: Color(0xFFFA7701)),
+              border: Border.all(color: const Color(0xFFFA7701)),
               borderRadius: BorderRadius.circular(12),
             ),
             child: TabBar(
@@ -67,18 +67,18 @@ class _AuthenticationTabsState extends State<AuthenticationTabs>
                 ),
               ],
               indicator: BoxDecoration(
-                color: Color(0xFFFA7701),
+                color: const Color(0xFFFA7701),
                 borderRadius: BorderRadius.circular(10),
                 boxShadow: [
                   BoxShadow(
                       color: Colors.grey.withOpacity(0.2),
                       spreadRadius: 1,
                       blurRadius: 7,
-                      offset: Offset(0, 1)),
+                      offset: const Offset(0, 1)),
                 ],
               ),
-              labelColor: Color(0xFFf5f5f5),
-              unselectedLabelColor: Color.fromARGB(255, 11, 11, 11),
+              labelColor: const Color(0xFFf5f5f5),
+              unselectedLabelColor: const Color.fromARGB(255, 11, 11, 11),
               indicatorSize: TabBarIndicatorSize.tab,
             ),
           ),
@@ -91,7 +91,7 @@ class _AuthenticationTabsState extends State<AuthenticationTabs>
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
-              color: Color.fromARGB(224, 249, 247, 249),
+              color: const Color.fromARGB(224, 249, 247, 249),
             ),
             child: TabBarView(
               controller: _tabController,
@@ -136,7 +136,7 @@ class _AuthenticationTabsState extends State<AuthenticationTabs>
                   labelText: 'Email',
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
-                    borderSide: BorderSide(color: Color(0xFF43c7ff)),
+                    borderSide: const BorderSide(color: Color(0xFF43c7ff)),
                   ),
                 ),
                 validator: (value) {
@@ -274,7 +274,7 @@ class _AuthenticationTabsState extends State<AuthenticationTabs>
                 },
                 style: ElevatedButton.styleFrom(
                   textStyle:
-                      TextStyle(color: Color.fromARGB(255, 250, 249, 249)),
+                      const TextStyle(color: Color.fromARGB(255, 250, 249, 249)),
                   backgroundColor: const Color(0xFFFA7701),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20),

@@ -1,7 +1,15 @@
 import 'package:dame_una_mano/features/first_page.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'services/config/firebase_options.dart';
 
-void main() {
+void main() async {
+  // Inicializa Firebase antes de ejecutar runApp
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
   runApp(const MyApp());
 }
 
@@ -16,7 +24,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: FirstScreen(),
+      home: const FirstScreen(),
     );
   }
 }

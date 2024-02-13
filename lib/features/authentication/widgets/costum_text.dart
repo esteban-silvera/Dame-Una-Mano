@@ -8,13 +8,13 @@ class CustomText extends StatelessWidget {
   final TextAlign alignment;
 
   const CustomText({
-    Key? key,
+    super.key,
     required this.text,
     this.color = Colors.black,
     this.fontSize = 16.0,
     this.fontWeight = FontWeight.normal,
     this.alignment = TextAlign.left
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -41,12 +41,12 @@ class CustomTextWithVisibility extends StatelessWidget {
   
 
   const CustomTextWithVisibility({
-    Key? key,
+    super.key,
     required this.text,
     required this.color,
     required this.fontSize,
     required this.isVisible,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

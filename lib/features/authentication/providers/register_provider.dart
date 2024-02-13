@@ -19,9 +19,7 @@ class RegisterProvider extends ChangeNotifier {
       var usuario = User.fromJson(jsonDecode(response.body));
       print(usuario.localId);
       var urlDB = Uri.parse(
-          'https://dame-una-mano-411922-default-rtdb.firebaseio.com/' +
-              usuario.localId! +
-              '.json');
+          'https://dame-una-mano-411922-default-rtdb.firebaseio.com/${usuario.localId!}.json');
       var responseDb = await http.put(
         urlDB,
         body: jsonEncode(

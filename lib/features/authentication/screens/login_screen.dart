@@ -5,9 +5,9 @@ class LoginScreen extends StatelessWidget {
   final void Function(String email, String password) onLogin;
 
   const LoginScreen({
-    Key? key,
+    super.key,
     required this.onLogin,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
