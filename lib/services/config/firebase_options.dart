@@ -54,7 +54,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyA9qvrnsVxG7t_3unWiOG3OOZN0qwGbOFE',
-    appId: '1:310650687478:android:ce1ccb9f7efe65024041d7',
+    appId: '1:310650687478:android:d38d365d3733a5624041d7',
     messagingSenderId: '310650687478',
     projectId: 'dame-una-mano-411922',
     databaseURL: 'https://dame-una-mano-411922-default-rtdb.firebaseio.com',
