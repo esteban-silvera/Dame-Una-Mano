@@ -1,4 +1,4 @@
-import 'package:dame_una_mano/features/first_page.dart';
+import 'package:dame_una_mano/features/authentication/screens/screens.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: FirstScreen(),
+      home: WorkerScreen(),
     );
   }
 }
