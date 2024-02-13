@@ -1,8 +1,4 @@
-import 'package:dame_una_mano/features/authentication/providers/providers.dart';
-import 'package:dame_una_mano/features/authentication/providers/register_provider.dart';
-import 'package:dame_una_mano/features/authentication/screens/login_screen.dart';
-import 'package:dame_una_mano/features/authentication/widgets/app_dialogs.dart';
-import 'package:dame_una_mano/features/authentication/widgets/costum_text.dart';
+import 'package:dame_una_mano/features/authentication/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 
 class AuthenticationTabs extends StatefulWidget {
@@ -357,7 +353,7 @@ class _AuthenticationTabsState extends State<AuthenticationTabs>
         AppDialogs.showDialog1(context, 'usuario registrado con exito');
       } else {
         // Error al registrar el usuario
-        AppDialogs.showDialog1(context, 'el usuario no se pudo registrar');
+        AppDialogs.showDialog1(context, 'ola');
       }
     } else {
       AppDialogs.showDialog1(context, 'no se pudo validar');
