@@ -15,7 +15,7 @@ class _WorkerFormState extends State<WorkerForm> {
   List<String> _selectedJobs = [];
   String _selectedDepartment = '';
   String _selectedCity = '';
-  Set<String> _selectedNeighborhood = {};
+  final Set<String> _selectedNeighborhood = {};
 
   final List<String> _jobs = ['Carpintero', 'Plomero', 'Electricista'];
   final List<String> _departments = [
@@ -57,13 +57,13 @@ class _WorkerFormState extends State<WorkerForm> {
                   return null;
                 },
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               TextFormField(
                 decoration: InputDecoration(
                   labelText: 'Número de Teléfono *',
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10.0),
-                    borderSide: BorderSide(color: Color(0xFF43c7ff)),
+                    borderSide: const BorderSide(color: Color(0xFF43c7ff)),
                   ),
                 ),
                 keyboardType: TextInputType.phone,
@@ -83,21 +83,21 @@ class _WorkerFormState extends State<WorkerForm> {
                   return null;
                 },
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
                   _showJobsDialog();
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Color.fromARGB(244, 255, 255, 255),
+                  backgroundColor: const Color.fromARGB(244, 255, 255, 255),
                   side: const BorderSide(color: Color(0xFF43c7ff)),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10.0),
                   ),
                 ),
-                child: Container(
+                child: const SizedBox(
                   height: 63,
-                  child: const Row(
+                  child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       SizedBox(
@@ -118,13 +118,13 @@ class _WorkerFormState extends State<WorkerForm> {
                   ),
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               DropdownButtonFormField<String>(
                 decoration: InputDecoration(
                   labelText: 'Departamento *',
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10.0),
-                    borderSide: BorderSide(color: Color(0xFF43c7ff)),
+                    borderSide: const BorderSide(color: Color(0xFF43c7ff)),
                   ),
                 ),
                 value:
@@ -147,14 +147,14 @@ class _WorkerFormState extends State<WorkerForm> {
                   return null;
                 },
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               if (_selectedDepartment.isNotEmpty)
                 DropdownButtonFormField<String>(
                   decoration: InputDecoration(
                     labelText: 'Ciudad *',
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0),
-                      borderSide: BorderSide(color: Color(0xFF43c7ff)),
+                      borderSide: const BorderSide(color: Color(0xFF43c7ff)),
                     ),
                   ),
                   value: _selectedCity.isNotEmpty ? _selectedCity : null,
@@ -176,16 +176,16 @@ class _WorkerFormState extends State<WorkerForm> {
                     return null;
                   },
                 ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               if (_selectedCity.isNotEmpty)
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Text(
+                    const Text(
                       'Barrio *',
                       style: TextStyle(color: Color(0xFF43c7ff)),
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Wrap(
                       spacing: 10,
                       children: _neighborhoods.map((neighborhood) {
@@ -202,20 +202,20 @@ class _WorkerFormState extends State<WorkerForm> {
                               }
                             });
                           },
-                          selectedColor: Color(0xFF43c7ff),
+                          selectedColor: const Color(0xFF43c7ff),
                         );
                       }).toList(),
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     _selectedNeighborhood.isEmpty
-                        ? Text(
+                        ? const Text(
                             'Por favor selecciona al menos un barrio',
                             style: TextStyle(color: Colors.red),
                           )
-                        : SizedBox(),
+                        : const SizedBox(),
                   ],
                 ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               CustomButton(
                 text: 'Enviar',
                 color: Colors.orange,
@@ -243,7 +243,7 @@ class _WorkerFormState extends State<WorkerForm> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Selecciona Profesión'),
+          title: const Text('Selecciona Profesión'),
           content: MultiSelectChip(
             options: _jobs,
           ),
