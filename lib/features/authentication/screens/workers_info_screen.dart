@@ -4,10 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:dame_una_mano/features/authentication/widgets/widgets.dart';
 
 class WorkerScreen extends StatelessWidget {
+  const WorkerScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
           image: DecorationImage(
               image: AssetImage("assets/fondo2.jpg"), fit: BoxFit.cover)),
       child: Scaffold(
@@ -15,7 +17,7 @@ class WorkerScreen extends StatelessWidget {
         appBar: const CustomAppBar(),
         body: SingleChildScrollView(
           child: Padding(
-            padding: EdgeInsets.all(20.0),
+            padding: const EdgeInsets.all(20.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -31,7 +33,7 @@ class WorkerScreen extends StatelessWidget {
                     height: 20), // Espacio entre el texto y el formulario
                 Container(
                     decoration: BoxDecoration(
-                        color: Color(0xB6F5F4F4),
+                        color: const Color(0xB6F5F4F4),
                         borderRadius: BorderRadius.circular(20.0)),
                     child: const Padding(
                       padding: EdgeInsets.all(20),

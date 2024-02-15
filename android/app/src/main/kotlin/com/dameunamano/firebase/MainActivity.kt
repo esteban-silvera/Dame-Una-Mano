@@ -1,4 +1,4 @@
-package com.example.dame_una_mano
+package com.dameunamano.firebase
 
 import io.flutter.embedding.android.FlutterActivity
 
