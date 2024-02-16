@@ -18,17 +18,24 @@ class RegisterProvider extends ChangeNotifier {
     if (response.statusCode == 200) {
       var usuario = User.fromJson(jsonDecode(response.body));
       print(usuario.localId);
-      var urlDB = Uri.parse(
-          'https://dame-una-mano-411922-default-rtdb.firebaseio.com/${usuario.localId!}.json');
-      var responseDb = await http.put(
-        urlDB,
-        body: jsonEncode(
-            {'name': formData['name'], 'lastname': formData['lastname']}),
+
+      // Guardar datos del usuario en Firestore
+      var firestoreUrl = Uri.parse(
+          'https://dame-una-mano-411922-default-rtdb.firebaseio.com/${usuario.localId}.json');
+      var firestoreResponse = await http.put(
+        firestoreUrl,
+        body: jsonEncode({
+          'name': formData['name'],
+          'lastname': formData['lastname'],
+          'email': formData['email'], // Puedes guardar otros datos aquí también
+        }),
       );
-      if (responseDb.statusCode == 200) {
-        // Aquí se verifica que código de estado de la respuesta de la base de datos
+
+      if (firestoreResponse.statusCode == 200) {
+        // Éxito al guardar en Firestore
         return true;
       } else {
+        // Error al guardar en Firestore
         return false;
       }
     }

@@ -23,6 +23,7 @@ class User {
     name = json['name'];
     lastname = json['lastname'];
     image = json['image'];
+    email = json['email'];
   }
 
   User({

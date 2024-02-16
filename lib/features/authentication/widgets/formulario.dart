@@ -1,3 +1,4 @@
+import 'package:dame_una_mano/features/authentication/data/user.dart';
 import 'package:dame_una_mano/features/authentication/providers/providers.dart';
 import 'package:dame_una_mano/features/authentication/screens/screens.dart';
 import 'package:dame_una_mano/features/authentication/widgets/widgets.dart';
@@ -231,6 +232,12 @@ class _AuthenticationTabsState extends State<AuthenticationTabs>
                     borderSide: const BorderSide(color: Color(0xFF43c7ff)),
                   ),
                 ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Por favor ingresa tu nombre';
+                  }
+                  return null;
+                },
               ),
               const SizedBox(height: 10),
               TextFormField(
@@ -243,6 +250,12 @@ class _AuthenticationTabsState extends State<AuthenticationTabs>
                     borderSide: const BorderSide(color: Color(0xFF43c7ff)),
                   ),
                 ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Por favor ingresa tu apellido';
+                  }
+                  return null;
+                },
               ),
               const SizedBox(height: 10),
               TextFormField(
@@ -255,6 +268,12 @@ class _AuthenticationTabsState extends State<AuthenticationTabs>
                     borderSide: const BorderSide(color: Color(0xFF43c7ff)),
                   ),
                 ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Por favor ingresa tu correo electrónico';
+                  }
+                  return null;
+                },
               ),
               const SizedBox(height: 10),
               TextFormField(
@@ -268,15 +287,28 @@ class _AuthenticationTabsState extends State<AuthenticationTabs>
                   ),
                 ),
                 obscureText: true,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Por favor ingresa una contraseña';
+                  }
+                  if (value.length < 6) {
+                    return 'La contraseña debe tener al menos 6 caracteres';
+                  }
+                  return null;
+                },
               ),
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
                   formRegister();
+//                  Navigator.push(
+//                    context,
+//                    MaterialPageRoute(builder: (context) => EditPerfilScreen()),
+//                  );
                 },
                 style: ElevatedButton.styleFrom(
-                  textStyle:
-                      const TextStyle(color: Color.fromARGB(255, 250, 249, 249)),
+                  textStyle: const TextStyle(
+                      color: Color.fromARGB(255, 250, 249, 249)),
                   backgroundColor: const Color(0xFFFA7701),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20),
@@ -315,8 +347,10 @@ class _AuthenticationTabsState extends State<AuthenticationTabs>
       final email = emailController.text;
       final password = passwordController.text;
       final loginData = {'email': email, 'password': password};
-      bool respuesta = await loginProvider.loginUsuario(loginData);
-      if (respuesta) {
+      User? usuario = await loginProvider
+          .loginUsuario(loginData); // Cambiado el tipo de usuario a User?
+      if (usuario != null) {
+        // Comprobando si usuario no es nulo
         AppDialogs.showDialog2(context, "usuario autenticado", [
           TextButton(
             onPressed: () {
@@ -349,13 +383,13 @@ class _AuthenticationTabsState extends State<AuthenticationTabs>
         'password': password,
       };
 
-      bool respuesta = await RegisterProvider().registrarUsuario(formData);
-      if (respuesta) {
+      bool usuario = await RegisterProvider().registrarUsuario(formData);
+      if (usuario) {
         // Registro con exito
         AppDialogs.showDialog1(context, 'usuario registrado con exito');
       } else {
         // Error al registrar el usuario
-        AppDialogs.showDialog1(context, 'ola');
+        AppDialogs.showDialog1(context, 'Error al registrar el usuario');
       }
     } else {
       AppDialogs.showDialog1(context, 'no se pudo validar');
