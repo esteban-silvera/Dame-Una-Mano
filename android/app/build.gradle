@@ -2,6 +2,7 @@ plugins {
     id "com.android.application"
     id "kotlin-android"
     id "dev.flutter.flutter-gradle-plugin"
+    id 'com.google.gms.google-services'
 }
 
 def localProperties = new Properties()
@@ -23,7 +24,7 @@ if (flutterVersionName == null) {
 }
 
 android {
-    namespace "com.example.dame_una_mano"
+    namespace "com.dameunamano.firebase"
     compileSdkVersion flutter.compileSdkVersion
     ndkVersion flutter.ndkVersion
 
@@ -41,10 +42,7 @@ android {
     }
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "com.example.dame_una_mano"
-        // You can update the following values to match your application needs.
-        // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
+        applicationId "com.dameunamano.firebase"
         minSdkVersion flutter.minSdkVersion
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
@@ -54,8 +52,6 @@ android {
 
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig signingConfigs.debug
         }
     }
@@ -66,5 +62,13 @@ flutter {
 }
 
 dependencies {
+    implementation platform('com.google.firebase:firebase-bom:32.7.1')
     implementation 'com.android.support:multidex:1.0'
+    // Agrega aquí las dependencias específicas de Firebase que desees utilizar
+    // Por ejemplo:
+    // implementation 'com.google.firebase:firebase-auth'
+    // implementation 'com.google.firebase:firebase-database'
+    // ...
+
+    // Asegúrate de agregar las dependencias que necesitas según la documentación de Firebase
 }
