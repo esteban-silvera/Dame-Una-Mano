@@ -99,7 +99,7 @@ class _AuthenticationTabsState extends State<AuthenticationTabs>
             child: TabBarView(
               controller: _tabController,
               children: [
-                _buildLoginForm(formKey),
+                _buildLoginForm(),
                 _buildRegisterForm(),
               ],
             ),
@@ -109,7 +109,7 @@ class _AuthenticationTabsState extends State<AuthenticationTabs>
     );
   }
 
-  Widget _buildLoginForm(GlobalKey<FormState> formKey) {
+  Widget _buildLoginForm() {
     return SingleChildScrollView(
       child: Form(
         key: formKey,
@@ -132,44 +132,9 @@ class _AuthenticationTabsState extends State<AuthenticationTabs>
                 fontWeight: FontWeight.w300,
                 alignment: TextAlign.left,
               ),
-              TextFormField(
-                controller: emailController,
-                style: const TextStyle(color: Colors.black),
-                decoration: InputDecoration(
-                  labelText: 'Email',
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                    borderSide: const BorderSide(color: Color(0xFF43c7ff)),
-                  ),
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your email';
-                  }
-                  formKey.currentState!.save();
-                  return null;
-                },
-              ),
+              EmailField(controller: emailController),
               const SizedBox(height: 10),
-              TextFormField(
-                controller: passwordController,
-                style: const TextStyle(color: Colors.black),
-                decoration: InputDecoration(
-                  labelText: 'Contraseña',
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                    borderSide: const BorderSide(color: Color(0xFF43c7ff)),
-                  ),
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your password';
-                  }
-                  formKey.currentState!.save();
-                  return null;
-                },
-                obscureText: true,
-              ),
+              PasswordField(controller: passwordController),
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: formLogin,
@@ -222,90 +187,16 @@ class _AuthenticationTabsState extends State<AuthenticationTabs>
                 alignment: TextAlign.left,
               ),
               const SizedBox(height: 5),
-              TextFormField(
-                controller: nameController,
-                style: const TextStyle(color: Colors.black),
-                decoration: InputDecoration(
-                  labelText: 'Nombre',
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                    borderSide: const BorderSide(color: Color(0xFF43c7ff)),
-                  ),
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Por favor ingresa tu nombre';
-                  }
-                  return null;
-                },
-              ),
+              NameField(controller: nameController),
               const SizedBox(height: 10),
-              TextFormField(
-                controller: lastNameController,
-                style: const TextStyle(color: Colors.black),
-                decoration: InputDecoration(
-                  labelText: 'Apellido',
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                    borderSide: const BorderSide(color: Color(0xFF43c7ff)),
-                  ),
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Por favor ingresa tu apellido';
-                  }
-                  return null;
-                },
-              ),
+              LastNameField(controller: lastNameController),
               const SizedBox(height: 10),
-              TextFormField(
-                controller: registerEmailController,
-                style: const TextStyle(color: Colors.black),
-                decoration: InputDecoration(
-                  labelText: 'Email',
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                    borderSide: const BorderSide(color: Color(0xFF43c7ff)),
-                  ),
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Por favor ingresa tu correo electrónico';
-                  }
-                  return null;
-                },
-              ),
+              EmailField(controller: registerEmailController),
               const SizedBox(height: 10),
-              TextFormField(
-                controller: registerPasswordController,
-                style: const TextStyle(color: Colors.black),
-                decoration: InputDecoration(
-                  labelText: 'Contraseña',
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                    borderSide: const BorderSide(color: Color(0xFF43c7ff)),
-                  ),
-                ),
-                obscureText: true,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Por favor ingresa una contraseña';
-                  }
-                  if (value.length < 6) {
-                    return 'La contraseña debe tener al menos 6 caracteres';
-                  }
-                  return null;
-                },
-              ),
+              PasswordField(controller: registerPasswordController),
               const SizedBox(height: 20),
               ElevatedButton(
-                onPressed: () {
-                  formRegister();
-//                  Navigator.push(
-//                    context,
-//                    MaterialPageRoute(builder: (context) => EditPerfilScreen()),
-//                  );
-                },
+                onPressed: formRegister,
                 style: ElevatedButton.styleFrom(
                   textStyle: const TextStyle(
                       color: Color.fromARGB(255, 250, 249, 249)),
@@ -351,6 +242,7 @@ class _AuthenticationTabsState extends State<AuthenticationTabs>
           .loginUsuario(loginData); // Cambiado el tipo de usuario a User?
       if (usuario != null) {
         // Comprobando si usuario no es nulo
+        // ignore: use_build_context_synchronously
         AppDialogs.showDialog2(context, "usuario autenticado", [
           TextButton(
             onPressed: () {
