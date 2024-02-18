@@ -2,7 +2,9 @@ import 'package:dame_una_mano/features/authentication/data/user.dart';
 import 'package:dame_una_mano/features/authentication/providers/providers.dart';
 import 'package:dame_una_mano/features/authentication/screens/screens.dart';
 import 'package:dame_una_mano/features/authentication/widgets/widgets.dart';
+import 'package:dame_una_mano/features/home_page/screens/home_screen1.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class AuthenticationTabs extends StatefulWidget {
   final void Function(String email, String password) onLogin;
@@ -233,21 +235,27 @@ class _AuthenticationTabsState extends State<AuthenticationTabs>
     );
   }
 
-  Future<void> formLogin() async {
+Future<void> formLogin() async {
     if (formKey.currentState!.validate()) {
       final email = emailController.text;
       final password = passwordController.text;
       final loginData = {'email': email, 'password': password};
-      User? usuario = await loginProvider
-          .loginUsuario(loginData); // Cambiado el tipo de usuario a User?
-      if (usuario != null) {
-        // Comprobando si usuario no es nulo
-        // ignore: use_build_context_synchronously
+
+      // Obtener el UserProvider del contexto
+      final userProvider = Provider.of<UserProvider>(context, listen: false);
+
+      bool success = await loginProvider.loginUsuario(loginData, userProvider);
+      if (success) {
         AppDialogs.showDialog2(context, "usuario autenticado", [
           TextButton(
             onPressed: () {
               Navigator.pop(context);
-              Navigator.pushReplacementNamed(context, 'home');
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => HomeScreen(),
+                ),
+              );
             },
             child: const Text("OK"),
           )
