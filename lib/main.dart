@@ -1,7 +1,10 @@
+import 'package:dame_una_mano/features/authentication/providers/providers.dart';
 import 'package:dame_una_mano/features/first_page.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'services/config/firebase_options.dart';
+
+import 'package:provider/provider.dart';
 
 void main() async {
   // Inicializa Firebase antes de ejecutar runApp
@@ -10,21 +13,27 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Tu App',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => UserProvider()),
+        ChangeNotifierProvider(create: (_) => LoginProvider()),
+        ChangeNotifierProvider(create: (_) => RegisterProvider()),
+        // Aquí puedes agregar más providers si es necesario
+      ],
+      child: MaterialApp(
+        title: 'Tu Aplicación',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+        ),
+        home: FirstScreen(),
       ),
-      home: const FirstScreen(),
     );
   }
 }
