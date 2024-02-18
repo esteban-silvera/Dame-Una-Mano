@@ -21,21 +21,18 @@ class RegisterProvider extends ChangeNotifier {
 
       // Guardar datos del usuario en Firestore
       var firestoreUrl = Uri.parse(
-          'https://dame-una-mano-411922-default-rtdb.firebaseio.com/${usuario.localId}.json');
+          'https://dame-una-mano-411922-default-rtdb.firebaseio.com/users/${usuario.localId}.json');
       var firestoreResponse = await http.put(
         firestoreUrl,
         body: jsonEncode({
           'name': formData['name'],
           'lastname': formData['lastname'],
-          'email': formData['email'], // Puedes guardar otros datos aquí también
+          'email': formData['email'], // para guardar mas datos agregemos aca
         }),
       );
-
       if (firestoreResponse.statusCode == 200) {
-        // Éxito al guardar en Firestore
         return true;
       } else {
-        // Error al guardar en Firestore
         return false;
       }
     }
