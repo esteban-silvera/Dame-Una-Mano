@@ -1,4 +1,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    package="com.dameunamano.firebase">
+
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    
     <application
         android:label="dame_una_mano"
         android:name="${applicationName}"
@@ -29,5 +35,8 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+        <meta-data
+        android:name="com.google.android.geo.API_KEY"
+        android:value="AIzaSyA9qvrnsVxG7t_3unWiOG3OOZN0qwGbOFE" />
     </application>
 </manifest>
