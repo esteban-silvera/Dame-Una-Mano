@@ -32,7 +32,11 @@ class UserProvider extends ChangeNotifier {
           body: jsonEncode({
             'name': formData['name'],
             'lastname': formData['lastname'],
-            'email': formData['email']
+            'email': formData['email'],
+            'description': formData['description'],
+            'department': formData['department'],
+            'barrio': formData['barrio'],
+            'job': formData['job'],
           }));
       if (responseDb.statusCode == 200) {
         user.setUserData(jsonDecode(responseDb.body));

@@ -18,12 +18,29 @@ class User {
   String? name;
   String? lastname;
   String? image;
+  String? description;
+  String? department;
+  String? barrio;
+  String? job;
 
-  setUserData(Map<String, dynamic> json) {
-    name = json['name'];
-    lastname = json['lastname'];
-    image = json['image'];
-    email = json['email'];
+  void setUserData(Map<String, dynamic> json) {
+    name = json['name'] ?? '';
+    lastname = json['lastname'] ?? '';
+    image = json['image'] ?? '';
+    email = json['email'] ?? '';
+    description = json['description'] ?? '';
+    department = json['department'] ?? '';
+
+    // Asegurémonos de que "barrio" sea un mapa antes de asignarlo
+    if (json['barrio'] is Map<String, dynamic>) {
+      barrio = json['barrio']
+          .toString(); // Convertir el mapa a una representación de cadena
+    } else {
+      // Si "barrio" no es un mapa, asignamos directamente
+      barrio = json['barrio'] ?? '';
+    }
+
+    job = json['job'] ?? '';
   }
 
   User({
