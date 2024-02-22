@@ -7,7 +7,7 @@ class CustomSearchBar extends StatelessWidget {
   const CustomSearchBar({
     Key? key,
     required this.onChanged,
-    required this.suggestions,
+    required this.suggestions, required Null Function(String value) onSubmitted,
   }) : super(key: key);
 
   @override
