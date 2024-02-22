@@ -1,12 +1,13 @@
 import 'package:dame_una_mano/features/controllers/location_controller.dart';
 import 'package:dame_una_mano/features/home_page/widgets/trabajadores.dart';
+import 'package:dame_una_mano/features/perfil/sceens/wokers_profile.dart';
 import 'package:dame_una_mano/features/services/location_file_manager.dart';
 import 'package:dame_una_mano/features/utils/app_bar.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dame_una_mano/features/utils/file_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:permission_handler/permission_handler.dart';
+import 'package:permission_handler/permission_handler.dart'; // Importa el archivo de pantalla de perfil de usuario
 
 class BarrioScreen extends StatefulWidget {
   final String selectedProfession;
@@ -28,7 +29,6 @@ class _BarrioScreenState extends State<BarrioScreen> {
   String? selectedBarrio;
   List<Trabajador> trabajadores = [];
 
-  // Lista de barrios de ejemplo definida en la pantalla
   List<String> barriosMontevideo = [
     'Aires Puros',
     'Atahualpa',
@@ -55,13 +55,11 @@ class _BarrioScreenState extends State<BarrioScreen> {
 
   Future<void> _fetchTrabajadores() async {
     try {
-      // Obtener una referencia a la colección "professionals"
       QuerySnapshot querySnapshot = await FirebaseFirestore.instance
           .collection('professionals')
           .where('job', isEqualTo: widget.selectedProfession)
           .get();
 
-      // Mapear los documentos a objetos Trabajador
       trabajadores = querySnapshot.docs.map((doc) {
         return Trabajador(
           nombre: doc['name'],
@@ -71,7 +69,6 @@ class _BarrioScreenState extends State<BarrioScreen> {
         );
       }).toList();
 
-      // Actualizar el estado con los trabajadores obtenidos
       setState(() {});
     } catch (e) {
       print('Error al obtener trabajadores: $e');
@@ -124,17 +121,13 @@ class _BarrioScreenState extends State<BarrioScreen> {
                     _isLocationLoaded = true;
                   });
 
-                  // Subir la ubicación a Firestore
                   await _locationController.uploadCurrentLocationToFirestore();
-
-                  // Guardar la ubicación en un archivo JSON local
                   await LocationFileManager.saveLocationToJson({
                     'address': _currentAddress,
                     'latitude': _initialCameraPosition.latitude,
                     'longitude': _initialCameraPosition.longitude,
                   });
 
-                  // Obtener el directorio de documentos de la aplicación y mostrarlo en la consola
                   final directoryPath =
                       await FileUtils.getApplicationDocumentsDirectoryPath();
                   print(
@@ -181,15 +174,13 @@ class _BarrioScreenState extends State<BarrioScreen> {
             ElevatedButton(
               onPressed: () {
                 if (selectedBarrio != null) {
-                  // Filtrar trabajadores por el barrio seleccionado
                   List<Trabajador> trabajadoresEnBarrio = trabajadores
                       .where((trabajador) =>
                           trabajador.barrio.toLowerCase() ==
                           selectedBarrio!.toLowerCase())
                       .toList();
 
-                  // Muestra los trabajadores en ese barrio
-                    if (trabajadoresEnBarrio.isNotEmpty) {
+                  if (trabajadoresEnBarrio.isNotEmpty) {
                     showDialog(
                       context: context,
                       builder: (BuildContext context) {
@@ -200,11 +191,19 @@ class _BarrioScreenState extends State<BarrioScreen> {
                             children: trabajadoresEnBarrio.map((trabajador) {
                               return ListTile(
                                 title: Text(
-                                  '${trabajador.nombre} ${trabajador.apellido}',
-                                  style: TextStyle(fontSize: 18, color: Colors.lightBlue)
-                                ),
+                                    '${trabajador.nombre} ${trabajador.apellido}',
+                                    style: TextStyle(
+                                        fontSize: 18, color: Colors.lightBlue)),
                                 onTap: () {
-                                  // Aquí se puede navegar al perfil del trabajador
+                                  print(
+                                      'Nombre del trabajador: ${trabajador.nombre}');
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          WorkersProfileScreen(
+                                              workerName: trabajador.nombre),
+                                    ),
+                                  );
                                 },
                               );
                             }).toList(),
@@ -221,7 +220,6 @@ class _BarrioScreenState extends State<BarrioScreen> {
                       },
                     );
                   } else {
-                    // Muestra un mensaje si no hay trabajadores en ese barrio
                     showDialog(
                       context: context,
                       builder: (BuildContext context) {

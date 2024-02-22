@@ -1,4 +1,3 @@
-import 'package:dame_una_mano/features/authentication/data/user.dart';
 import 'package:dame_una_mano/features/authentication/providers/providers.dart';
 import 'package:dame_una_mano/features/authentication/screens/screens.dart';
 import 'package:dame_una_mano/features/authentication/widgets/widgets.dart';

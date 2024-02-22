@@ -14,7 +14,7 @@ class WorkerScreen extends StatelessWidget {
               image: AssetImage("assets/fondo2.jpg"), fit: BoxFit.cover)),
       child: Scaffold(
         backgroundColor: Colors.transparent,
-        appBar: const CustomAppBar(),
+        appBar: const CustomAppBar(automaticallyImplyLeading: false,),
         body: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(20.0),

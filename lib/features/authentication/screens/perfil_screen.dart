@@ -19,7 +19,7 @@ class UserProfileScreen extends StatelessWidget {
         },
         onNotificationPressed: () {
           // Acción al presionar el icono de notificaciones
-        },
+        }, automaticallyImplyLeading: false,
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
