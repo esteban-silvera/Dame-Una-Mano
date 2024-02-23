@@ -9,7 +9,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     Key? key,
     this.height = kToolbarHeight,
     this.onProfilePressed,
-    this.onNotificationPressed,
+    this.onNotificationPressed, required bool automaticallyImplyLeading,
   }) : super(key: key);
 
   @override
