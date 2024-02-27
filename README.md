@@ -1,5 +1,9 @@
 # Dame Una Mano
 
+<p align="center">
+  <img width="473" alt="image" src="https://github.com/esteban-silvera/Dame-Una-Mano/assets/108559276/83b8b370-3230-4190-b237-99dc49c10bbd">
+</p>
+
 "Dame Una Mano: The app that streamlines connections to trusted professionals across various services, simplifying your search and ensuring efficient solutions."
 
 ##  Description 
@@ -9,8 +13,9 @@
 Dame Una Mano is a user-friendly application that serves as a centralized platform for connecting users with a diverse array of professionals across various services. Professionals can easily advertise their services, while users can conveniently search and filter through profiles to find the perfect match for their needs. With a wide range of services available, from plumbing to tutoring, users can explore detailed professional profiles showcasing expertise and qualifications, ensuring they connect with the right professionals efficiently.
 
 **Technologies**
-
-Adding Images soon!
+<p align="center">
+  <img width="475" alt="image" src="https://github.com/esteban-silvera/Dame-Una-Mano/assets/108559276/dad387b6-8cae-482f-b628-e52a2199503a">
+</p>
 
 **Challenges**
 
