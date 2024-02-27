@@ -54,7 +54,7 @@ The challenges we encountered included dedicating ample time to understand the n
 ## Contact
 * Project Manager/ Front End Developer - Lucia Puppo : https://github.com/LuciaPuppo897
 * Fullstack Devloper - Esteban Silvera : https://github.com/esteban-silvera
-* Backend Developer - Yetzabeth Hernandez : 
+* Backend Developer - Yetzabeth Hernandez : https://github.com/yetzabeth
 * Backend Developer - Carlos Franco : https://github.com/cfranco87
 
 * Dame Una Mano: https://github.com/esteban-silvera/Dame-Una-Mano
