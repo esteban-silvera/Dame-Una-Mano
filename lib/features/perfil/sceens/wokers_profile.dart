@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dame_una_mano/features/utils/app_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class WorkersProfileScreen extends StatelessWidget {
   final String workerName;
@@ -22,6 +21,7 @@ class WorkersProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFFF5f5f5),
       appBar: CustomAppBar(
         onProfilePressed: () {
           // Acción al presionar el icono de perfil
@@ -39,17 +39,17 @@ class WorkersProfileScreen extends StatelessWidget {
             .then((QuerySnapshot querySnapshot) => querySnapshot.docs.first),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
+            return Center(
               child: CircularProgressIndicator(),
             );
           }
           if (snapshot.hasError) {
-            return const Center(
+            return Center(
               child: Text('Error al cargar el perfil del trabajador'),
             );
           }
           if (!snapshot.hasData || snapshot.data == null) {
-            return const Center(
+            return Center(
               child: Text('Trabajador no encontrado'),
             );
           }
@@ -62,43 +62,32 @@ class WorkersProfileScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const CircleAvatar(
+                  CircleAvatar(
                     radius: 60,
                     backgroundImage: NetworkImage(
                         'https://www.example.com/default_profile_image.jpg'),
                   ),
-                  const SizedBox(height: 20),
+                  SizedBox(height: 20),
                   Text(
-                    'Nombre: ${workerData['name']}',
-                    style: const TextStyle(
-                        fontWeight: FontWeight.bold, fontSize: 20),
+                    '${workerData['name']} ${workerData['lastname']}',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                     textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: 20),
-                  Text(
-                    'Apellido: ${workerData['lastname']}',
-                    style: const TextStyle(
-                        fontWeight: FontWeight.bold, fontSize: 20),
-                    textAlign: TextAlign.center,
+                  SizedBox(height: 20),
+                  _buildUserInfo(
+                    title: '',
+                    value: workerData['Descripcion'] ??
+                        'Descripcion no disponible',
                   ),
-                  const SizedBox(height: 20),
-                  Text(
-                    'Barrio: ${workerData['barrio']}',
-                    style: const TextStyle(
-                        fontWeight: FontWeight.bold, fontSize: 20),
-                    textAlign: TextAlign.center,
+                  SizedBox(height: 20),
+                  _buildUserInfo(
+                    title: 'Oficio:',
+                    value: workerData['job'] ?? 'Oficio no disponible',
                   ),
-                  const SizedBox(height: 20),
-                  Text(
-                    'Oficio: ${workerData['job']}',
-                    style: const TextStyle(
-                        fontWeight: FontWeight.bold, fontSize: 20),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 20),
+                  SizedBox(height: 20),
                   ElevatedButton(
                     onPressed: _launchWhatsApp,
-                    child: const Row(
+                    child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Icon(Icons.message), // Icono de WhatsApp
@@ -113,6 +102,34 @@ class WorkersProfileScreen extends StatelessWidget {
             ),
           );
         },
+      ),
+    );
+  }
+
+  Widget _buildUserInfo({required String title, required String value}) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: const Color(0xFF43c7ff)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          SizedBox(height: 5),
+          Text(
+            value,
+            style: TextStyle(fontSize: 20),
+          ),
+        ],
       ),
     );
   }
