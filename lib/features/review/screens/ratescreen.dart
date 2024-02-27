@@ -12,7 +12,7 @@ class RateWorkerScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.lightBlue,
-        title: Text('Califica al trabajador'),
+        title: Text('Por favor Califica al trabajador!!!'),
       ),
       body: Center(
         child: SingleChildScrollView(
