@@ -1,9 +1,8 @@
 import 'package:dame_una_mano/features/authentication/providers/providers.dart';
-import 'package:dame_una_mano/features/home_page/screens/home_screen2.dart';
+import 'package:dame_una_mano/features/authentication/screens/screens.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'services/config/firebase_options.dart';
-
 import 'package:provider/provider.dart';
 
 void main() async {
@@ -33,7 +32,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        home: MyHomePage(),
+        home: HomeScreen(),
       ),
     );
   }

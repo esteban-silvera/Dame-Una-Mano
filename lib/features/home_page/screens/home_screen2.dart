@@ -1,6 +1,6 @@
 import 'package:dame_una_mano/features/controllers/location_controller.dart';
 import 'package:dame_una_mano/features/home_page/widgets/trabajadores.dart';
-import 'package:dame_una_mano/features/perfil/sceens/wokers_profile.dart';
+import 'package:dame_una_mano/features/perfil/screens/wokers_profile.dart';
 import 'package:dame_una_mano/features/services/location_file_manager.dart';
 import 'package:dame_una_mano/features/utils/app_bar.dart';
 import 'package:dame_una_mano/features/utils/file_utils.dart';

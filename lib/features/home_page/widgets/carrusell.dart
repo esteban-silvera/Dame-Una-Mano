@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
 class ImageCarousel extends StatelessWidget {
-  final List<String> imageAssetPaths;
+  final List<String> imageUrls;
 
-  const ImageCarousel({Key? key, required this.imageAssetPaths})
-      : super(key: key);
+  const ImageCarousel({Key? key, required this.imageUrls}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +22,7 @@ class ImageCarousel extends StatelessWidget {
         enlargeCenterPage: true,
         onPageChanged: (index, reason) {},
       ),
-      items: imageAssetPaths.map((assetPath) {
+      items: imageUrls.map((imageUrl) {
         return Builder(
           builder: (BuildContext context) {
             return Container(
@@ -32,8 +31,8 @@ class ImageCarousel extends StatelessWidget {
               decoration: const BoxDecoration(
                 color: Colors.grey,
               ),
-              child: Image.asset(
-                assetPath,
+              child: Image.network(
+                imageUrl,
                 fit: BoxFit.cover,
               ),
             );
