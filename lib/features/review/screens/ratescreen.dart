@@ -36,7 +36,7 @@ class RateWorkerScreen extends StatelessWidget {
                       ),
                     );
                   },
-                  child: Text('Ver Info del Trabajador'),
+                  child: Text('Ver info del Trabajador'),
                 ),
               ],
             ),
