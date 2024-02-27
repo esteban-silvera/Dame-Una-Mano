@@ -34,7 +34,22 @@ The challenges we encountered included dedicating ample time to understand the n
 
 ## Mock-Ups
 
-images coming!
+<p align="center">
+  <img width="475" alt="image" src="https://github.com/esteban-silvera/Dame-Una-Mano/assets/108559276/44d77c4c-55ce-4e37-925d-b7a0c1df4f8f">
+</p>
+
+<p align="center">
+  <img width="475" alt="image" src="https://github.com/esteban-silvera/Dame-Una-Mano/assets/108559276/bee32626-8b6d-4d6e-9426-05462d347cf1">
+</p>
+
+<p align="center">
+  <img width="475" alt="image" src="https://github.com/esteban-silvera/Dame-Una-Mano/assets/108559276/76467ba3-a7c4-4d80-9a2e-0aedb6a02918">
+</p>
+
+<p align="center">
+  <img width="475" alt="image" src="https://github.com/esteban-silvera/Dame-Una-Mano/assets/108559276/1fdffad7-f4f7-401f-b9f7-d7658159b40c">
+</p>
+
 
 ## Contact
 * Project Manager/ Front End Developer - Lucia Puppo : https://github.com/LuciaPuppo897
