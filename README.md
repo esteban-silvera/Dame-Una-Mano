@@ -11,8 +11,9 @@
  - [Getting Started](#item-two)
  - [Features](#item-three)
  - [Built With](#item-four)
- - [Authors](#item-five)
- - [Acknowledgements](#item-five)
+ - [Future](#item-five)
+ - [Authors](#item-six)
+ - [Acknowledgements](#item-seven)
  
 
 
@@ -51,8 +52,38 @@ This setup allows for a seamless integration of Flutter and Dart for the front e
 - Must have a github account to use Dame Una Mano.
 - To explore features without logging in, check out Features.
 
+**Use of Application**
+
+Dame Una Mano is a user-friendly application that serves as a centralized platform for connecting users with a diverse array of professionals across various services. Professionals can easily advertise their services, while users can conveniently search and filter through profiles to find the perfect match for their needs. With a wide range of services available, from plumbing to tutoring, users can explore detailed professional profiles showcasing expertise and qualifications, ensuring they connect with the right professionals efficiently.
+
+**Challenges**
+
+The challenges we encountered included dedicating ample time to understand the nuances of each new technology. To address this, we divided the team between front end and backend development. Our front end developers focused on crafting the application's aesthetic using tools like Figma and Flutter, ensuring it aligned with the project's concept. Meanwhile, the backend developers concentrated on building the database infrastructure using Firebase for hosting and integrating the Google Maps API for real-time user-professional connections. Throughout this process, we relied on task-based platforms such as Trello to track weekly objectives and ensure we met our deadline for completing the app.
+
 <a id="item-three"></a>
 ### Features
+
+The initial screen of the application offers users three distinct options to proceed:
+
+- ¿Qué estás buscando??
+- Ofrezco servicio
+- Iniciar sesión or regístrate
+
+We designed the initial screen to provide users with multiple pathways to use the application, catering to those seeking services, those offering services, and those who simply want to explore the available services.
+
+<p align="left">
+  <img width="200" alt="image" src="https://github.com/esteban-silvera/Dame-Una-Mano/assets/108559276/0dcb7b9f-5721-49c9-8df6-89db4222ef4b">
+</p>
+
+We have integrated a button on the login screen that toggles between the login and registration states. Below, you can see an example of how these changes are implemented.
+
+<p align="left">
+  <img width="200" alt="image" src="https://github.com/esteban-silvera/Dame-Una-Mano/assets/108559276/786b37c0-bb6d-4cd7-a94f-1914e3142522">
+</p>
+
+<p align="left">
+  <img width="200" alt="image" src="https://github.com/esteban-silvera/Dame-Una-Mano/assets/108559276/344682f3-0930-4527-b085-dbe50e597bd3">
+</p>
 
 - **Need images** 
 - Using Google Api to find professionals near by
@@ -72,58 +103,10 @@ This setup allows for a seamless integration of Flutter and Dart for the front e
 - [Geocoding API](https://developers.google.com/maps/documentation/geocoding/overview) - For Converting Addresses into Geographic Coordinates
 - [Google Cloud](https://cloud.google.com/why-google-cloud/) - Backend Services and Infrastructure Support for Firebase 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-**Use of Application**
-
-Dame Una Mano is a user-friendly application that serves as a centralized platform for connecting users with a diverse array of professionals across various services. Professionals can easily advertise their services, while users can conveniently search and filter through profiles to find the perfect match for their needs. With a wide range of services available, from plumbing to tutoring, users can explore detailed professional profiles showcasing expertise and qualifications, ensuring they connect with the right professionals efficiently.
-
-**Structure of Database**
-
-<p align="center">
-  <img width="475" alt="image" src="https://github.com/esteban-silvera/Dame-Una-Mano/assets/108559276/bb677c4d-c6f9-4bf6-b206-26c727df3c33">
-</p>
-
-
-**Challenges**
-
-The challenges we encountered included dedicating ample time to understand the nuances of each new technology. To address this, we divided the team between front end and backend development. Our front end developers focused on crafting the application's aesthetic using tools like Figma and Flutter, ensuring it aligned with the project's concept. Meanwhile, the backend developers concentrated on building the database infrastructure using Firebase for hosting and integrating the Google Maps API for real-time user-professional connections. Throughout this process, we relied on task-based platforms such as Trello to track weekly objectives and ensure we met our deadline for completing the app.
-
-<a id="item-three"></a>
-### Project Objectives
-
-* Streamlining service facilitation
-* Showcasing a wide array of services
-* Developing an agile and user-friendly platform for both users and service providers
-
-**How we help**
-* Providing an additional tool for efficient work management
-* Recognizing and acknowledging quality work
-* Instilling a sense of trust and confidence in the reliability of professionals
-
-<a id="item-four"></a>
-
 <a id="item-five"></a>
+### Future
+
+<a id="item-six"></a>
 ### Authors
 * Project Manager/ Front End Developer - Lucia Puppo : https://github.com/LuciaPuppo897
 * Fullstack Devloper - Esteban Silvera : https://github.com/esteban-silvera
@@ -132,6 +115,7 @@ The challenges we encountered included dedicating ample time to understand the n
 
 * Dame Una Mano: https://github.com/esteban-silvera/Dame-Una-Mano
 
+<a id="item-seven"></a>
 ### Acknowledgements
 
 - [Holberton School](https://holbertonschool.uy/) - (Staff and Students)
