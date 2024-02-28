@@ -9,7 +9,7 @@ class ServiceItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<String>(
-      future: IconStorageService.getIconUrl('icons/$service.jpg'),
+      future: IconStorageService.getIconUrl('icons/${IconStorageService.obtenerIconoNombre(service)}'),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return CircularProgressIndicator();

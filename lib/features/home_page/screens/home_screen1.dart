@@ -36,6 +36,10 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  Future<String> getIconUrl(String iconName) async {
+    return IconStorageService.getIconUrl(iconName);
+  }
+
   @override
   Widget build(BuildContext context) {
     List<String> professions = [
@@ -78,9 +82,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 SizedBox(
                   height: 200,
-                  child: ImageCarousel(
-                    imageUrls: images,
-                  ),
+                  child: images.isEmpty
+                      ? Placeholder() // Muestra un Placeholder si no hay imágenes cargadas
+                      : ImageCarousel(imageUrls: images), // Muestra el carrusel de imágenes si hay imágenes cargadas
                 ),
               ],
             ),
@@ -94,18 +98,23 @@ class _HomeScreenState extends State<HomeScreen> {
                             .toLowerCase()
                             .contains(value.toLowerCase()))
                         .toList();
+                    selectedProfession = searchedProfessions.isNotEmpty ? searchedProfessions.first : null; // Establece la profesión seleccionada
                   });
                   Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => BarrioScreen(
-                        selectedProfession: value,
+                        selectedProfession: selectedProfession!,
                       ),
                     ),
                   );
                 },
                 suggestions: professions,
-                onChanged: (String value) {},
+                onChanged: (String value) {
+                  setState(() {
+                    selectedProfession = value.isNotEmpty ? value : null; // Actualiza la profesión seleccionada
+                  });
+                },
               ),
             ),
             const SizedBox(height: 20),
@@ -114,15 +123,17 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: List.generate(
-                  (professions.length / 2).ceil(),
+                  (professions.length / 3).ceil(), // Cambiado a 3
                   (index) => Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: List.generate(
-                      4,
+                      3, // Cambiado a 3
                       (subIndex) {
-                        final professionIndex = index * 4 + subIndex;
+                        final professionIndex = index * 3 + subIndex; // Cambiado a 3
                         if (professionIndex < professions.length) {
-                          return _buildIcon(professions[professionIndex]);
+                          return Expanded(
+                            child: _buildIcon(professions[professionIndex], professionIndex),
+                          );
                         } else {
                           return const SizedBox(width: 60); // Espacio vacío
                         }
@@ -136,7 +147,7 @@ class _HomeScreenState extends State<HomeScreen> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Container(
-                width: 100,
+                width: 80, // Reducido el ancho del contenedor
                 child: TextButton(
                   onPressed: () {
                     print(searchedProfessions);
@@ -151,11 +162,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       );
                     }
                   },
-                  style: const ButtonStyle(
-                    backgroundColor:
-                        MaterialStatePropertyAll(Color(0xFF43c7ff)),
-                    foregroundColor: MaterialStatePropertyAll(
-                        Color.fromARGB(255, 248, 248, 249)),
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all<Color>(const Color(0xFF43c7ff)),
+                    foregroundColor: MaterialStateProperty.all<Color>(const Color.fromARGB(255, 248, 248, 249)),
                   ),
                   child: const Text('Siguiente'),
                 ),
@@ -167,37 +176,54 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildIcon(String profession) {
-    return FutureBuilder<String>(
-      future: IconStorageService.obtenerIconoUrl(profession), // Obtén la URL de descarga del icono según la profesión
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          // Muestra un indicador de carga mientras se obtiene la URL del icono
-          return CircularProgressIndicator();
-        } else if (snapshot.hasError) {
-          // Si hay un error al obtener la URL del icono, muestra un icono predeterminado
-          return Icon(Icons.error); // Puedes personalizar el icono de error según tus necesidades
-        } else {
-          // Si se obtiene la URL del icono exitosamente, muestra el icono
-          return InkWell(
-            onTap: () {
-              // Acción al presionar el servicio
-              print("Servicio seleccionado: $profession");
-              // Puedes realizar la búsqueda u otras acciones aquí
-            },
-            splashColor: Colors.lightBlueAccent.withOpacity(0.5),
-            child: Container(
-              padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
-              decoration: BoxDecoration(
-                shape: BoxShape.rectangle,
-                border: Border.all(color: Colors.lightBlue.shade300),
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-              child: Image.network(snapshot.data!), // Muestra el icono utilizando la URL de descarga
-            ),
-          );
-        }
+  Widget _buildIcon(String profession, int index) {
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          selectedProfession = profession; // Almacena la profesión seleccionada
+        });
       },
+      child: FutureBuilder<String>(
+        future: getIconUrl('${IconStorageService.obtenerIconoNombre(profession)}'),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting || !snapshot.hasData) {
+            return Container(); // No muestra nada mientras espera la carga
+          } else if (snapshot.hasError) {
+            return Icon(Icons.error); // Muestra un ícono de error si ocurre un error
+          } else {
+            return Column(
+              children: [
+                Container(
+                  width: 80, // Reducido el ancho del contenedor
+                  height: 100, // Ajusta la altura para que se vean mejor
+                  margin: const EdgeInsets.all(4.0), // Añade un margen entre los iconos
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(
+                      color: profession.toLowerCase() == selectedProfession?.toLowerCase() ? Colors.orange : const Color(0xFF43c7ff), // Cambia el color del borde si la profesión está seleccionada
+                      width: 2.0, // Aumenta el grosor del borde
+                    ),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.network(
+                        snapshot.data!,
+                        width: 40, // Ajusta el ancho de la imagen para evitar el desbordamiento
+                      ), // Muestra el icono utilizando la URL de descarga
+                      const SizedBox(height: 4),
+                      Text(
+                        profession,
+                        style: TextStyle(color: Colors.black), // Color del texto
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            );
+          }
+        },
+      ),
     );
   }
 }

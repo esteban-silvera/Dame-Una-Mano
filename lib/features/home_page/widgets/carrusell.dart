@@ -28,17 +28,29 @@ class ImageCarousel extends StatelessWidget {
             return Container(
               width: MediaQuery.of(context).size.width,
               margin: const EdgeInsets.symmetric(horizontal: 5.0),
-              decoration: const BoxDecoration(
-                color: Colors.grey,
-              ),
-              child: Image.network(
-                imageUrl,
-                fit: BoxFit.cover,
-              ),
+              child: _buildImage(imageUrl),
             );
           },
         );
       }).toList(),
+    );
+  }
+
+  Widget _buildImage(String imageUrl) {
+    return Image.network(
+      imageUrl,
+      fit: BoxFit.cover,
+      loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+        if (loadingProgress == null) {
+          return child;
+        } else {
+          return Container(
+            color: Colors.transparent, // Color transparente para evitar que se muestre el contenedor gris
+            width: double.infinity,
+            height: 120,
+          );
+        }
+      },
     );
   }
 }
