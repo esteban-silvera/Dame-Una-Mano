@@ -1,12 +1,19 @@
-# Dame Una Mano
-
 <p align="center">
   <img width="473" alt="image" src="https://github.com/esteban-silvera/Dame-Una-Mano/assets/108559276/83b8b370-3230-4190-b237-99dc49c10bbd">
 </p>
 
 "Dame Una Mano: The app that streamlines connections to trusted professionals across various services, simplifying your search and ensuring efficient solutions."
 
-##  Description 
+ **Table of content:**
+ - [Description](#item-one)
+ - [Project Objectives](#item-three)
+ - [Mock Ups](#item-four)
+ - [Contact](#item-five)
+ 
+
+
+<a id="item-one"></a>
+###  Description 
 
 **Use of Application**
 
@@ -17,11 +24,13 @@ Dame Una Mano is a user-friendly application that serves as a centralized platfo
   <img width="475" alt="image" src="https://github.com/esteban-silvera/Dame-Una-Mano/assets/108559276/dad387b6-8cae-482f-b628-e52a2199503a">
 </p>
 
+
 **Challenges**
 
 The challenges we encountered included dedicating ample time to understand the nuances of each new technology. To address this, we divided the team between front end and backend development. Our front end developers focused on crafting the application's aesthetic using tools like Figma and Flutter, ensuring it aligned with the project's concept. Meanwhile, the backend developers concentrated on building the database infrastructure using Firebase for hosting and integrating the Google Maps API for real-time user-professional connections. Throughout this process, we relied on task-based platforms such as Trello to track weekly objectives and ensure we met our deadline for completing the app.
 
-## Project Objectives
+<a id="item-three"></a>
+### Project Objectives
 
 * Streamlining service facilitation
 * Showcasing a wide array of services
@@ -32,7 +41,8 @@ The challenges we encountered included dedicating ample time to understand the n
 * Recognizing and acknowledging quality work
 * Instilling a sense of trust and confidence in the reliability of professionals
 
-## Mock-Ups
+<a id="item-four"></a>
+### Mock-Ups
 
 <p align="center">
   <img width="475" alt="image" src="https://github.com/esteban-silvera/Dame-Una-Mano/assets/108559276/44d77c4c-55ce-4e37-925d-b7a0c1df4f8f">
@@ -50,8 +60,8 @@ The challenges we encountered included dedicating ample time to understand the n
   <img width="475" alt="image" src="https://github.com/esteban-silvera/Dame-Una-Mano/assets/108559276/1fdffad7-f4f7-401f-b9f7-d7658159b40c">
 </p>
 
-
-## Contact
+<a id="item-five"></a>
+### Contact
 * Project Manager/ Front End Developer - Lucia Puppo : https://github.com/LuciaPuppo897
 * Fullstack Devloper - Esteban Silvera : https://github.com/esteban-silvera
 * Backend Developer - Yetzabeth Hernandez : https://github.com/yetzabeth
