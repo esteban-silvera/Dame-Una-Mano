@@ -1,10 +1,9 @@
-import 'package:dame_una_mano/features/authentication/widgets/widgets.dart';
-import 'package:dame_una_mano/features/home_page/screens/home_screen2.dart';
-
 import 'package:flutter/material.dart';
 import 'package:dame_una_mano/features/utils/app_bar.dart';
+import 'package:dame_una_mano/features/authentication/data/storage_image.dart';
 import 'package:dame_una_mano/features/home_page/widgets/widgets_home.dart';
-// Importa la pantalla de los trabajadores
+import 'package:dame_una_mano/features/home_page/screens/home_screen2.dart';
+import 'package:dame_una_mano/features/authentication/data/icon_storage.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -16,16 +15,34 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   String? selectedProfession;
   List<String> searchedProfessions = [];
+  List<String> images = [];
+  bool showErrorMessage = false; // Nuevo booleano para controlar la visibilidad del mensaje de error
+
+  @override
+  void initState() {
+    super.initState();
+    loadImagesFromStorage();
+  }
+
+  Future<void> loadImagesFromStorage() async {
+    // Obtener las URL de las imágenes desde Firebase Storage
+    List<String> storageImages = await Future.wait([
+      StorageService.getImageUrl('images/albanil.png'),
+      StorageService.getImageUrl('images/barraca.png'),
+      StorageService.getImageUrl('images/imagen3.png'),
+      StorageService.getImageUrl('images/imagen2.png'),
+    ]);
+    setState(() {
+      images = storageImages;
+    });
+  }
+
+  Future<String> getIconUrl(String iconName) async {
+    return IconStorageService.getIconUrl(iconName);
+  }
 
   @override
   Widget build(BuildContext context) {
-    List<String> images = [
-      'assets/albanil.png',
-      'assets/barraca.png',
-      'assets/imagen3.png',
-      'assets/imagen2.png',
-    ];
-
     List<String> professions = [
       "Carpintero",
       "Electricista",
@@ -66,9 +83,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 SizedBox(
                   height: 200,
-                  child: ImageCarousel(
-                    imageAssetPaths: images,
-                  ),
+                  child: images.isEmpty
+                      ? Placeholder() // Muestra un Placeholder si no hay imágenes cargadas
+                      : ImageCarousel(imageUrls: images), // Muestra el carrusel de imágenes si hay imágenes cargadas
                 ),
               ],
             ),
@@ -76,27 +93,50 @@ class _HomeScreenState extends State<HomeScreen> {
               padding: const EdgeInsets.all(15.0),
               child: CustomSearchBar(
                 onSubmitted: (String value) {
-                  // Filtrar la lista de profesiones cuando se presione enter
                   setState(() {
                     searchedProfessions = professions
                         .where((profession) => profession
                             .toLowerCase()
                             .contains(value.toLowerCase()))
                         .toList();
+                    selectedProfession = searchedProfessions.isNotEmpty ? searchedProfessions.first : null; // Establece la profesión seleccionada
+                    // Verificar si la profesión buscada está en la lista de sugerencias
+                    if (!professions.contains(value)) {
+                      showErrorMessage = true; // Mostrar mensaje de error si la profesión no está en la lista de sugerencias
+                    } else {
+                      showErrorMessage = false; // Ocultar mensaje de error si la profesión está en la lista de sugerencias
+                    }
                   });
-
-                  // Navegar a la siguiente pantalla (BarrioScreen) con el valor ingresado
                   Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => BarrioScreen(
-                        selectedProfession: value,
+                        selectedProfession: selectedProfession!,
                       ),
                     ),
                   );
                 },
                 suggestions: professions,
-                onChanged: (String value) {},
+                onChanged: (String value) {
+                  setState(() {
+                    selectedProfession = value.isNotEmpty ? value : null; // Actualiza la profesión seleccionada
+                    // Ocultar el mensaje de error al cambiar el texto
+                    if (professions.contains(value)) {
+                      showErrorMessage = false;
+                    }
+                  });
+                },
+              ),
+            ),
+            // Mostrar mensaje de error si la profesión buscada no está en la lista de sugerencias
+            Visibility(
+              visible: showErrorMessage,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Text(
+                  'La profesión buscada no está disponible',
+                  style: TextStyle(color: Colors.red),
+                ),
               ),
             ),
             const SizedBox(height: 20),
@@ -105,15 +145,17 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: List.generate(
-                  (professions.length / 2).ceil(),
+                  (professions.length / 3).ceil(), // Cambiado a 3
                   (index) => Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: List.generate(
-                      4,
+                      3, // Cambiado a 3
                       (subIndex) {
-                        final professionIndex = index * 4 + subIndex;
+                        final professionIndex = index * 3 + subIndex; // Cambiado a 3
                         if (professionIndex < professions.length) {
-                          return _buildIcon(professions[professionIndex]);
+                          return Expanded(
+                            child: _buildIcon(professions[professionIndex], professionIndex),
+                          );
                         } else {
                           return const SizedBox(width: 60); // Espacio vacío
                         }
@@ -127,7 +169,7 @@ class _HomeScreenState extends State<HomeScreen> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Container(
-                width: 100,
+                width: 80, // Reducido el ancho del contenedor
                 child: TextButton(
                   onPressed: () {
                     print(searchedProfessions);
@@ -137,17 +179,14 @@ class _HomeScreenState extends State<HomeScreen> {
                         MaterialPageRoute(
                           builder: (context) => BarrioScreen(
                             selectedProfession: selectedProfession!,
-                            // Asegúrate de tener esta lista
                           ),
                         ),
                       );
                     }
                   },
-                  style: const ButtonStyle(
-                    backgroundColor:
-                        MaterialStatePropertyAll(Color(0xFF43c7ff)),
-                    foregroundColor: MaterialStatePropertyAll(
-                        Color.fromARGB(255, 248, 248, 249)),
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all<Color>(const Color(0xFF43c7ff)),
+                    foregroundColor: MaterialStateProperty.all<Color>(const Color.fromARGB(255, 248, 248, 249)),
                   ),
                   child: const Text('Siguiente'),
                 ),
@@ -159,53 +198,53 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildIcon(String profession) {
-    IconData iconData = obtenerIcono(profession);
-
+  Widget _buildIcon(String profession, int index) {
     return GestureDetector(
       onTap: () {
         setState(() {
           selectedProfession = profession; // Almacena la profesión seleccionada
         });
       },
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            border: Border.all(color: const Color(0xFF43c7ff)), // Borde celeste
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(4.0),
-            child: Container(
-              width: 60,
-              height: 60,
-              decoration: BoxDecoration(
-                color: const Color(0xFFF5f5f5), // Fondo blanco
-                borderRadius: BorderRadius.circular(10), // Borde redondeado
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    iconData,
-                    color: const Color.fromARGB(
-                        255, 243, 152, 33), // Color del icono
-                    size: 24, // Tamaño del icono
-                  ),
-                  const SizedBox(height: 6),
-                  Text(
-                    profession,
-                    style: const TextStyle(
-                      fontSize: 11,
-                      fontWeight: FontWeight.bold,
+      child: FutureBuilder<String>(
+        future: getIconUrl('${IconStorageService.obtenerIconoNombre(profession)}'),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting || !snapshot.hasData) {
+            return Container(); // No muestra nada mientras espera la carga
+          } else if (snapshot.hasError) {
+            return Icon(Icons.error); // Muestra un ícono de error si ocurre un error
+          } else {
+            return Column(
+              children: [
+                Container(
+                  width: 80, // Reducido el ancho del contenedor
+                  height: 100, // Ajusta la altura para que se vean mejor
+                  margin: const EdgeInsets.all(4.0), // Añade un margen entre los iconos
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(
+                      color: profession.toLowerCase() == selectedProfession?.toLowerCase() ? Colors.orange : const Color(0xFF43c7ff), // Cambia el color del borde si la profesión está seleccionada
+                      width: 2.0, // Aumenta el grosor del borde
                     ),
                   ),
-                ],
-              ),
-            ),
-          ),
-        ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.network(
+                        snapshot.data!,
+                        width: 40, // Ajusta el ancho de la imagen para evitar el desbordamiento
+                      ), // Muestra el icono utilizando la URL de descarga
+                      const SizedBox(height: 4),
+                      Text(
+                        profession,
+                        style: TextStyle(color: Colors.black), // Color del texto
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            );
+          }
+        },
       ),
     );
   }
