@@ -1,13 +1,14 @@
-import 'package:dame_una_mano/features/controllers/location_controller.dart';
-import 'package:dame_una_mano/features/home_page/widgets/trabajadores.dart';
 import 'package:dame_una_mano/features/perfil/sceens/wokers_profile.dart';
-import 'package:dame_una_mano/features/services/location_file_manager.dart';
-import 'package:dame_una_mano/features/utils/app_bar.dart';
-import 'package:dame_una_mano/features/utils/file_utils.dart';
+import 'package:dame_una_mano/features/review/screens/ratescreen.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:permission_handler/permission_handler.dart'; // Importa el archivo de pantalla de perfil de usuario
+import 'package:permission_handler/permission_handler.dart';
+import 'package:dame_una_mano/features/controllers/location_controller.dart';
+import 'package:dame_una_mano/features/home_page/widgets/trabajadores.dart';
+import 'package:dame_una_mano/features/services/location_file_manager.dart';
+import 'package:dame_una_mano/features/utils/app_bar.dart';
+import 'package:dame_una_mano/features/utils/file_utils.dart';
 
 class BarrioScreen extends StatefulWidget {
   final String selectedProfession;
@@ -50,7 +51,7 @@ class _BarrioScreenState extends State<BarrioScreen> {
   }
 
   Future<void> _getLocation() async {
-    // Aquí implementa la lógica para obtener la ubicación del usuario
+    // Implementa la lógica para obtener la ubicación del usuario
   }
 
   Future<void> _fetchTrabajadores() async {
@@ -62,6 +63,7 @@ class _BarrioScreenState extends State<BarrioScreen> {
 
       trabajadores = querySnapshot.docs.map((doc) {
         return Trabajador(
+          id: doc.id, // ID del documento, que es la ID del trabajador
           nombre: doc['name'],
           apellido: doc['lastname'],
           barrio: doc['barrio'],
@@ -195,13 +197,11 @@ class _BarrioScreenState extends State<BarrioScreen> {
                                     style: TextStyle(
                                         fontSize: 18, color: Colors.lightBlue)),
                                 onTap: () {
-                                  print(
-                                      'Nombre del trabajador: ${trabajador.nombre}');
                                   Navigator.of(context).push(
                                     MaterialPageRoute(
-                                      builder: (context) =>
-                                          WorkersProfileScreen(
-                                              workerName: trabajador.nombre),
+                                      builder: (context) => WorkerProfileScreen(
+                                        workerId: trabajador.id,
+                                      ),
                                     ),
                                   );
                                 },
