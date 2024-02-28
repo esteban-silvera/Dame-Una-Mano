@@ -16,7 +16,7 @@ class LoginProvider extends ChangeNotifier {
     if (response.statusCode == 200) {
       var usuario = User.fromJson(jsonDecode(response.body));
       var urlDB = Uri.parse(
-          'https://dame-una-mano-411922-default-rtdb.firebaseio.com/users/${usuario.localId}.json');
+          'https://firestore.googleapis.com/v1/projects/dame-una-mano-411922/databases/(default)/documents/Users/${usuario.localId}');
       var responseDB = await http.get(urlDB);
       if (responseDB.statusCode == 200) {
         usuario.setUserData(jsonDecode(responseDB.body));

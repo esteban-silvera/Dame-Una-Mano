@@ -7,7 +7,7 @@ import 'package:dame_una_mano/features/authentication/data/user.dart';
 
 class RegisterProvider extends ChangeNotifier {
   RegisterProvider() {
-    print("iniciando registerProvider");
+    print("Iniciando RegisterProvider");
   }
 
   Future<bool> registrarUsuario(Map<String, String> formData) async {
@@ -21,15 +21,22 @@ class RegisterProvider extends ChangeNotifier {
 
       // Guardar datos del usuario en Firestore
       var firestoreUrl = Uri.parse(
-          'https://dame-una-mano-411922-default-rtdb.firebaseio.com/users/${usuario.localId}.json');
-      var firestoreResponse = await http.put(
+          'https://firestore.googleapis.com/v1/projects/dame-una-mano-411922/databases/(default)/documents/Users/${usuario.localId}');
+
+      var firestoreResponse = await http.patch(
         firestoreUrl,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
         body: jsonEncode({
-          'name': formData['name'],
-          'lastname': formData['lastname'],
-          'email': formData['email'], // para guardar mas datos agregemos aca
+          'fields': {
+            'name': {'stringValue': formData['name']},
+            'lastname': {'stringValue': formData['lastname']},
+            'email': {'stringValue': formData['email']},
+          }
         }),
       );
+
       if (firestoreResponse.statusCode == 200) {
         return true;
       } else {

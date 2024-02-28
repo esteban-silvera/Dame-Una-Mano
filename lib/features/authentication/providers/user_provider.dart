@@ -27,7 +27,7 @@ class UserProvider extends ChangeNotifier {
     if (response.statusCode == 200) {
       var usuario = User.fromJson(jsonDecode(response.body));
       var urlDB = Uri.parse(
-          'https://dame-una-mano-411922-default-rtdb.firebaseio.com/users/${usuario.localId}.json');
+          'https://firestore.googleapis.com/v1/projects/dame-una-mano-411922/databases/(default)/documents/Users/${usuario.localId}');
       var responseDb = await http.put(urlDB,
           body: jsonEncode({
             'name': formData['name'],
