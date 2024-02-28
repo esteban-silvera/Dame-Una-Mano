@@ -24,6 +24,12 @@ Dame Una Mano is a user-friendly application that serves as a centralized platfo
   <img width="475" alt="image" src="https://github.com/esteban-silvera/Dame-Una-Mano/assets/108559276/dad387b6-8cae-482f-b628-e52a2199503a">
 </p>
 
+**Structure of Database**
+
+<p align="center">
+  <img width="475" alt="image" src="https://github.com/esteban-silvera/Dame-Una-Mano/assets/108559276/bb677c4d-c6f9-4bf6-b206-26c727df3c33">
+</p>
+
 
 **Challenges**
 
