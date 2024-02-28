@@ -16,6 +16,7 @@ class _HomeScreenState extends State<HomeScreen> {
   String? selectedProfession;
   List<String> searchedProfessions = [];
   List<String> images = [];
+  bool showErrorMessage = false; // Nuevo booleano para controlar la visibilidad del mensaje de error
 
   @override
   void initState() {
@@ -99,6 +100,12 @@ class _HomeScreenState extends State<HomeScreen> {
                             .contains(value.toLowerCase()))
                         .toList();
                     selectedProfession = searchedProfessions.isNotEmpty ? searchedProfessions.first : null; // Establece la profesión seleccionada
+                    // Verificar si la profesión buscada está en la lista de sugerencias
+                    if (!professions.contains(value)) {
+                      showErrorMessage = true; // Mostrar mensaje de error si la profesión no está en la lista de sugerencias
+                    } else {
+                      showErrorMessage = false; // Ocultar mensaje de error si la profesión está en la lista de sugerencias
+                    }
                   });
                   Navigator.push(
                     context,
@@ -113,8 +120,23 @@ class _HomeScreenState extends State<HomeScreen> {
                 onChanged: (String value) {
                   setState(() {
                     selectedProfession = value.isNotEmpty ? value : null; // Actualiza la profesión seleccionada
+                    // Ocultar el mensaje de error al cambiar el texto
+                    if (professions.contains(value)) {
+                      showErrorMessage = false;
+                    }
                   });
                 },
+              ),
+            ),
+            // Mostrar mensaje de error si la profesión buscada no está en la lista de sugerencias
+            Visibility(
+              visible: showErrorMessage,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Text(
+                  'La profesión buscada no está disponible',
+                  style: TextStyle(color: Colors.red),
+                ),
               ),
             ),
             const SizedBox(height: 20),
