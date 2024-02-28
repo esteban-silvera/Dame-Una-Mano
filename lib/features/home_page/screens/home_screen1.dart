@@ -16,7 +16,8 @@ class _HomeScreenState extends State<HomeScreen> {
   String? selectedProfession;
   List<String> searchedProfessions = [];
   List<String> images = [];
-  bool showErrorMessage = false; // Nuevo booleano para controlar la visibilidad del mensaje de error
+  bool showErrorMessage =
+      false; // Nuevo booleano para controlar la visibilidad del mensaje de error
 
   @override
   void initState() {
@@ -85,7 +86,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   height: 200,
                   child: images.isEmpty
                       ? Placeholder() // Muestra un Placeholder si no hay imágenes cargadas
-                      : ImageCarousel(imageUrls: images), // Muestra el carrusel de imágenes si hay imágenes cargadas
+                      : ImageCarousel(
+                          imageUrls:
+                              images), // Muestra el carrusel de imágenes si hay imágenes cargadas
                 ),
               ],
             ),
@@ -99,12 +102,16 @@ class _HomeScreenState extends State<HomeScreen> {
                             .toLowerCase()
                             .contains(value.toLowerCase()))
                         .toList();
-                    selectedProfession = searchedProfessions.isNotEmpty ? searchedProfessions.first : null; // Establece la profesión seleccionada
+                    selectedProfession = searchedProfessions.isNotEmpty
+                        ? searchedProfessions.first
+                        : null; // Establece la profesión seleccionada
                     // Verificar si la profesión buscada está en la lista de sugerencias
                     if (!professions.contains(value)) {
-                      showErrorMessage = true; // Mostrar mensaje de error si la profesión no está en la lista de sugerencias
+                      showErrorMessage =
+                          true; // Mostrar mensaje de error si la profesión no está en la lista de sugerencias
                     } else {
-                      showErrorMessage = false; // Ocultar mensaje de error si la profesión está en la lista de sugerencias
+                      showErrorMessage =
+                          false; // Ocultar mensaje de error si la profesión está en la lista de sugerencias
                     }
                   });
                   Navigator.push(
@@ -119,7 +126,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 suggestions: professions,
                 onChanged: (String value) {
                   setState(() {
-                    selectedProfession = value.isNotEmpty ? value : null; // Actualiza la profesión seleccionada
+                    selectedProfession = value.isNotEmpty
+                        ? value
+                        : null; // Actualiza la profesión seleccionada
                     // Ocultar el mensaje de error al cambiar el texto
                     if (professions.contains(value)) {
                       showErrorMessage = false;
@@ -131,33 +140,35 @@ class _HomeScreenState extends State<HomeScreen> {
             // Mostrar mensaje de error si la profesión buscada no está en la lista de sugerencias
             Visibility(
               visible: showErrorMessage,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20),
                 child: Text(
                   'La profesión buscada no está disponible',
-                  style: TextStyle(color: Colors.red),
+                  style: TextStyle(color: Color(0xFF43c7ff)),
                 ),
               ),
             ),
             const SizedBox(height: 20),
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(9.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: List.generate(
-                  (professions.length / 3).ceil(), // Cambiado a 3
+                  (professions.length / 4).ceil(), // Cambiado a 3
                   (index) => Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: List.generate(
-                      3, // Cambiado a 3
+                      4, // Cambiado a 3
                       (subIndex) {
-                        final professionIndex = index * 3 + subIndex; // Cambiado a 3
+                        final professionIndex =
+                            index * 4 + subIndex; // Cambiado a 3
                         if (professionIndex < professions.length) {
                           return Expanded(
-                            child: _buildIcon(professions[professionIndex], professionIndex),
+                            child: _buildIcon(
+                                professions[professionIndex], professionIndex),
                           );
                         } else {
-                          return const SizedBox(width: 60); // Espacio vacío
+                          return const SizedBox(width: 50); // Espacio vacío
                         }
                       },
                     ),
@@ -167,9 +178,9 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             const SizedBox(height: 40),
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(10.0),
               child: Container(
-                width: 80, // Reducido el ancho del contenedor
+                // Reducido el ancho del contenedor
                 child: TextButton(
                   onPressed: () {
                     print(searchedProfessions);
@@ -185,8 +196,14 @@ class _HomeScreenState extends State<HomeScreen> {
                     }
                   },
                   style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all<Color>(const Color(0xFF43c7ff)),
-                    foregroundColor: MaterialStateProperty.all<Color>(const Color.fromARGB(255, 248, 248, 249)),
+                    padding: MaterialStateProperty.all<EdgeInsets>(
+                      EdgeInsets.all(
+                          1.0), // Esto agregará un espacio de 16.0 en todos los lados
+                    ),
+                    backgroundColor: MaterialStateProperty.all<Color>(
+                        const Color(0xFF43c7ff)),
+                    foregroundColor: MaterialStateProperty.all<Color>(
+                        const Color.fromARGB(255, 248, 248, 249)),
                   ),
                   child: const Text('Siguiente'),
                 ),
@@ -206,24 +223,32 @@ class _HomeScreenState extends State<HomeScreen> {
         });
       },
       child: FutureBuilder<String>(
-        future: getIconUrl('${IconStorageService.obtenerIconoNombre(profession)}'),
+        future:
+            getIconUrl('${IconStorageService.obtenerIconoNombre(profession)}'),
         builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting || !snapshot.hasData) {
-            return Container(); // No muestra nada mientras espera la carga
+          if (snapshot.connectionState == ConnectionState.waiting ||
+              !snapshot.hasData) {
+            return Container();
           } else if (snapshot.hasError) {
-            return Icon(Icons.error); // Muestra un ícono de error si ocurre un error
+            return Icon(
+                Icons.error); // Muestra un ícono de error si ocurre un error
           } else {
             return Column(
               children: [
                 Container(
-                  width: 80, // Reducido el ancho del contenedor
-                  height: 100, // Ajusta la altura para que se vean mejor
-                  margin: const EdgeInsets.all(4.0), // Añade un margen entre los iconos
+                  width: 75, // Reducido el ancho del contenedor
+                  height: 80, // Ajusta la altura para que se vean mejor
+                  margin: const EdgeInsets.all(
+                      4.0), // Añade un margen entre los iconos
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
                     border: Border.all(
-                      color: profession.toLowerCase() == selectedProfession?.toLowerCase() ? Colors.orange : const Color(0xFF43c7ff), // Cambia el color del borde si la profesión está seleccionada
-                      width: 2.0, // Aumenta el grosor del borde
+                      color: profession.toLowerCase() ==
+                              selectedProfession?.toLowerCase()
+                          ? Colors.orange
+                          : const Color(
+                              0xFF43c7ff), // Cambia el color del borde si la profesión está seleccionada
+                      width: 1.5, // Aumenta el grosor del borde
                     ),
                   ),
                   child: Column(
@@ -231,12 +256,15 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: [
                       Image.network(
                         snapshot.data!,
-                        width: 40, // Ajusta el ancho de la imagen para evitar el desbordamiento
+                        width:
+                            40, // Ajusta el ancho de la imagen para evitar el desbordamiento
                       ), // Muestra el icono utilizando la URL de descarga
                       const SizedBox(height: 4),
                       Text(
                         profession,
-                        style: TextStyle(color: Colors.black), // Color del texto
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w200), // Color del texto
                       ),
                     ],
                   ),
