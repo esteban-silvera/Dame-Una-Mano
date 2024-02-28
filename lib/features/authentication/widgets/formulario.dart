@@ -234,7 +234,7 @@ class _AuthenticationTabsState extends State<AuthenticationTabs>
     );
   }
 
-Future<void> formLogin() async {
+  Future<void> formLogin() async {
     if (formKey.currentState!.validate()) {
       final email = emailController.text;
       final password = passwordController.text;
@@ -245,25 +245,17 @@ Future<void> formLogin() async {
 
       bool success = await loginProvider.loginUsuario(loginData, userProvider);
       if (success) {
-        AppDialogs.showDialog2(context, "usuario autenticado", [
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context);
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => HomeScreen(),
-                ),
-              );
-            },
-            child: const Text("OK"),
-          )
-        ]);
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => HomeScreen(),
+          ),
+        );
       } else {
-        AppDialogs.showDialog1(context, 'no se pudo iniciar');
+        AppDialogs.showDialog1(context, 'No se pudo iniciar');
       }
     } else {
-      AppDialogs.showDialog1(context, 'no se pudo validar');
+      AppDialogs.showDialog1(context, 'Email o Contraseña Erróneas');
     }
   }
 
