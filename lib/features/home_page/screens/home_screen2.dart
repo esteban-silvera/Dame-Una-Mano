@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dame_una_mano/features/controllers/location_controller.dart';
-import 'package:dame_una_mano/features/utils/file_utils.dart';
-import 'package:dame_una_mano/features/services/location_file_manager.dart';
 import 'package:dame_una_mano/features/home_page/widgets/trabajadores.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:uuid/uuid.dart';
 
 class BarrioScreen extends StatefulWidget {
   final String selectedProfession;
@@ -46,58 +42,60 @@ class _BarrioScreenState extends State<BarrioScreen> {
   void initState() {
     super.initState();
     _getLocation();
-    _fetchTrabajadores();
   }
 
   Future<void> _getLocation() async {
-    // Implementa la lógica para obtener la ubicación del usuario
+    var status = await Permission.location.request();
+    if (status.isGranted) {
+      var position = await _locationController.getCurrentLocation();
+      setState(() {
+        _currentAddress = position.address;
+        _initialCameraPosition = position.position;
+        _isLocationLoaded = true;
+      });
+      // Llama a la función para cargar los trabajadores cuando se obtiene la ubicación
+      _fetchTrabajadores();
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Se requiere permiso de ubicación.'),
+        ),
+      );
+    }
   }
 
   Future<void> _fetchTrabajadores() async {
     try {
-      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-          .collection('professionals')
-          .where('job', isEqualTo: widget.selectedProfession)
-          .get();
-
-      trabajadores = querySnapshot.docs.map((doc) {
-        return Trabajador(
-          id: doc.id, // ID del documento, que es la ID del trabajador
-          nombre: doc['name'],
-          apellido: doc['lastname'],
-          barrio: doc['barrio'],
-          oficio: doc['job'],
-        );
-      }).toList();
-
-      setState(() {});
-    } catch (e) {
-      print('Error al obtener trabajadores: $e');
-    }
-  }
-
-  Future<void> _updateProfessionalBarrio(String barrio) async {
-    try {
-      String userId = '';
-      
-      // Obtén el ID del usuario actualmente autenticado
-      User? user = FirebaseAuth.instance.currentUser;
-      if (user != null) {
-        userId = user.uid;
+      QuerySnapshot querySnapshot;
+      if (selectedBarrio != null) {
+        querySnapshot = await FirebaseFirestore.instance
+            .collection('professionals')
+            .where('job', isEqualTo: widget.selectedProfession)
+            .where('barrio', isEqualTo: selectedBarrio)
+            .get();
       } else {
-        // Si no hay usuario autenticado, genera un ID único para el usuario no autenticado
-        userId = Uuid().v4();
+        querySnapshot = await FirebaseFirestore.instance
+            .collection('professionals')
+            .where('job', isEqualTo: widget.selectedProfession)
+            .get();
       }
 
-      // Actualiza el campo 'barrio' en Firestore para el profesional
-      await FirebaseFirestore.instance
-          .collection('professionals')
-          .doc(userId)
-          .update({'barrio': barrio});
-
-      print('Barrio actualizado en Firestore.');
+      setState(() {
+        // Limpia la lista de trabajadores antes de cargar los nuevos
+        trabajadores.clear();
+        // Mapea los documentos a objetos Trabajador y los agrega a la lista
+        trabajadores.addAll(querySnapshot.docs.map((doc) {
+          return Trabajador(
+            id: doc.id,
+            nombre: doc['name'],
+            apellido: doc['lastname'],
+            barrio: doc['barrio'],
+            oficio: doc['job'],
+          );
+        }).toList());
+      });
     } catch (e) {
-      print('Error al actualizar el barrio en Firestore: $e');
+      print('Error al obtener trabajadores: $e');
     }
   }
 
@@ -116,9 +114,11 @@ class _BarrioScreenState extends State<BarrioScreen> {
               padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
               child: DropdownButton<String>(
                 hint: const Text('Seleccionar Barrio'),
+                value: selectedBarrio,
                 onChanged: (String? barrio) {
                   setState(() {
                     selectedBarrio = barrio;
+                    _fetchTrabajadores(); // Llama a la función al cambiar el barrio seleccionado
                   });
                 },
                 items: barriosMontevideo.map((String barrio) {
@@ -131,40 +131,7 @@ class _BarrioScreenState extends State<BarrioScreen> {
             ),
             const SizedBox(height: 20),
             ElevatedButton(
-              onPressed: () async {
-                var status = await Permission.location.request();
-                if (status.isGranted) {
-                  var position = await _locationController.getCurrentLocation();
-                  setState(() {
-                    _currentAddress = position.address;
-                    _initialCameraPosition = position.position;
-                    _isLocationLoaded = true;
-                  });
-
-                  await _locationController.uploadCurrentLocationToFirestore();
-                  await LocationFileManager.saveLocationToJson({
-                    'address': _currentAddress,
-                    'latitude': _initialCameraPosition.latitude,
-                    'longitude': _initialCameraPosition.longitude,
-                  });
-
-                  final directoryPath =
-                      await FileUtils.getApplicationDocumentsDirectoryPath();
-                  print(
-                      'Directorio de documentos de la aplicación: $directoryPath');
-
-                  // Actualiza el barrio del profesional en Firestore
-                  if (selectedBarrio != null) {
-                    await _updateProfessionalBarrio(selectedBarrio!);
-                  }
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Se requiere permiso de ubicación.'),
-                    ),
-                  );
-                }
-              },
+              onPressed: _getLocation,
               child: const Text('Actualizar ubicación'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.white,
@@ -198,7 +165,31 @@ class _BarrioScreenState extends State<BarrioScreen> {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                // Resto del código
+                showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: Text('Trabajadores en tu área'),
+                    content: SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: trabajadores.map((trabajador) {
+                          return ListTile(
+                            title: Text('${trabajador.nombre} ${trabajador.apellido}'),
+                            subtitle: Text('Barrio: ${trabajador.barrio}'),
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: Text('Cerrar'),
+                      ),
+                    ],
+                  ),
+                );
               },
               child: const Text('Mostrar Trabajadores'),
               style: ElevatedButton.styleFrom(
