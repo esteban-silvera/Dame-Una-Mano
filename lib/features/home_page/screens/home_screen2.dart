@@ -1,14 +1,13 @@
-import 'package:dame_una_mano/features/perfil/sceens/wokers_profile.dart';
-import 'package:dame_una_mano/features/review/screens/ratescreen.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dame_una_mano/features/controllers/location_controller.dart';
+import 'package:dame_una_mano/features/utils/file_utils.dart';
+import 'package:dame_una_mano/features/services/location_file_manager.dart';
+import 'package:dame_una_mano/features/home_page/widgets/trabajadores.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:dame_una_mano/features/controllers/location_controller.dart';
-import 'package:dame_una_mano/features/home_page/widgets/trabajadores.dart';
-import 'package:dame_una_mano/features/services/location_file_manager.dart';
-import 'package:dame_una_mano/features/utils/app_bar.dart';
-import 'package:dame_una_mano/features/utils/file_utils.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:uuid/uuid.dart';
 
 class BarrioScreen extends StatefulWidget {
   final String selectedProfession;
@@ -77,18 +76,37 @@ class _BarrioScreenState extends State<BarrioScreen> {
     }
   }
 
+  Future<void> _updateProfessionalBarrio(String barrio) async {
+    try {
+      String userId = '';
+      
+      // Obtén el ID del usuario actualmente autenticado
+      User? user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        userId = user.uid;
+      } else {
+        // Si no hay usuario autenticado, genera un ID único para el usuario no autenticado
+        userId = Uuid().v4();
+      }
+
+      // Actualiza el campo 'barrio' en Firestore para el profesional
+      await FirebaseFirestore.instance
+          .collection('professionals')
+          .doc(userId)
+          .update({'barrio': barrio});
+
+      print('Barrio actualizado en Firestore.');
+    } catch (e) {
+      print('Error al actualizar el barrio en Firestore: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF5f5f5),
-      appBar: CustomAppBar(
-        onProfilePressed: () {
-          // Acción al presionar el icono de perfil
-        },
-        onNotificationPressed: () {
-          // Acción al presionar el icono de notificaciones
-        },
-        automaticallyImplyLeading: false,
+      appBar: AppBar(
+        title: Text('Seleccionar Barrio'),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -134,6 +152,11 @@ class _BarrioScreenState extends State<BarrioScreen> {
                       await FileUtils.getApplicationDocumentsDirectoryPath();
                   print(
                       'Directorio de documentos de la aplicación: $directoryPath');
+
+                  // Actualiza el barrio del profesional en Firestore
+                  if (selectedBarrio != null) {
+                    await _updateProfessionalBarrio(selectedBarrio!);
+                  }
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
@@ -175,72 +198,7 @@ class _BarrioScreenState extends State<BarrioScreen> {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                if (selectedBarrio != null) {
-                  List<Trabajador> trabajadoresEnBarrio = trabajadores
-                      .where((trabajador) =>
-                          trabajador.barrio.toLowerCase() ==
-                          selectedBarrio!.toLowerCase())
-                      .toList();
-
-                  if (trabajadoresEnBarrio.isNotEmpty) {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          title: const Text('Trabajadores en el Barrio'),
-                          content: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: trabajadoresEnBarrio.map((trabajador) {
-                              return ListTile(
-                                title: Text(
-                                    '${trabajador.nombre} ${trabajador.apellido}',
-                                    style: TextStyle(
-                                        fontSize: 18, color: Colors.lightBlue)),
-                                onTap: () {
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (context) => WorkerProfileScreen(
-                                        workerId: trabajador.id,
-                                      ),
-                                    ),
-                                  );
-                                },
-                              );
-                            }).toList(),
-                          ),
-                          actions: [
-                            TextButton(
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                              child: const Text('Aceptar'),
-                            ),
-                          ],
-                        );
-                      },
-                    );
-                  } else {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          title:
-                              const Text('No hay trabajadores en este barrio'),
-                          content:
-                              const Text('Por favor, selecciona otro barrio.'),
-                          actions: [
-                            TextButton(
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                              child: const Text('Aceptar'),
-                            ),
-                          ],
-                        );
-                      },
-                    );
-                  }
-                }
+                // Resto del código
               },
               child: const Text('Mostrar Trabajadores'),
               style: ElevatedButton.styleFrom(

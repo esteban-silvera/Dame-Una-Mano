@@ -52,6 +52,7 @@ dependencies:
   google_place: ^0.4.7
   path_provider: ^2.1.2
   flutter_rating_bar: ^4.0.1
+  uuid: ^4.3.3
   
 dev_dependencies:
   flutter_test:
