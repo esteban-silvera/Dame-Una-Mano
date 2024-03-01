@@ -52,6 +52,7 @@ dependencies:
   google_place: ^0.4.7
   path_provider: ^2.1.2
   flutter_rating_bar: ^4.0.1
+  animated_text_kit: ^4.2.2
   
 dev_dependencies:
   flutter_test:
