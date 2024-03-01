@@ -125,7 +125,7 @@ class _HomeScreenState extends State<HomeScreen> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Text(
-                  'La profesión buscada no está disponible',
+                  'La profesión seleccionada no está disponible.',
                   style: TextStyle(color: Color.fromARGB(2, 54, 181, 244)),
                 ),
               ),
@@ -235,7 +235,7 @@ class _HomeScreenState extends State<HomeScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Mensaje"),
+          title: Text("Profesion no encontrada"),
           content: Text(message),
           actions: <Widget>[
             TextButton(
