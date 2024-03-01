@@ -17,6 +17,16 @@ class _HomeScreenState extends State<HomeScreen> {
   List<String> searchedProfessions = [];
   List<String> images = [];
   bool showErrorMessage = false;
+  List<String> professions = [
+    "Carpintero",
+    "Electricista",
+    "Plomero",
+    "Albañil",
+    "Jardinero",
+    "Pintor",
+    "Mecanico",
+    "Cerrajero"
+  ];
 
   @override
   void initState() {
@@ -42,17 +52,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    List<String> professions = [
-      "Carpintero",
-      "Electricista",
-      "Plomero",
-      "Albañil",
-      "Jardinero",
-      "Pintor",
-      "Mecanico",
-      "Cerrajero"
-    ];
-
     return Scaffold(
       backgroundColor: const Color(0xFFF5f5f5),
       appBar: CustomAppBar(
@@ -93,45 +92,43 @@ class _HomeScreenState extends State<HomeScreen> {
             Padding(
               padding: const EdgeInsets.all(15.0),
               child: CustomSearchBar(
-                onSubmitted: (String value) {
-                  setState(() {
-                    searchedProfessions = professions
-                        .where((profession) => profession
-                            .toLowerCase()
-                            .contains(value.toLowerCase()))
-                        .toList();
-                    selectedProfession = searchedProfessions.isNotEmpty
-                        ? searchedProfessions.first
-                        : null;
-                    if (!professions.contains(value)) {
-                      showErrorMessage = true;
-                    } else {
-                      showErrorMessage = false;
-                    }
-                  });
-                  // No se navega automáticamente aquí, se hace en el onPressed del botón
-                },
-                suggestions: professions,
                 onChanged: (String value) {
                   setState(() {
                     selectedProfession = value.isNotEmpty ? value : null;
-                    if (professions.contains(value)) {
+                    if (professions
+                        .map((profession) => profession.toLowerCase())
+                        .contains(value.toLowerCase())) {
                       showErrorMessage = false;
                     }
                   });
                 },
+                onSubmitted: (String value) {
+                  setState(() {
+                    selectedProfession = value.isNotEmpty ? value : null;
+                    if (!professions
+                        .map((profession) => profession.toLowerCase())
+                        .contains(value.toLowerCase())) {
+                      showErrorMessage = true;
+                      _showDialog(
+                          'La profesión buscada no está disponible.');
+                    } else {
+                      showErrorMessage = false;
+                      _navigateToScreen(value);
+                    }
+                  });
+                },
+                suggestions: professions,
+                context: context, // Se pasa el BuildContext al widget CustomSearchBar
               ),
             ),
-            Visibility(
-              visible: showErrorMessage,
-              child: const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20),
+            if (showErrorMessage)
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Text(
-                  'La profesión buscada no está disponible',
-                  style: TextStyle(color: Color(0xFF43c7ff)),
+                  'La profesión seleccionada no está disponible.',
+                  style: TextStyle(color: Color.fromARGB(2, 54, 181, 244)),
                 ),
               ),
-            ),
             const SizedBox(height: 20),
             Padding(
               padding: const EdgeInsets.all(9.0),
@@ -159,81 +156,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             ),
-            const SizedBox(height: 40),
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Container(
-                child: TextButton(
-                  onPressed: () {
-                    if (selectedProfession != null) {
-                      // Verificar si la profesión seleccionada está en la lista de profesiones
-                      if (professions.contains(selectedProfession)) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => BarrioScreen(
-                              selectedProfession: selectedProfession!,
-                            ),
-                          ),
-                        );
-                      } else {
-                        // Mostrar mensaje de error si la profesión no está en la lista
-                        showDialog(
-                          context: context,
-                          builder: (context) {
-                            return AlertDialog(
-                              title: Text('Profesión no encontrada'),
-                              content: Text(
-                                  'La profesión seleccionada no está disponible.'),
-                              actions: <Widget>[
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                  child: Text('OK'),
-                                ),
-                              ],
-                            );
-                          },
-                        );
-                      }
-                    } else {
-                      // Mostrar mensaje si no se ha seleccionado ninguna profesión
-                      showDialog(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            title: Text('Profesión no seleccionada'),
-                            content: Text(
-                                'Por favor, selecciona una profesión antes de continuar.'),
-                            actions: <Widget>[
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                                child: Text('OK'),
-                              ),
-                            ],
-                          );
-                        },
-                      );
-                    }
-                  },
-                  style: ButtonStyle(
-                    padding: MaterialStateProperty.all<EdgeInsets>(
-                      EdgeInsets.all(1.0),
-                    ),
-                    backgroundColor: MaterialStateProperty.all<Color>(
-                      const Color(0xFF43c7ff),
-                    ),
-                    foregroundColor: MaterialStateProperty.all<Color>(
-                      const Color.fromARGB(255, 248, 248, 249),
-                    ),
-                  ),
-                  child: const Text('Siguiente'),
-                ),
-              ),
-            ),
           ],
         ),
       ),
@@ -246,10 +168,11 @@ class _HomeScreenState extends State<HomeScreen> {
         setState(() {
           selectedProfession = profession;
         });
+        _navigateToScreen(profession);
       },
       child: FutureBuilder<String>(
-        future:
-            getIconUrl('${IconStorageService.obtenerIconoNombre(profession)}'),
+        future: getIconUrl(
+            '${IconStorageService.obtenerIconoNombre(profession)}'),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting ||
               !snapshot.hasData) {
@@ -294,6 +217,39 @@ class _HomeScreenState extends State<HomeScreen> {
           }
         },
       ),
+    );
+  }
+
+  void _navigateToScreen(String profession) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) =>
+            HomeScreen2(selectedOption: profession),
+      ),
+    );
+  }
+
+  void _showDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Profesion no encontrada"),
+          content: Text(message),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                setState(() {
+                  showErrorMessage = false;
+                });
+              },
+              child: Text("Cerrar"),
+            ),
+          ],
+        );
+      },
     );
   }
 }
