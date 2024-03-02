@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:dame_una_mano/features/utils/app_bar.dart';
-import 'package:dame_una_mano/features/authentication/data/storage_image.dart';
 import 'package:dame_una_mano/features/home_page/widgets/widgets_home.dart';
 import 'package:dame_una_mano/features/home_page/screens/home_screen2.dart';
 import 'package:dame_una_mano/features/authentication/data/icon_storage.dart';
@@ -28,24 +27,6 @@ class _HomeScreenState extends State<HomeScreen> {
     "Cerrajero"
   ];
 
-  @override
-  void initState() {
-    super.initState();
-    loadImagesFromStorage();
-  }
-
-  Future<void> loadImagesFromStorage() async {
-    List<String> storageImages = await Future.wait([
-      StorageService.getImageUrl('images/albanil.png'),
-      StorageService.getImageUrl('images/barraca.png'),
-      StorageService.getImageUrl('images/imagen3.png'),
-      StorageService.getImageUrl('images/imagen2.png'),
-    ]);
-    setState(() {
-      images = storageImages;
-    });
-  }
-
   Future<String> getIconUrl(String iconName) async {
     return IconStorageService.getIconUrl(iconName);
   }
@@ -53,44 +34,15 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF5f5f5),
-      appBar: CustomAppBar(
-        onProfilePressed: () {
-          // Acción al presionar el icono de perfil
-        },
-        onNotificationPressed: () {
-          // Acción al presionar el icono de notificaciones
-        },
-        automaticallyImplyLeading: false,
-      ),
+      backgroundColor: Color(0xedededed),
+      drawer: Sidebar(),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Stack(
-              children: [
-                Container(
-                  height: 200,
-                  decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [Color(0xFF43c7ff), Color(0xFFF5f5f5)],
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 200,
-                  child: images.isEmpty
-                      ? Placeholder()
-                      : ImageCarousel(
-                          imageUrls: images,
-                        ),
-                ),
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.all(15.0),
+            SizedBox(height: 40),
+            Container(
+              padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
               child: CustomSearchBar(
                 onChanged: (String value) {
                   setState(() {
@@ -109,8 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         .map((profession) => profession.toLowerCase())
                         .contains(value.toLowerCase())) {
                       showErrorMessage = true;
-                      _showDialog(
-                          'La profesión buscada no está disponible.');
+                      _showDialog('La profesión buscada no está disponible.');
                     } else {
                       showErrorMessage = false;
                       _navigateToScreen(value);
@@ -118,37 +69,54 @@ class _HomeScreenState extends State<HomeScreen> {
                   });
                 },
                 suggestions: professions,
-                context: context, // Se pasa el BuildContext al widget CustomSearchBar
+                context: context,
               ),
             ),
             if (showErrorMessage)
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20),
                 child: Text(
                   'La profesión seleccionada no está disponible.',
-                  style: TextStyle(color: Color.fromARGB(2, 54, 181, 244)),
+                  style: TextStyle(
+                    color: Color.fromARGB(2, 54, 181, 244),
+                  ),
                 ),
               ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 70),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16),
+              child: Text(
+                '¿Qué servicio necesitas?',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 18,
+                  fontFamily: 'Montserrat',
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            const SizedBox(height: 10),
             Padding(
               padding: const EdgeInsets.all(9.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: List.generate(
-                  (professions.length / 4).ceil(),
+                  (professions.length / 2).ceil(),
                   (index) => Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: List.generate(
-                      4,
+                      2,
                       (subIndex) {
-                        final professionIndex = index * 4 + subIndex;
+                        final professionIndex = index * 2 + subIndex;
                         if (professionIndex < professions.length) {
                           return Expanded(
                             child: _buildIcon(
-                                professions[professionIndex], professionIndex),
+                              professions[professionIndex],
+                              professionIndex,
+                            ),
                           );
                         } else {
-                          return const SizedBox(width: 50);
+                          return SizedBox(width: 50);
                         }
                       },
                     ),
@@ -156,6 +124,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             ),
+            SizedBox(
+              height: 30,
+            )
           ],
         ),
       ),
@@ -171,8 +142,8 @@ class _HomeScreenState extends State<HomeScreen> {
         _navigateToScreen(profession);
       },
       child: FutureBuilder<String>(
-        future: getIconUrl(
-            '${IconStorageService.obtenerIconoNombre(profession)}'),
+        future:
+            getIconUrl('${IconStorageService.obtenerIconoNombre(profession)}'),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting ||
               !snapshot.hasData) {
@@ -180,39 +151,66 @@ class _HomeScreenState extends State<HomeScreen> {
           } else if (snapshot.hasError) {
             return Icon(Icons.error);
           } else {
-            return Column(
-              children: [
-                Container(
-                  width: 75,
-                  height: 80,
-                  margin: const EdgeInsets.all(4.0),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(
-                      color: profession.toLowerCase() ==
-                              selectedProfession?.toLowerCase()
-                          ? Colors.orange
-                          : const Color(0xFF43c7ff),
-                      width: 1.5,
+            return Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Stack(
+                children: [
+                  Container(
+                    width: 200,
+                    height: 200,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      boxShadow: [
+                        BoxShadow(
+                            color: Colors.black.withOpacity(0.2), blurRadius: 5)
+                      ],
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: Image.network(
+                        snapshot.data!,
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.network(
-                        snapshot.data!,
-                        width: 40,
+                  Container(
+                    width: 200,
+                    height: 200,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Colors.transparent,
+                          Color.fromARGB(255, 17, 49, 63).withOpacity(0.5)
+                        ],
                       ),
-                      const SizedBox(height: 4),
-                      Text(
-                        profession,
-                        style: TextStyle(
-                            color: Colors.black, fontWeight: FontWeight.w200),
-                      ),
-                    ],
+                    ),
                   ),
-                ),
-              ],
+                  Container(
+                    width: 200,
+                    height: 200,
+                    alignment: Alignment.bottomCenter,
+                    child: Text(
+                      profession,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                        shadows: [
+                          Shadow(
+                            color: Color.fromARGB(255, 11, 11, 11)
+                                .withOpacity(0.7),
+                            blurRadius: 5,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             );
           }
         },
@@ -224,8 +222,7 @@ class _HomeScreenState extends State<HomeScreen> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) =>
-            HomeScreen2(selectedOption: profession),
+        builder: (context) => HomeScreen2(selectedOption: profession),
       ),
     );
   }

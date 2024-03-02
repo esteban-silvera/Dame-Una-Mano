@@ -16,25 +16,25 @@ class IconStorageService {
     String iconName;
     switch (professionLowercase) {
       case 'electricista':
-        iconName = 'electricista.png';
+        iconName = 'electricista.jpg';
         break;
       case 'jardinero':
-        iconName = 'herramientas-de-jardineria.png';
+        iconName = 'jardinero.png';
         break;
       case 'plomero':
-        iconName = 'bano.png';
+        iconName = 'plomero.png';
         break;
       case 'carpintero':
-        iconName = 'carpintero.png';
+        iconName = 'carpintero.jpg';
         break;
       case 'mecanico':
-        iconName = 'herramientas-de-construccion.png';
+        iconName = 'mecanico.png';
         break;
       case 'albañil':
-        iconName = 'ladrillo.png';
+        iconName = 'albanil.png';
         break;
       case 'pintor':
-        iconName = 'rodillo.png';
+        iconName = 'pintora.png';
         break;
       case 'cerrajero':
         iconName = 'cerrajero.png';
