@@ -188,43 +188,197 @@ class WorkerProfileScreen extends StatelessWidget {
                         style: const TextStyle(fontSize: 16),
                       ),
                       SizedBox(height: 20),
-                      RatingBar.builder(
-                        minRating: 1,
-                        direction: Axis.horizontal,
-                        allowHalfRating: true,
-                        itemCount: 5,
-                        itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
-                        itemBuilder: (context, _) => Icon(
-                          Icons.star,
-                          color: Colors.amber,
+                      ElevatedButton.icon(
+                        onPressed: _launchWhatsApp,
+                        style: ElevatedButton.styleFrom(
+                          primary: Color(0xFF43c7ff), // Color del botón
+                          padding: EdgeInsets.symmetric(
+                            vertical: 12,
+                            horizontal: 24,
+                          ), // Ajusta el padding para hacer el botón más grande
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(
+                                12), // Ajusta el radio según tu preferencia
+                          ),
+                          elevation:
+                              7, // Ajusta el valor según tu preferencia de sombreado
                         ),
-                        onRatingUpdate: (rating) {
-                          // Guardar la calificación en Firestore
-                          FirebaseFirestore.instance
-                              .collection('Users')
-                              .doc(userId)
-                              .collection('ratings')
-                              .add({
-                            'workerId': workerId,
-                            'rating': rating,
-                          }).then((value) {
-                            print('Calificación guardada exitosamente');
-                          }).catchError((error) {
-                            print('Error al guardar la calificación: $error');
-                          });
-                          FirebaseFirestore.instance
-                              .collection('professionals')
-                              .doc(workerId)
-                              .collection('ratings')
-                              .add({
-                            'userId': userId,
-                            'rating': rating,
-                          }).then((value) {
-                            print('Calificación guardada exitosamente');
-                          }).catchError((error) {
-                            print('Error al guardar la calificación: $error');
-                          });
+                        icon: Icon(
+                          Icons.message,
+                          size: 30,
+                          color: Colors.white,
+                        ), // Icono de mensaje
+                        label: Text(
+                          'Contactame',
+                          style: TextStyle(
+                            fontSize: 20, // Ajusta el tamaño del texto
+                            color: Colors.white, // Color del texto
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 20),
+                      ElevatedButton(
+                        onPressed: () {
+                          // Mostrar el modal bottom sheet
+                          showModalBottomSheet(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return Container(
+                                width: double
+                                    .infinity, // Ocupa todo el ancho de la pantalla
+                                padding: EdgeInsets.all(20),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.handshake, // Icono handshake
+                                      size: 50, // Tamaño del icono
+                                    ),
+                                    SizedBox(height: 10), // Espaciador
+                                    Text(
+                                      'Dame Una Mano', // Texto mediano
+                                      style: TextStyle(
+                                        fontSize: 30, // Tamaño del texto
+                                        color: Color(
+                                            0xFFFA7701), // Color del texto
+                                        fontWeight: FontWeight.bold, // Negrita
+                                      ),
+                                    ),
+                                    SizedBox(height: 20), // Espaciador
+                                    Text(
+                                      '¿Te gusto el servicio.?', // Texto explicativo
+                                      textAlign: TextAlign
+                                          .center, // Alineación centrada
+                                      style: TextStyle(
+                                          color: Color(0xFF43c7ff),
+                                          fontSize: 20), // Tamaño del texto
+                                    ),
+                                    SizedBox(height: 10), // Espaciador
+                                    Text(
+                                      'Por favor, déjanos tu review de este usuario.', // Texto explicativo
+                                      textAlign: TextAlign
+                                          .center, // Alineación centrada
+                                      style: TextStyle(
+                                          fontSize: 18), // Tamaño del texto
+                                    ),
+                                    SizedBox(height: 30), // Espaciador
+                                    RatingBar.builder(
+                                      minRating: 1,
+                                      direction: Axis.horizontal,
+                                      itemCount: 5,
+                                      itemPadding:
+                                          EdgeInsets.symmetric(horizontal: 4.0),
+                                      itemBuilder: (context, _) => Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(
+                                              10), // Ajusta el radio del borde
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: Colors.grey.withOpacity(
+                                                  0.5), // Color y opacidad del sombreado
+                                              spreadRadius:
+                                                  0.1, // Radio de expansión del sombreado
+                                              blurRadius:
+                                                  10, // Radio de desenfoque del sombreado
+                                              offset: Offset(0,
+                                                  1), // Desplazamiento del sombreado
+                                            ),
+                                          ],
+                                        ),
+                                        child: Icon(
+                                          Icons.star,
+                                          color: Colors.amber,
+                                          size: 70, // Tamaño de los íconos
+                                        ),
+                                      ),
+                                      onRatingUpdate: (rating) {
+                                        // Guardar la calificación en Firestore
+                                        FirebaseFirestore.instance
+                                            .collection('Users')
+                                            .doc(userId)
+                                            .collection('ratings')
+                                            .add({
+                                          'workerId': workerId,
+                                          'rating': rating,
+                                        }).then((value) {
+                                          print(
+                                              'Calificación guardada exitosamente');
+                                        }).catchError((error) {
+                                          print(
+                                              'Error al guardar la calificación: $error');
+                                        });
+
+                                        FirebaseFirestore.instance
+                                            .collection('professionals')
+                                            .doc(workerId)
+                                            .collection('ratings')
+                                            .add({
+                                          'userId': userId,
+                                          'rating': rating,
+                                        }).then((value) {
+                                          print(
+                                              'Calificación guardada exitosamente');
+                                        }).catchError((error) {
+                                          print(
+                                              'Error al guardar la calificación: $error');
+                                        });
+                                      },
+                                      itemSize:
+                                          90.0, // Tamaño total del ítem, incluyendo el espacio entre íconos
+                                      unratedColor: Colors
+                                          .grey, // Color de los íconos no seleccionados
+                                      updateOnDrag:
+                                          true, // Actualiza la calificación mientras arrastras
+                                      glow:
+                                          true, // Añade un brillo a los íconos seleccionados
+                                      glowColor: Colors.amber
+                                          .withOpacity(0.5), // Color del brillo
+                                      glowRadius: 10, // Radio del brillo
+                                      allowHalfRating:
+                                          true, // Permite calificaciones con mitades
+                                    ),
+                                    SizedBox(height: 50),
+                                    ElevatedButton.icon(
+                                      onPressed: () {
+                                        // Cerrar el modal bottom sheet
+                                        Navigator.pop(context);
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                        primary: Color(
+                                            0xFF43c7ff), // Color del botón
+                                        padding: EdgeInsets.symmetric(
+                                          vertical: 12,
+                                          horizontal: 24,
+                                        ), // Ajusta el padding para hacer el botón más grande
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(
+                                              12), // Ajusta el radio según tu preferencia
+                                        ),
+                                        elevation:
+                                            10, // Ajusta el valor según tu preferencia de sombreado
+                                      ),
+                                      icon: Icon(
+                                        Icons.close, // Icono de cierre
+                                        size: 30,
+                                        color: Colors.white,
+                                      ),
+                                      label: Text(
+                                        'Cerrar', // Texto del botón
+                                        style: TextStyle(
+                                          fontSize:
+                                              20, // Ajusta el tamaño del texto
+                                          color:
+                                              Colors.white, // Color del texto
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          );
                         },
+                        child: Text('Calificar'),
                       ),
                     ],
                   );
@@ -235,5 +389,16 @@ class WorkerProfileScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  // Método para lanzar el enlace de WhatsApp
+  _launchWhatsApp() async {
+    // Reemplaza 'NUMERO_DE_TELEFONO' con el número de teléfono al que deseas enviar el mensaje
+    String phoneNumber = '09199999';
+    String message = 'Hola, quiero contactarte.';
+    String url = 'https://wa.me/$phoneNumber/?text=${Uri.encodeFull(message)}';
+    {
+      throw 'No se pudo abrir $url';
+    }
   }
 }
