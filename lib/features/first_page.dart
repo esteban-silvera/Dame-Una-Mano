@@ -3,7 +3,6 @@ import 'package:dame_una_mano/features/authentication/data/storage_image.dart';
 import 'package:dame_una_mano/features/authentication/screens/login_screen.dart';
 import 'package:dame_una_mano/features/authentication/widgets/costum_text.dart';
 import 'package:dame_una_mano/features/authentication/widgets/custom_button.dart';
-import 'package:dame_una_mano/features/pruebatitulo.dart';
 import 'package:flutter/material.dart';
 
 class FirstScreen extends StatefulWidget {
@@ -15,22 +14,25 @@ class FirstScreen extends StatefulWidget {
 
 class _FirstScreenState extends State<FirstScreen> {
   late String imageUrl;
-  bool isLoading = true;
+  bool isLoading = true; // Variable para controlar si la imagen se está cargando
 
   @override
   void initState() {
     super.initState();
+    // Obtener la URL de la imagen desde Firebase Storage
     _getImageUrl();
   }
 
   Future<void> _getImageUrl() async {
     try {
+      // Obtener la URL de la imagen desde Firebase Storage
       String imagePath = 'images/fondo2.jpg';
       imageUrl = await StorageService.getImageUrl(imagePath);
       setState(() {
-        isLoading = false;
+        isLoading = false; // La imagen se ha cargado, establecer isLoading a false
       });
     } catch (error) {
+      // Manejar cualquier error que pueda ocurrir al obtener la URL de la imagen
       print('Error al obtener la URL de la imagen: $error');
     }
   }
@@ -38,22 +40,24 @@ class _FirstScreenState extends State<FirstScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.white, // Fondo blanco
       body: Center(
         child: Stack(
           alignment: Alignment.center,
           children: [
+            // Mostrar la imagen si isLoading es false
             if (!isLoading)
               Container(
                 decoration: BoxDecoration(
                   image: imageUrl.isNotEmpty
                       ? DecorationImage(
-                          image: NetworkImage(imageUrl),
+                          image: NetworkImage(imageUrl), // Cargar la imagen desde la URL
                           fit: BoxFit.cover,
                         )
                       : null,
                 ),
               ),
+            // Mostrar el círculo si isLoading es true
             if (isLoading)
               Container(
                 width: 50,
@@ -63,19 +67,32 @@ class _FirstScreenState extends State<FirstScreen> {
                   shape: BoxShape.circle,
                   border: Border.all(color: Colors.grey),
                 ),
-                child: const CircularProgressIndicator(
-                  color: Color(0xFF43c7ff),
-                ),
+                child: const CircularProgressIndicator(), // Indicador de carga
               ),
+            // Resto de tu contenido aquí
             SingleChildScrollView(
               child: SizedBox(
                 width: double.infinity,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Padding(
+                    const Padding(
                       padding: EdgeInsets.fromLTRB(10, 200, 10, 10),
-                      child: AnimatedTextWidget(),
+                      child: Text(
+                        'Dame una mano',
+                        style: TextStyle(
+                          fontSize: 40,
+                          fontWeight: FontWeight.bold,
+                          color: Color.fromARGB(255, 10, 10, 10),
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    const Icon(
+                      Icons.handshake_rounded,
+                      size: 64,
+                      color: Color(0xFFFA7701),
                     ),
                     const SizedBox(height: 20),
                     Padding(
@@ -98,7 +115,9 @@ class _FirstScreenState extends State<FirstScreen> {
                           icon: const Icon(Icons.search),
                           color: const Color(0xFF43c7ff),
                           fontSize: 24,
-                          onPressed: () {},
+                          onPressed: () {
+                            // Agregar lógica para el botón de búsqueda aquí
+                          },
                         ),
                       ),
                     ),
@@ -118,9 +137,11 @@ class _FirstScreenState extends State<FirstScreen> {
                       ),
                       child: CustomButton(
                         text: "Ofrezco servicio",
-                        color: Color.fromARGB(255, 243, 149, 33),
+                        color: const Color.fromARGB(128, 67, 199, 255),
                         fontSize: 18,
-                        onPressed: () {},
+                        onPressed: () {
+                          // Agregar lógica para el botón de oferta de servicio aquí
+                        },
                       ),
                     ),
                     const SizedBox(height: 10),
@@ -140,20 +161,11 @@ class _FirstScreenState extends State<FirstScreen> {
                         fontSize: 19,
                         fontWeight: FontWeight.w500,
                         color: Color(0xFF43c7ff),
+                        // Agregar estilo personalizado si es necesario
                       ),
                     ),
-                    const SizedBox(height: 70),
                   ],
                 ),
-              ),
-            ),
-            AnimatedOpacity(
-              duration: Duration(seconds: 1),
-              opacity: 1.0,
-              child: Icon(
-                Icons.handshake_rounded,
-                size: 64,
-                color: Color(0xFFFA7701),
               ),
             ),
           ],
