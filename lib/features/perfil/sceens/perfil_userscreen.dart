@@ -1,7 +1,8 @@
+import 'package:dame_una_mano/features/authentication/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dame_una_mano/features/authentication/providers/providers.dart';
-import 'package:dame_una_mano/features/utils/app_bar.dart';
+
 import 'package:provider/provider.dart';
 
 class UserProfileScreen extends StatelessWidget {
@@ -19,15 +20,7 @@ class UserProfileScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: const Color(0xFFF5f5f5),
-      appBar: CustomAppBar(
-        onProfilePressed: () {
-          // Acción al presionar el icono de perfil
-        },
-        onNotificationPressed: () {
-          // Acción al presionar el icono de notificaciones
-        },
-        automaticallyImplyLeading: true,
-      ),
+      drawer: Sidebar(),
       body: FutureBuilder<DocumentSnapshot>(
         future: FirebaseFirestore.instance
             .collection('Users')
