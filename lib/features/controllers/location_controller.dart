@@ -1,5 +1,3 @@
-// lib/controllers/location_controller.dart
-
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -7,6 +5,8 @@ import '../models/location.dart' as MyLocation;
 import '../services/location_service.dart';
 import '../services/firebase_service.dart'; // Importa el servicio de Firestore
 import '../utils/barrios_codigos_postales.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 
 class LocationController {
   final LocationService _locationService = LocationService();
@@ -25,9 +25,27 @@ class LocationController {
       var position = await getCurrentLocation();
       String currentAddress = position.address;
 
-      // Luego, carga esta dirección en Firestore
+      // Separar la dirección en sus componentes: calle, ciudad, código postal, país, barrio
+      List<String> addressComponents = currentAddress.split(', ');
+
+      // Extraer los datos de la dirección
+      String street = addressComponents[0];
+      String city = addressComponents[1];
+      String postalCode = addressComponents[2].split(' ')[1]; // Obtener solo el código postal
+      String country = addressComponents[3];
+      List<String> barrios = addressComponents[4].split(', '); // Obtener lista de barrios
+
+      // Subir los datos a Firestore
       await _firestoreService.uploadData(
-        {'address': currentAddress},
+        {
+          'street': street,
+          'city': city,
+          'postalCode': postalCode,
+          'country': country,
+          'barrios': barrios,
+          'latitude': position.position.latitude, // Agregar latitud
+          'longitude': position.position.longitude, // Agregar longitud
+        },
         'ubicaciones',
         'ubicacion_actual',
       );
@@ -69,8 +87,11 @@ class LocationController {
       String address = '${addressLine.isNotEmpty ? '$addressLine, ' : ''}${subLocalityText.isNotEmpty ? subLocalityText : ''}${locality.isNotEmpty ? '$locality, ' : ''}${postalCode.isNotEmpty ? '$postalCode, ' : ''}${place.country}';
 
       List<String> zones = postalCode.isNotEmpty ? _mapPostalCodeToZone(postalCode) : ["Desconocida"];
+      
+      String barrioFromAddress = zones.join(', '); // Obtiene el nombre del barrio de la dirección
+      String barrio = normalizeBarrioName(barrioFromAddress); // Normaliza el nombre del barrio
 
-      return "$address\nBarrios: ${zones.join(", ")}";
+      return "$address\nBarrios: $barrio";
     } catch (e) {
       return "No se pudo obtener la dirección: $e";
     }
@@ -87,5 +108,39 @@ class LocationController {
       }
     }
     return foundZones;
+  }
+
+  String normalizeBarrioName(String barrioName) {
+    // Divide el nombre del barrio en sus palabras
+    List<String> words = barrioName.split(' ');
+    
+    // Itera sobre cada palabra y capitaliza la primera letra
+    List<String> capitalizedWords = words.map((word) {
+      if (word.isNotEmpty) {
+        return word[0].toUpperCase() + word.substring(1).toLowerCase();
+      } else {
+        return word;
+      }
+    }).toList();
+    
+    // Une las palabras nuevamente en un solo string
+    String normalizedBarrioName = capitalizedWords.join(' ');
+    
+    return normalizedBarrioName;
+  }
+
+  Future<List<Map<String, dynamic>>> getProfessionalsInBarrio(String profession, String barrio) async {
+    try {
+      final querySnapshot = await FirebaseFirestore.instance
+          .collection('professionals')
+          .where('job', isEqualTo: profession)
+          .where('barrio', isEqualTo: barrio)
+          .get();
+      
+      return querySnapshot.docs.map((doc) => doc.data()).toList();
+    } catch (e) {
+      print('Error al obtener profesionales en el barrio: $e');
+      return [];
+    }
   }
 }
