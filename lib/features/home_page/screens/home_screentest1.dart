@@ -6,10 +6,10 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class BarrioScreen extends StatefulWidget {
-  final String selectedOption;
+  final String selectedProfession;
 
   BarrioScreen({
-    required this.selectedOption,
+    required this.selectedProfession,
   });
 
   @override
@@ -22,20 +22,39 @@ class _BarrioScreenState extends State<BarrioScreen> {
   LatLng _initialCameraPosition = const LatLng(0, 0);
   bool _isLocationLoaded = false;
 
+  String? selectedBarrio;
   List<Trabajador> trabajadores = [];
+
+  List<String> barriosMontevideo = [
+    'Aires Puros',
+    'Atahualpa',
+    'Bañados de Carrasco',
+    'Bella Italia',
+    'Brazo Oriental',
+    'Carrasco',
+    'Cordon',
+    'Centro',
+    'Cerro Norte',
+    'Punta Carretas',
+  ];
 
   @override
   void initState() {
     super.initState();
-    _requestLocationPermission();
+    _getLocation();
   }
 
-  void _requestLocationPermission() async {
+  Future<void> _getLocation() async {
     var status = await Permission.location.request();
     if (status.isGranted) {
+      var position = await _locationController.getCurrentLocation();
       setState(() {
-        _isLocationLoaded = false;
+        _currentAddress = position.address;
+        _initialCameraPosition = position.position;
+        _isLocationLoaded = true;
       });
+      // Llama a la función para cargar los trabajadores cuando se obtiene la ubicación
+      _fetchTrabajadores();
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -45,28 +64,26 @@ class _BarrioScreenState extends State<BarrioScreen> {
     }
   }
 
-  Future<void> _getLocation() async {
-    var position = await _locationController.getCurrentLocation();
-    setState(() {
-      _currentAddress = position.address;
-      _initialCameraPosition = position.position;
-      _isLocationLoaded = true;
-    });
-    _fetchTrabajadores(_currentAddress);
-  }
-
-  Future<void> _fetchTrabajadores(String currentAddress) async {
+  Future<void> _fetchTrabajadores() async {
     try {
-      final List<String> barrios = currentAddress.split('Barrios: ')[1].split(', ');
-
-      final querySnapshot = await FirebaseFirestore.instance
-          .collection('professionals')
-          .where('job', isEqualTo: widget.selectedOption)
-          .where('barrio', whereIn: barrios)
-          .get();
+      QuerySnapshot querySnapshot;
+      if (selectedBarrio != null) {
+        querySnapshot = await FirebaseFirestore.instance
+            .collection('professionals')
+            .where('job', isEqualTo: widget.selectedProfession)
+            .where('barrio', isEqualTo: selectedBarrio)
+            .get();
+      } else {
+        querySnapshot = await FirebaseFirestore.instance
+            .collection('professionals')
+            .where('job', isEqualTo: widget.selectedProfession)
+            .get();
+      }
 
       setState(() {
+        // Limpia la lista de trabajadores antes de cargar los nuevos
         trabajadores.clear();
+        // Mapea los documentos a objetos Trabajador y los agrega a la lista
         trabajadores.addAll(querySnapshot.docs.map((doc) {
           return Trabajador(
             id: doc.id,
@@ -87,12 +104,31 @@ class _BarrioScreenState extends State<BarrioScreen> {
     return Scaffold(
       backgroundColor: const Color(0xFFF5f5f5),
       appBar: AppBar(
-        title: Text(widget.selectedOption), // Mostrar la opción seleccionada en el título del app bar
+        title: Text('Seleccionar Barrio'),
       ),
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
+              child: DropdownButton<String>(
+                hint: const Text('Seleccionar Barrio'),
+                value: selectedBarrio,
+                onChanged: (String? barrio) {
+                  setState(() {
+                    selectedBarrio = barrio;
+                    _fetchTrabajadores(); // Llama a la función al cambiar el barrio seleccionado
+                  });
+                },
+                items: barriosMontevideo.map((String barrio) {
+                  return DropdownMenuItem<String>(
+                    value: barrio,
+                    child: Text(barrio),
+                  );
+                }).toList(),
+              ),
+            ),
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: _getLocation,
@@ -111,20 +147,20 @@ class _BarrioScreenState extends State<BarrioScreen> {
             const SizedBox(height: 20),
             _isLocationLoaded
                 ? SizedBox(
-              height: 300,
-              child: GoogleMap(
-                initialCameraPosition: CameraPosition(
-                  target: _initialCameraPosition,
-                  zoom: 16,
-                ),
-                markers: {
-                  Marker(
-                    markerId: const MarkerId('userLocation'),
-                    position: _initialCameraPosition,
-                  ),
-                },
-              ),
-            )
+                    height: 300,
+                    child: GoogleMap(
+                      initialCameraPosition: CameraPosition(
+                        target: _initialCameraPosition,
+                        zoom: 16,
+                      ),
+                      markers: {
+                        Marker(
+                          markerId: const MarkerId('userLocation'),
+                          position: _initialCameraPosition,
+                        ),
+                      },
+                    ),
+                  )
                 : const Center(child: CircularProgressIndicator()),
             const SizedBox(height: 20),
             ElevatedButton(
@@ -132,7 +168,7 @@ class _BarrioScreenState extends State<BarrioScreen> {
                 showDialog(
                   context: context,
                   builder: (context) => AlertDialog(
-                    title: Text('Profesionales cercanos'),
+                    title: Text('Trabajadores en tu área'),
                     content: SingleChildScrollView(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -155,7 +191,7 @@ class _BarrioScreenState extends State<BarrioScreen> {
                   ),
                 );
               },
-              child: const Text('Mostrar Profesionales'),
+              child: const Text('Mostrar Trabajadores'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.white,
                 foregroundColor: Color.fromRGBO(255, 130, 67, 1),
