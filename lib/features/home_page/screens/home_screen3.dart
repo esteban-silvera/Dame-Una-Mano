@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dame_una_mano/features/controllers/location_controller.dart';
 import 'package:dame_una_mano/features/home_page/widgets/trabajadores.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:dame_una_mano/features/perfil/sceens/wokers_profile.dart';
 
 class BarrioScreen extends StatefulWidget {
   final String selectedOption;
@@ -28,7 +29,6 @@ class _BarrioScreenState extends State<BarrioScreen> {
   @override
   void initState() {
     super.initState();
-    // Solo llama a _fetchTrabajadores si la ubicación está cargada
     if (widget.isLocationLoaded) {
       _fetchTrabajadores(widget.currentAddress);
     }
@@ -74,53 +74,53 @@ class _BarrioScreenState extends State<BarrioScreen> {
           children: [
             const SizedBox(height: 20),
             Text(
-              'Ubicación actual: ${widget.currentAddress}',
+              'Ubicación actual: ${_removeBarriosFromAddress(widget.currentAddress)}',
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 20),
             widget.isLocationLoaded
                 ? SizedBox(
-                    height: 300,
-                    child: GoogleMap(
-                      initialCameraPosition: CameraPosition(
-                        target: widget.initialCameraPosition,
-                        zoom: 16,
-                      ),
-                      markers: {
-                        Marker(
-                          markerId: const MarkerId('userLocation'),
-                          position: widget.initialCameraPosition,
-                        ),
-                      },
-                    ),
-                  )
+              height: 300,
+              child: GoogleMap(
+                initialCameraPosition: CameraPosition(
+                  target: widget.initialCameraPosition,
+                  zoom: 16,
+                ),
+                markers: {
+                  Marker(
+                    markerId: const MarkerId('userLocation'),
+                    position: widget.initialCameraPosition,
+                  ),
+                },
+              ),
+            )
                 : const Center(child: CircularProgressIndicator()),
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
                 showDialog(
                   context: context,
-                  builder: (context) => AlertDialog(
+                  builder: (context) => SimpleDialog(
                     title: Text('Profesionales cercanos'),
-                    content: SingleChildScrollView(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: trabajadores.map((trabajador) {
-                          return ListTile(
-                            title: Text('${trabajador.nombre} ${trabajador.apellido}'),
-                            subtitle: Text('Barrio: ${trabajador.barrio}'),
-                          );
-                        }).toList(),
-                      ),
-                    ),
-                    actions: [
-                      TextButton(
+                    children: trabajadores.map((trabajador) {
+                      return SimpleDialogOption(
                         onPressed: () {
-                          Navigator.pop(context);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => WorkerProfileScreen(
+                                workerId: trabajador.id,
+                                userId: 'ID_DEL_USUARIO_ACTUAL', // Reemplaza con el ID del usuario actual
+                              ),
+                            ),
+                          );
                         },
-                        child: Text('Cerrar'),
-                      ),
-                    ],
+                        child: ListTile(
+                          title: Text('${trabajador.nombre} ${trabajador.apellido}'),
+                          subtitle: Text('Barrio: ${trabajador.barrio}'),
+                        ),
+                      );
+                    }).toList(),
                   ),
                 );
               },
@@ -130,5 +130,9 @@ class _BarrioScreenState extends State<BarrioScreen> {
         ),
       ),
     );
+  }
+
+  String _removeBarriosFromAddress(String addressWithBarrios) {
+    return addressWithBarrios.split('Barrios:')[0].trim();
   }
 }

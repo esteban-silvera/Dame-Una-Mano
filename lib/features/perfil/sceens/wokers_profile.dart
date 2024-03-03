@@ -8,11 +8,6 @@ class WorkerProfileScreen extends StatelessWidget {
 
   WorkerProfileScreen({required this.workerId, required this.userId});
 
-  Future<double> averageRating(List<double> ratings) async {
-    if (ratings.isEmpty) return 0.0;
-    return ratings.reduce((a, b) => a + b) / ratings.length;
-  }
-
   final Map<String, String> profileImages = {
     'sebastian judini': 'sebastian_judini.png',
     'emilio herrera': 'emilio_herrera.png',
