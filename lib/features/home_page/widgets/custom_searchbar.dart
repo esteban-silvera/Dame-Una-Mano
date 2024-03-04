@@ -36,7 +36,7 @@ class CustomSearchBar extends StatelessWidget {
         decoration: const InputDecoration(
           hintText: 'Buscar pintor,albañil...',
           hintStyle: TextStyle(
-              color: Color.fromARGB(255, 12, 12, 12),
+              color: Color.fromARGB(255, 4, 4, 4),
               fontSize: 16,
               fontFamily: 'Montserrat',
               fontWeight: FontWeight.w300),

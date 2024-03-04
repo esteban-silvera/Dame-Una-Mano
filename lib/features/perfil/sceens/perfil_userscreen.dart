@@ -98,7 +98,7 @@ class UserProfileScreen extends StatelessWidget {
                       .snapshots(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return CircularProgressIndicator(color: Color(0xFF43c7ff).withOpacity(0.8),);
+                      return CircularProgressIndicator(color: Color(0xFF43c7ff).withOpacity(0.7),);
                     }
                     if (!snapshot.hasData || snapshot.data == null) {
                       return const Text('No hay calificaciones');

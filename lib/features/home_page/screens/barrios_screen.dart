@@ -181,7 +181,7 @@ class _BarrioScreenState extends State<BarrioScreen> {
                                   },
                                   child: const Text(
                                     'Aceptar',
-                                    style: TextStyle(color: Colors.black),
+                                    style: TextStyle(color: Color.fromARGB(255, 2, 2, 2)),
                                   ),
                                 ),
                               ],
