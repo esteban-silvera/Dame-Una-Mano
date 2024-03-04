@@ -1,8 +1,7 @@
 import 'package:dame_una_mano/features/authentication/providers/providers.dart';
 import 'package:dame_una_mano/features/authentication/screens/screens.dart';
 import 'package:dame_una_mano/features/authentication/widgets/widgets.dart';
-import 'package:dame_una_mano/features/home_page/screens/home_screen1.dart';
-import 'package:flutter/material.dart';
+import 'package:dame_una_mano/features/home_page/screens/home_screen1.dart';import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class AuthenticationTabs extends StatefulWidget {
@@ -252,10 +251,12 @@ class _AuthenticationTabsState extends State<AuthenticationTabs>
           ),
         );
       } else {
-        AppDialogs.showDialog1(context, 'No se pudo iniciar');
+        // ignore: use_build_context_synchronously
+        AppDialogs.showDialog1(
+            context, 'Email o contraseña incorrectas: pruebe de nuevo');
       }
     } else {
-      AppDialogs.showDialog1(context, 'Email o Contraseña Erróneas');
+      AppDialogs.showDialog1(context, 'Los campos son obligatorios');
     }
   }
 
@@ -277,13 +278,13 @@ class _AuthenticationTabsState extends State<AuthenticationTabs>
       bool usuario = await RegisterProvider().registrarUsuario(formData);
       if (usuario) {
         // Registro con exito
-        AppDialogs.showDialog1(context, 'usuario registrado con exito');
+        AppDialogs.showDialog1(context, 'Usuario registrado con exito');
       } else {
         // Error al registrar el usuario
         AppDialogs.showDialog1(context, 'Error al registrar el usuario');
       }
     } else {
-      AppDialogs.showDialog1(context, 'no se pudo validar');
+      AppDialogs.showDialog1(context, 'Los campos son obligatorios');
     }
   }
 }

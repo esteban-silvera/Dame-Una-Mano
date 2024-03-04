@@ -1,3 +1,4 @@
+import 'package:dame_una_mano/features/first_page.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'services/config/firebase_options.dart';
@@ -27,13 +28,14 @@ class MyApp extends StatelessWidget {
         // Aquí puedes agregar más providers si es necesario
       ],
       child: MaterialApp(
-        debugShowCheckedModeBanner: false, // Aquí eliminas la franja de depuración
+        debugShowCheckedModeBanner:
+            false, // Aquí eliminas la franja de depuración
         title: 'Tu Aplicación',
         theme: ThemeData(
           primarySwatch: Colors.blue,
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        home: HomeScreen(),
+        home: FirstScreen(),
       ),
     );
   }
