@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dame_una_mano/features/authentication/providers/providers.dart';
+import 'package:provider/provider.dart';
 
 class WorkerProfileScreen extends StatelessWidget {
   final String workerId;
@@ -8,6 +10,7 @@ class WorkerProfileScreen extends StatelessWidget {
 
   WorkerProfileScreen({required this.workerId, required this.userId});
 
+  final TextEditingController _commentController = TextEditingController();
   final Map<String, String> profileImages = {
     'sebastian judini': 'sebastian_judini.png',
     'emilio herrera': 'emilio_herrera.png',
@@ -19,6 +22,7 @@ class WorkerProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final userProvider = Provider.of<UserProvider>(context);
     return Scaffold(
       appBar: AppBar(
         title: Text('Perfil del Trabajador'),
@@ -158,7 +162,7 @@ class WorkerProfileScreen extends StatelessWidget {
                   }
 
                   var ratings = snapshot.data!.docs
-                      .map((doc) => doc["rating"] as double)
+                      .map((doc) => (doc["rating"] as num).toDouble())
                       .toList();
 
                   double averageRating = ratings.isEmpty
@@ -218,163 +222,190 @@ class WorkerProfileScreen extends StatelessWidget {
                           showModalBottomSheet(
                             context: context,
                             builder: (BuildContext context) {
-                              return Container(
-                                width: double
-                                    .infinity, // Ocupa todo el ancho de la pantalla
-                                padding: EdgeInsets.all(20),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Icon(
-                                      Icons.handshake, // Icono handshake
-                                      size: 50, // Tamaño del icono
-                                    ),
-                                    SizedBox(height: 10), // Espaciador
-                                    Text(
-                                      'Dame Una Mano', // Texto mediano
-                                      style: TextStyle(
-                                        fontSize: 30, // Tamaño del texto
-                                        color: Color(
-                                            0xFFFA7701), // Color del texto
-                                        fontWeight: FontWeight.bold, // Negrita
-                                      ),
-                                    ),
-                                    SizedBox(height: 20), // Espaciador
-                                    Text(
-                                      '¿Te gusto el servicio.?', // Texto explicativo
-                                      textAlign: TextAlign
-                                          .center, // Alineación centrada
-                                      style: TextStyle(
-                                          color: Color(0xFF43c7ff),
-                                          fontSize: 20), // Tamaño del texto
-                                    ),
-                                    SizedBox(height: 10), // Espaciador
-                                    Text(
-                                      'Por favor, déjanos tu review de este usuario.', // Texto explicativo
-                                      textAlign: TextAlign
-                                          .center, // Alineación centrada
-                                      style: TextStyle(
-                                          fontSize: 18), // Tamaño del texto
-                                    ),
-                                    SizedBox(height: 30), // Espaciador
-                                    RatingBar.builder(
-                                      minRating: 1,
-                                      direction: Axis.horizontal,
-                                      itemCount: 5,
-                                      itemPadding:
-                                          EdgeInsets.symmetric(horizontal: 4.0),
-                                      itemBuilder: (context, _) => Container(
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(
-                                              10), // Ajusta el radio del borde
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color: Colors.grey.withOpacity(
-                                                  0.5), // Color y opacidad del sombreado
-                                              spreadRadius:
-                                                  0.1, // Radio de expansión del sombreado
-                                              blurRadius:
-                                                  10, // Radio de desenfoque del sombreado
-                                              offset: Offset(0,
-                                                  1), // Desplazamiento del sombreado
-                                            ),
-                                          ],
-                                        ),
-                                        child: Icon(
-                                          Icons.star,
-                                          color: Colors.amber,
-                                          size: 70, // Tamaño de los íconos
-                                        ),
-                                      ),
-                                      onRatingUpdate: (rating) {
-                                        // Guardar la calificación en Firestore
-                                        FirebaseFirestore.instance
-                                            .collection('Users')
-                                            .doc(userId)
-                                            .collection('ratings')
-                                            .add({
-                                          'workerId': workerId,
-                                          'rating': rating,
-                                        }).then((value) {
-                                          print(
-                                              'Calificación guardada exitosamente');
-                                        }).catchError((error) {
-                                          print(
-                                              'Error al guardar la calificación: $error');
-                                        });
+                              double screenWidth =
+                                  MediaQuery.of(context).size.width;
+                              double starSize = screenWidth *
+                                  0.1; // Ajusta el tamaño de las estrellas según el ancho de la pantalla
 
-                                        FirebaseFirestore.instance
-                                            .collection('professionals')
-                                            .doc(workerId)
-                                            .collection('ratings')
-                                            .add({
-                                          'userId': userId,
-                                          'rating': rating,
-                                        }).then((value) {
-                                          print(
-                                              'Calificación guardada exitosamente');
-                                        }).catchError((error) {
-                                          print(
-                                              'Error al guardar la calificación: $error');
-                                        });
-                                      },
-                                      itemSize:
-                                          90.0, // Tamaño total del ítem, incluyendo el espacio entre íconos
-                                      unratedColor: Colors
-                                          .grey, // Color de los íconos no seleccionados
-                                      updateOnDrag:
-                                          true, // Actualiza la calificación mientras arrastras
-                                      glow:
-                                          true, // Añade un brillo a los íconos seleccionados
-                                      glowColor: Colors.amber
-                                          .withOpacity(0.5), // Color del brillo
-                                      glowRadius: 10, // Radio del brillo
-                                      allowHalfRating:
-                                          true, // Permite calificaciones con mitades
-                                    ),
-                                    SizedBox(height: 50),
-                                    ElevatedButton.icon(
-                                      onPressed: () {
-                                        // Cerrar el modal bottom sheet
-                                        Navigator.pop(context);
-                                      },
-                                      style: ElevatedButton.styleFrom(
-                                        primary: Color(
-                                            0xFF43c7ff), // Color del botón
-                                        padding: EdgeInsets.symmetric(
-                                          vertical: 12,
-                                          horizontal: 24,
-                                        ), // Ajusta el padding para hacer el botón más grande
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(
-                                              12), // Ajusta el radio según tu preferencia
-                                        ),
-                                        elevation:
-                                            10, // Ajusta el valor según tu preferencia de sombreado
+                              return SingleChildScrollView(
+                                child: Container(
+                                  padding: EdgeInsets.all(20),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisSize: MainAxisSize
+                                        .min, // Usar el tamaño mínimo verticalmente
+                                    children: [
+                                      Icon(
+                                        Icons.handshake, // Icono handshake
+                                        size: 50, // Tamaño del icono
                                       ),
-                                      icon: Icon(
-                                        Icons.close, // Icono de cierre
-                                        size: 30,
-                                        color: Colors.white,
-                                      ),
-                                      label: Text(
-                                        'Cerrar', // Texto del botón
+                                      SizedBox(height: 10), // Espaciador
+                                      Text(
+                                        'Dame Una Mano', // Texto mediano
                                         style: TextStyle(
-                                          fontSize:
-                                              20, // Ajusta el tamaño del texto
-                                          color:
-                                              Colors.white, // Color del texto
+                                          fontSize: 30, // Tamaño del texto
+                                          color: Color(
+                                              0xFFFA7701), // Color del texto
+                                          fontWeight:
+                                              FontWeight.bold, // Negrita
                                         ),
                                       ),
-                                    ),
-                                  ],
+                                      SizedBox(height: 20), // Espaciador
+                                      Text(
+                                        '¿Te gustó el servicio?', // Texto explicativo
+                                        textAlign: TextAlign
+                                            .center, // Alineación centrada
+                                        style: TextStyle(
+                                          color: Color(0xFF43c7ff),
+                                          fontSize: 20,
+                                        ), // Tamaño del texto
+                                      ),
+                                      SizedBox(height: 10), // Espaciador
+                                      Text(
+                                        'Por favor, déjanos tu review de este usuario.', // Texto explicativo
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                        ),
+                                      ), // Tamaño del texto
+                                      SizedBox(height: 30), // Espaciador
+                                      RatingBar.builder(
+                                        minRating: 1,
+                                        direction: Axis.horizontal,
+                                        itemCount: 5,
+                                        itemPadding: EdgeInsets.symmetric(
+                                            horizontal: 4.0),
+                                        itemBuilder: (context, _) => Container(
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: Colors.grey
+                                                    .withOpacity(0.5),
+                                                spreadRadius: 0.1,
+                                                blurRadius: 10,
+                                                offset: Offset(0, 1),
+                                              ),
+                                            ],
+                                          ),
+                                          child: Icon(
+                                            Icons.star,
+                                            color: Colors.amber,
+                                            size: starSize,
+                                          ),
+                                        ),
+                                        onRatingUpdate: (rating) {
+                                          // Guardar la calificación y el comentario en Firestore
+                                          FirebaseFirestore.instance
+                                              .collection('Users')
+                                              .doc(userProvider.user.localId)
+                                              .collection('ratings')
+                                              .add({
+                                            'workerId': workerId,
+                                            'rating': rating,
+                                            'comment': _commentController.text,
+                                          }).then((value) {
+                                            print(
+                                                'Calificación guardada exitosamente');
+                                          }).catchError((error) {
+                                            print(
+                                                'Error al guardar la calificación: $error');
+                                          });
+
+                                          FirebaseFirestore.instance
+                                              .collection('professionals')
+                                              .doc(workerId)
+                                              .collection('ratings')
+                                              .add({
+                                            'userId': userId,
+                                            'rating': rating,
+                                            'comment': _commentController.text,
+                                          }).then((value) {
+                                            print(
+                                                'Calificación guardada exitosamente');
+                                          }).catchError((error) {
+                                            print(
+                                                'Error al guardar la calificación: $error');
+                                          });
+                                        },
+                                        itemSize: starSize,
+                                        unratedColor: Colors.grey,
+                                        updateOnDrag: true,
+                                        glow: true,
+                                        glowColor:
+                                            Colors.amber.withOpacity(0.5),
+                                        glowRadius: 10,
+                                        allowHalfRating: true,
+                                      ),
+                                      SizedBox(height: 20),
+                                      ElevatedButton.icon(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                          primary: Colors
+                                              .transparent, // Establece el color transparente para el fondo del botón
+                                          padding: EdgeInsets.all(8), // padding
+                                          elevation: 0, //  sombra del botón
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(12),
+                                            side: BorderSide(
+                                              color: Color(0xFF43c7ff),
+                                              width:
+                                                  1, // Ajusta el ancho del borde
+                                            ),
+                                          ),
+                                        ),
+                                        icon: Icon(
+                                          Icons.close,
+                                          size:
+                                              20, // Ajusta el tamaño del icono
+                                          color: Colors.black,
+                                        ),
+                                        label: Text(
+                                          'Cerrar',
+                                          style: TextStyle(
+                                            fontSize:
+                                                16, // Ajusta el tamaño del texto
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               );
                             },
                           );
                         },
-                        child: Text('Calificar'),
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.transparent, // Color de fondo
+                          padding: EdgeInsets.symmetric(
+                            vertical: 12,
+                            horizontal: 60,
+                          ), // Ajusta el padding para hacer el botón más grande
+                          shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.circular(12), // Radio del borde
+                            side: BorderSide(
+                              color: Color(0xFF43c7ff),
+                              width: 1, // Grosor del borde
+                            ),
+                          ),
+                          elevation: 0, // sombreado
+                        ),
+                        child: Text(
+                          'Calificar',
+                          style: TextStyle(
+                            fontSize: 20, // texto
+                            color: Colors.black,
+                          ),
+                        ),
                       ),
+                      SizedBox(height: 20),
                     ],
                   );
                 },
