@@ -1,4 +1,5 @@
 import 'package:dame_una_mano/features/home_page/screens/barrios_screen.dart';
+import 'package:dame_una_mano/features/utils/side_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:dame_una_mano/features/controllers/location_controller.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -50,18 +51,26 @@ class _HomeScreen2State extends State<HomeScreen2> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xedededed),
+      backgroundColor: Color(0xf1f1f1f1),
       appBar: AppBar(
-        backgroundColor: Color(0xedededed),
+        backgroundColor: const Color(0xebebebeb),
         title: Text(widget.selectedOption),
+        bottom: PreferredSize(
+          preferredSize: Size.fromHeight(2.0), // Altura de la línea
+          child: Container(
+            color: const Color(0xFF43c7ff).withOpacity(0.5), // Color celeste
+            height: 1.0, // Grosor de la línea
+          ),
+        ),
       ),
+      drawer: Sidebar(),
       body: Center(
         child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(10),
             child: Container(
               decoration: BoxDecoration(
-                color: Color(0xF5f5f5f5),
+                color: Color(0xF1f1f1f1).withOpacity(1),
                 border: Border.all(color: Colors.black),
                 borderRadius: BorderRadius.circular(10),
                 boxShadow: [
@@ -76,11 +85,34 @@ class _HomeScreen2State extends State<HomeScreen2> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    const Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Dame una mano',
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: Colors.black,
+                            fontFamily: "Monserrat",
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                        SizedBox(width: 8),
+                        Icon(
+                          Icons.handshake,
+                          color: Colors.black,
+                          size: 24,
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
                     const Text(
                       '¿Para dónde deseas el servicio?',
                       style: TextStyle(
                         fontSize: 20,
-                        color: Colors.black,
+                        color: Color(0xFF000000),
                         fontWeight: FontWeight.bold,
                         decoration: TextDecoration.none,
                       ),
@@ -107,6 +139,7 @@ class _HomeScreen2State extends State<HomeScreen2> {
                         'Ubicación Actual',
                         style: TextStyle(
                           fontSize: 16,
+                          fontFamily: "Monserrat",
                           decoration: TextDecoration.none,
                         ),
                       ),
@@ -115,7 +148,7 @@ class _HomeScreen2State extends State<HomeScreen2> {
                     ElevatedButton(
                       onPressed: () {
                         setState(() {
-                          buttonColor = Color(0xFF43c7ff);
+                          buttonColor = Color(0xFFFA7701);
                         });
                         Navigator.push(
                           context,
@@ -127,8 +160,8 @@ class _HomeScreen2State extends State<HomeScreen2> {
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: buttonColor,
-                        foregroundColor: Colors.black,
-                        side: BorderSide(color: Color(0xFF43c7ff)),
+                        foregroundColor: const Color.fromARGB(255, 10, 10, 10),
+                        side: BorderSide(color: Color(0xFFFA7701)),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
@@ -138,6 +171,7 @@ class _HomeScreen2State extends State<HomeScreen2> {
                       child: const Text(
                         'Otro Barrio',
                         style: TextStyle(
+                          fontFamily: "Monserrat",
                           fontSize: 16,
                           decoration: TextDecoration.none,
                         ),

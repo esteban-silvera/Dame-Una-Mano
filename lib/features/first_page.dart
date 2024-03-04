@@ -14,7 +14,8 @@ class FirstScreen extends StatefulWidget {
 
 class _FirstScreenState extends State<FirstScreen> {
   late String imageUrl;
-  bool isLoading = true; // Variable para controlar si la imagen se está cargando
+  bool isLoading =
+      true; // Variable para controlar si la imagen se está cargando
 
   @override
   void initState() {
@@ -29,7 +30,8 @@ class _FirstScreenState extends State<FirstScreen> {
       String imagePath = 'images/fondo2.jpg';
       imageUrl = await StorageService.getImageUrl(imagePath);
       setState(() {
-        isLoading = false; // La imagen se ha cargado, establecer isLoading a false
+        isLoading =
+            false; // La imagen se ha cargado, establecer isLoading a false
       });
     } catch (error) {
       // Manejar cualquier error que pueda ocurrir al obtener la URL de la imagen
@@ -51,7 +53,8 @@ class _FirstScreenState extends State<FirstScreen> {
                 decoration: BoxDecoration(
                   image: imageUrl.isNotEmpty
                       ? DecorationImage(
-                          image: NetworkImage(imageUrl), // Cargar la imagen desde la URL
+                          image: NetworkImage(
+                              imageUrl), // Cargar la imagen desde la URL
                           fit: BoxFit.cover,
                         )
                       : null,
@@ -91,12 +94,12 @@ class _FirstScreenState extends State<FirstScreen> {
                     const SizedBox(height: 8),
                     const Icon(
                       Icons.handshake_rounded,
-                      size: 64,
+                      size: 80,
                       color: Color(0xFFFA7701),
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 1),
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(10, 100, 10, 1),
+                      padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
                       child: Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
@@ -109,15 +112,6 @@ class _FirstScreenState extends State<FirstScreen> {
                               offset: const Offset(0, 2),
                             ),
                           ],
-                        ),
-                        child: CustomButton(
-                          text: "¿Qué estás buscando?",
-                          icon: const Icon(Icons.search),
-                          color: const Color(0xFF43c7ff),
-                          fontSize: 24,
-                          onPressed: () {
-                            // Agregar lógica para el botón de búsqueda aquí
-                          },
                         ),
                       ),
                     ),
@@ -135,14 +129,6 @@ class _FirstScreenState extends State<FirstScreen> {
                           ),
                         ],
                       ),
-                      child: CustomButton(
-                        text: "Ofrezco servicio",
-                        color: const Color.fromARGB(128, 67, 199, 255),
-                        fontSize: 18,
-                        onPressed: () {
-                          // Agregar lógica para el botón de oferta de servicio aquí
-                        },
-                      ),
                     ),
                     const SizedBox(height: 10),
                     GestureDetector(
@@ -158,8 +144,8 @@ class _FirstScreenState extends State<FirstScreen> {
                       },
                       child: const CustomText(
                         text: "Iniciar sesión o registrarte",
-                        fontSize: 19,
-                        fontWeight: FontWeight.w500,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
                         color: Color(0xFF43c7ff),
                         // Agregar estilo personalizado si es necesario
                       ),

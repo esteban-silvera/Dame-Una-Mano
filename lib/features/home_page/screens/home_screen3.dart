@@ -1,3 +1,4 @@
+import 'package:dame_una_mano/features/utils/side_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dame_una_mano/features/controllers/location_controller.dart';
@@ -22,6 +23,8 @@ class MapScreen extends StatefulWidget {
   _MapScreenState createState() => _MapScreenState();
 }
 
+Color buttonColor = const Color(0xf1f1f1f1);
+
 class _MapScreenState extends State<MapScreen> {
   final LocationController _locationController = LocationController();
   List<Trabajador> trabajadores = [];
@@ -36,7 +39,8 @@ class _MapScreenState extends State<MapScreen> {
 
   Future<void> _fetchTrabajadores(String currentAddress) async {
     try {
-      final List<String> barrios = currentAddress.split('Barrios: ')[1].split(', ');
+      final List<String> barrios =
+          currentAddress.split('Barrios: ')[1].split(', ');
 
       final querySnapshot = await FirebaseFirestore.instance
           .collection('professionals')
@@ -64,9 +68,12 @@ class _MapScreenState extends State<MapScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xf1f1f1f1),
       appBar: AppBar(
+        backgroundColor: const Color(0xf1f1f1f1),
         title: Text(widget.selectedOption),
       ),
+      drawer: Sidebar(),
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -93,37 +100,95 @@ class _MapScreenState extends State<MapScreen> {
                       },
                     ),
                   )
-                : const Center(child: CircularProgressIndicator()),
+                : Center(
+                    child: CircularProgressIndicator(
+                    color: Color(0xff43c7ff).withOpacity(0.8),
+                  )),
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
                 showDialog(
+                  barrierColor: Color(0xf5f5f5f5),
                   context: context,
                   builder: (context) => SimpleDialog(
-                    title: Text('Profesionales cercanos'),
+                    title: const Text('Profesionales cercanos'),
                     children: trabajadores.map((trabajador) {
-                      return SimpleDialogOption(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => WorkerProfileScreen(
-                                workerId: trabajador.id,
-                                userId: 'ID_DEL_USUARIO_ACTUAL', // Reemplaza con el ID del usuario actual
+                      return FutureBuilder<QuerySnapshot>(
+                        future: FirebaseFirestore.instance
+                            .collection('professionals')
+                            .doc(trabajador.id) // Usar la ID del trabajador
+                            .collection('ratings')
+                            .get(),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return Center(
+                                child: CircularProgressIndicator(
+                              color: const Color(0xff43c7ff).withOpacity(0.8),
+                            ));
+                          }
+                          if (snapshot.hasError) {
+                            return const Text(
+                                'Error al cargar los datos del trabajador');
+                          }
+
+                          var ratings = snapshot.data!.docs
+                              .map((doc) => (doc["rating"] as num).toDouble())
+                              .toList();
+
+                          double averageRating = ratings.isEmpty
+                              ? 0.0
+                              : ratings.reduce((a, b) => a + b) /
+                                  ratings.length;
+
+                          return SimpleDialogOption(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => WorkerProfileScreen(
+                                    workerId: trabajador.id,
+                                    userId:
+                                        'ID_DEL_USUARIO_ACTUAL', // Reemplaza con el ID del usuario actual
+                                  ),
+                                ),
+                              );
+                            },
+                            child: ListTile(
+                              title: Text(
+                                '${trabajador.nombre} ${trabajador.apellido}',
+                              ),
+                              subtitle: Row(
+                                children: [
+                                  Text('Barrio: ${trabajador.barrio}'),
+                                  const SizedBox(width: 8),
+                                  Text(
+                                    'Calificación: ${averageRating.toStringAsFixed(1)}',
+                                  ),
+                                ],
                               ),
                             ),
                           );
                         },
-                        child: ListTile(
-                          title: Text('${trabajador.nombre} ${trabajador.apellido}'),
-                          subtitle: Text('Barrio: ${trabajador.barrio}'),
-                        ),
                       );
                     }).toList(),
                   ),
                 );
               },
-              child: const Text('Mostrar Profesionales'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: buttonColor, // Usar el color de fondo dinámico
+                foregroundColor: Colors.black,
+                side: const BorderSide(
+                  color: Color.fromRGBO(255, 130, 67, 1), // Borde naranja
+                ),
+              ),
+              child: const Text(
+                'Encuentra!',
+                style: TextStyle(
+                  fontFamily: "Monserrat",
+                  fontSize: 20,
+                ),
+              ),
             )
           ],
         ),

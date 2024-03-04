@@ -10,7 +10,10 @@ class Trabajador {
     required this.nombre,
     required this.apellido,
     required this.oficio,
-    required this.barrio,
+    required this.barrio, 
+
 
   });
+
+  get rating => null;
 }

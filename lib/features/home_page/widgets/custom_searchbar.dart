@@ -18,7 +18,7 @@ class CustomSearchBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Color(0xededecec),
+        color: Color(0xf1f1f1f1),
         borderRadius: BorderRadius.circular(20),
         border: Border.all(color: const Color(0xff43c7ff), width: 1.5),
         boxShadow: [
@@ -34,9 +34,9 @@ class CustomSearchBar extends StatelessWidget {
         onChanged: onChanged,
         onSubmitted: onSubmitted,
         decoration: const InputDecoration(
-          hintText: 'Prueba albañil,plomero,pintor...',
+          hintText: 'Buscar pintor,albañil...',
           hintStyle: TextStyle(
-              color: Color.fromARGB(255, 12, 12, 12),
+              color: Color.fromARGB(255, 4, 4, 4),
               fontSize: 16,
               fontFamily: 'Montserrat',
               fontWeight: FontWeight.w300),

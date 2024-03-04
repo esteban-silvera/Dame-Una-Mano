@@ -2,11 +2,9 @@ import 'package:dame_una_mano/features/authentication/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dame_una_mano/features/authentication/providers/providers.dart';
-
 import 'package:provider/provider.dart';
 
 class UserProfileScreen extends StatelessWidget {
-  // Mapa que asocia nombres de usuario con nombres de archivo de imágenes de perfil
   final Map<String, String> profileImages = {
     'sebastian judini': 'sebastian_judini.png',
     'emilio herrera': 'emilio_herrera.png',
@@ -19,7 +17,18 @@ class UserProfileScreen extends StatelessWidget {
     final userProvider = Provider.of<UserProvider>(context);
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF5f5f5),
+      backgroundColor: const Color(0xf1f1f1f1),
+      appBar: AppBar(
+        backgroundColor: const Color(0xf1f1f1f1),
+        title: const Text("Perfil"),
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(2.0),
+          child: Container(
+            color: const Color(0xFF43c7ff).withOpacity(0.5),
+            height: 1.0,
+          ),
+        ),
+      ),
       drawer: Sidebar(),
       body: FutureBuilder<DocumentSnapshot>(
         future: FirebaseFirestore.instance
@@ -28,55 +37,80 @@ class UserProfileScreen extends StatelessWidget {
             .get(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
+            return  Center(
               child: CircularProgressIndicator(
-                color: Color.fromARGB(255, 21, 199, 239),
+                color: Color(0xFF43c7ff).withOpacity(0.8),
               ),
             );
           }
-          if (snapshot.hasError || !snapshot.hasData || snapshot.data == null) {
-            return Center(
+          if (!snapshot.hasData || snapshot.data == null) {
+            return const Center(
               child: Text('Error al cargar el perfil del usuario'),
             );
           }
           var userData = snapshot.data!.data() as Map<String, dynamic>;
-
-          // Obtener el nombre de usuario y buscar su imagen de perfil correspondiente en el mapa
-          String username = userData['username'] ?? '';
+          String username = userData['name'] ?? '';
           String profileImageAsset = profileImages[username] ?? 'default.jpg';
 
           return Center(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Container(
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(
-                      color: Color(0xFF43c7ff),
-                      width: 4,
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: const Color(0xFF43c7ff),
+                        width: 4,
+                      ),
+                    ),
+                    child: CircleAvatar(
+                      radius: 60,
+                      backgroundImage: AssetImage('assets/$profileImageAsset'),
                     ),
                   ),
-                  child: CircleAvatar(
-                    radius: 60,
-                    // Usar la imagen de perfil del activo correspondiente al nombre de usuario
-                    backgroundImage: AssetImage('assets/$profileImageAsset'),
-                  ),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 Text(
-                  '${userData['name']} ${userData['lastname']} - Clasificaciones: ${userData['ratings'] ?? 0}',
-                  style: TextStyle(
+                  '${userData['name']} ${userData['lastname']}',
+                  style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 20,
                   ),
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 Text(
-                  userData['description'] ?? 'Descripción no disponible',
-                  style: TextStyle(fontSize: 18),
-                  textAlign: TextAlign.center,
+                  'Email: ${userData['email']}',
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 10),
+                StreamBuilder<QuerySnapshot>(
+                  stream: FirebaseFirestore.instance
+                      .collection('Users')
+                      .doc(userProvider.user.localId)
+                      .collection('ratings')
+                      .snapshots(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return CircularProgressIndicator(color: Color(0xFF43c7ff).withOpacity(0.7),);
+                    }
+                    if (!snapshot.hasData || snapshot.data == null) {
+                      return const Text('No hay calificaciones');
+                    }
+                    var ratings = snapshot.data!.docs.length;
+                    return Text(
+                      'Calificaciones hechas por el usuario: $ratings',
+                      style: const TextStyle(
+                        fontSize: 16,
+                      ),
+                    );
+                  },
                 ),
               ],
             ),

@@ -26,6 +26,15 @@ class _HomeScreenState extends State<HomeScreen> {
     "Mecanico",
     "Cerrajero"
   ];
+  String _mapProfession(String value) {
+    switch (value.toLowerCase()) {
+      case 'sanitario':
+      case 'fontanero':
+        return 'Plomero';
+      default:
+        return value;
+    }
+  }
 
   Future<String> getIconUrl(String iconName) async {
     return IconStorageService.getIconUrl(iconName);
@@ -34,37 +43,51 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xedededed),
+      backgroundColor: const Color(0xf1f1f1f1),
+      appBar: AppBar(
+        backgroundColor: const Color(0xf1f1f1f1),
+        title: const Text(
+          "Dame una mano",
+          textAlign: TextAlign.justify,
+        ),
+        bottom: PreferredSize(
+          preferredSize: Size.fromHeight(2.0), // Altura de la línea
+          child: Container(
+            color: const Color(0xFF43c7ff).withOpacity(0.5), // Color celeste
+            height: 1.0, // Grosor de la línea
+          ),
+        ),
+      ),
       drawer: Sidebar(),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            SizedBox(height: 40),
+            const SizedBox(height: 40),
             Container(
               padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
               child: CustomSearchBar(
                 onChanged: (String value) {
                   setState(() {
-                    selectedProfession = value.isNotEmpty ? value : null;
+                    selectedProfession = _mapProfession(value);
                     if (professions
                         .map((profession) => profession.toLowerCase())
-                        .contains(value.toLowerCase())) {
+                        .contains(selectedProfession?.toLowerCase())) {
                       showErrorMessage = false;
                     }
                   });
                 },
                 onSubmitted: (String value) {
                   setState(() {
-                    selectedProfession = value.isNotEmpty ? value : null;
+                    selectedProfession = _mapProfession(value);
                     if (!professions
                         .map((profession) => profession.toLowerCase())
-                        .contains(value.toLowerCase())) {
+                        .contains(selectedProfession?.toLowerCase())) {
                       showErrorMessage = true;
                       _showDialog('La profesión buscada no está disponible.');
                     } else {
                       showErrorMessage = false;
-                      _navigateToScreen(value);
+                      _navigateToScreen(selectedProfession!);
                     }
                   });
                 },
@@ -116,7 +139,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           );
                         } else {
-                          return SizedBox(width: 50);
+                          return const SizedBox(width: 50);
                         }
                       },
                     ),
@@ -124,7 +147,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 30,
             )
           ],
@@ -149,7 +172,7 @@ class _HomeScreenState extends State<HomeScreen> {
               !snapshot.hasData) {
             return Container();
           } else if (snapshot.hasError) {
-            return Icon(Icons.error);
+            return const Icon(Icons.error);
           } else {
             return Padding(
               padding: const EdgeInsets.all(10.0),
@@ -162,7 +185,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       borderRadius: BorderRadius.circular(10),
                       boxShadow: [
                         BoxShadow(
-                            color: Colors.black.withOpacity(0.2), blurRadius: 5)
+                            color: Colors.black.withOpacity(0.2), blurRadius: 4)
                       ],
                     ),
                     child: ClipRRect(
@@ -183,7 +206,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         end: Alignment.bottomCenter,
                         colors: [
                           Colors.transparent,
-                          Color.fromARGB(255, 17, 49, 63).withOpacity(0.5)
+                          const Color.fromARGB(255, 17, 49, 63).withOpacity(0.5)
                         ],
                       ),
                     ),
@@ -201,7 +224,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         fontSize: 16,
                         shadows: [
                           Shadow(
-                            color: Color.fromARGB(255, 11, 11, 11)
+                            color: const Color.fromARGB(255, 11, 11, 11)
                                 .withOpacity(0.7),
                             blurRadius: 5,
                           ),
@@ -232,7 +255,7 @@ class _HomeScreenState extends State<HomeScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Profesion no encontrada"),
+          title: const Text("Profesion no encontrada"),
           content: Text(message),
           actions: <Widget>[
             TextButton(
@@ -242,7 +265,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   showErrorMessage = false;
                 });
               },
-              child: Text("Cerrar"),
+              child: const Text("Cerrar"),
             ),
           ],
         );
