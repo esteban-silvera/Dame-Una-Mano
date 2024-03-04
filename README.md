@@ -95,7 +95,7 @@ The following screen will display a live Google Maps API, showcasing real-time u
 
 <p align="center">
   <img width="200" alt="image" src="https://github.com/esteban-silvera/Dame-Una-Mano/assets/108559276/80a2baa4-b8de-4c28-8dbb-0ddbafc1cb41">
-  <img width="200" alt="image" src="https://github.com/esteban-silvera/Dame-Una-Mano/assets/108559276/1e3d8951-a846-4842-8878-47c647a42079">
+  <img width="200" alt="image" src="https://github.com/esteban-silvera/Dame-Una-Mano/assets/108559276/deee65de-f02c-46fa-84ec-0696d9b63dd1">
 </p>
 
 <a id="item-four"></a>
