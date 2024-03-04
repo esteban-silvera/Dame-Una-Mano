@@ -63,33 +63,40 @@ The challenges we encountered included dedicating ample time to understand the n
 <a id="item-three"></a>
 ### Features
 
-The initial screen of the application offers users three distinct options to proceed:
+The initial screen of "Dame Una Mano" presents three distinct options. The first path, "¿Qué estás buscando?" enables users to access the application without signing in and explore the available services. The second path, "Ofrezco servicio," caters to professionals seeking to broaden the reach of their business. The final path is designed for users in search of professional assistance for everyday issues. This option allows them to register and log in, facilitating their journey in finding a suitable professional.
 
-- ¿Qué estás buscando??
-- Ofrezco servicio
-- Iniciar sesión or regístrate
 
-We designed the initial screen to provide users with multiple pathways to use the application, catering to those seeking services, those offering services, and those who simply want to explore the available services.
-
-<p align="left">
+<p align="center">
   <img width="200" alt="image" src="https://github.com/esteban-silvera/Dame-Una-Mano/assets/108559276/0dcb7b9f-5721-49c9-8df6-89db4222ef4b">
 </p>
 
 We have integrated a button on the login screen that toggles between the login and registration states. Below, you can see an example of how these changes are implemented.
 
-<p align="left">
+<p align="center">
   <img width="200" alt="image" src="https://github.com/esteban-silvera/Dame-Una-Mano/assets/108559276/786b37c0-bb6d-4cd7-a94f-1914e3142522">
-</p>
-
-<p align="left">
   <img width="200" alt="image" src="https://github.com/esteban-silvera/Dame-Una-Mano/assets/108559276/344682f3-0930-4527-b085-dbe50e597bd3">
 </p>
 
-- **Need images** 
-- Using Google Api to find professionals near by
-- searching by neighborhood
-- review of professionals 
+Upon logging in, both users and workers are provided with their own profile pages to input their respective information. For workers, we require specific details such as job title, a description of their work, as well as location information including department, city, and neighborhood.
 
+<p align="center">
+  <img width="200" alt="image" src="https://github.com/esteban-silvera/Dame-Una-Mano/assets/108559276/c8bd3939-5fa7-4bf3-a198-c8e271aadfa7">
+  <img width="200" alt="image" src="https://github.com/esteban-silvera/Dame-Una-Mano/assets/108559276/1b7c960d-bfa4-4e7c-ba41-de57f3d9e444">
+</p>
+
+On the subsequent screen, users will encounter the home pages, where they will interact with various options of professionals to choose from. Upon selecting a professional, the next screen will prompt users to choose between two options: live location or neighborhood selection.
+
+<p align="center">
+  <img width="200" alt="image" src="https://github.com/esteban-silvera/Dame-Una-Mano/assets/108559276/3f287ab7-7bf8-435d-b616-e699eea93c75">
+  <img width="200" alt="image" src="https://github.com/esteban-silvera/Dame-Una-Mano/assets/108559276/1e3d8951-a846-4842-8878-47c647a42079">
+</p>
+
+The following screen will display a live Google Maps API, showcasing real-time usage of one of our team members. Meanwhile, another screen will demonstrate how the worker's profile appears to the user, featuring a real-time responsive rating system.
+
+<p align="center">
+  <img width="200" alt="image" src="https://github.com/esteban-silvera/Dame-Una-Mano/assets/108559276/80a2baa4-b8de-4c28-8dbb-0ddbafc1cb41">
+  <img width="200" alt="image" src="https://github.com/esteban-silvera/Dame-Una-Mano/assets/108559276/deee65de-f02c-46fa-84ec-0696d9b63dd1">
+</p>
 
 <a id="item-four"></a>
 ### Built With
@@ -105,6 +112,10 @@ We have integrated a button on the login screen that toggles between the login a
 
 <a id="item-five"></a>
 ### Future
+
+For future development, we plan to implement:
+- An agenda feature
+- A booking system
 
 <a id="item-six"></a>
 ### Authors
