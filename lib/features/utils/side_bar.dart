@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:dame_una_mano/features/authentication/widgets/widgets.dart';
 import 'package:dame_una_mano/features/first_page.dart';
 import 'package:dame_una_mano/features/home_page/screens/home_screen1.dart';
-import 'package:dame_una_mano/features/perfil/sceens/perfil_userscreen.dart';
+import 'package:dame_una_mano/features/perfil/screens/perfil_userscreen.dart';
 
 class Sidebar extends StatelessWidget {
   @override

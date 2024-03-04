@@ -1,7 +1,7 @@
 import 'package:dame_una_mano/features/home_page/widgets/barrios.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dame_una_mano/features/perfil/sceens/wokers_profile.dart';
+import 'package:dame_una_mano/features/perfil/screens/wokers_profile.dart';
 import 'package:dame_una_mano/features/home_page/widgets/widgets_home.dart';
 import 'package:dame_una_mano/features/utils/side_bar.dart';
 import 'package:dame_una_mano/features/authentication/widgets/widgets.dart';

@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dame_una_mano/features/controllers/location_controller.dart';
 import 'package:dame_una_mano/features/home_page/widgets/trabajadores.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:dame_una_mano/features/perfil/sceens/wokers_profile.dart';
+import 'package:dame_una_mano/features/perfil/screens/wokers_profile.dart';
 
 class MapScreen extends StatefulWidget {
   final String selectedOption;
