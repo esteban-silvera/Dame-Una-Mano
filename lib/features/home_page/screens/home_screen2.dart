@@ -53,7 +53,7 @@ class _HomeScreen2State extends State<HomeScreen2> {
     return Scaffold(
       backgroundColor: Color(0xf1f1f1f1),
       appBar: AppBar(
-        backgroundColor: const Color(0xebebebeb),
+        backgroundColor: const Color(0xf1f1f1f1),
         title: Text(widget.selectedOption),
         bottom: PreferredSize(
           preferredSize: Size.fromHeight(2.0), // Altura de la línea
@@ -70,7 +70,7 @@ class _HomeScreen2State extends State<HomeScreen2> {
             padding: const EdgeInsets.all(10),
             child: Container(
               decoration: BoxDecoration(
-                color: Color(0xF1f1f1f1).withOpacity(1),
+                color: Color(0xF1f1f1f1),
                 border: Border.all(color: Colors.black),
                 borderRadius: BorderRadius.circular(10),
                 boxShadow: [
