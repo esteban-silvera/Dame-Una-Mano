@@ -1,28 +1,41 @@
-import 'package:dame_una_mano/features/authentication/screens/perfil_screen.dart';
-import 'package:dame_una_mano/features/first_page.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart'; // Importa la primera pantalla
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:dame_una_mano/features/authentication/widgets/widgets.dart';
+import 'package:dame_una_mano/features/first_page.dart';
+import 'package:dame_una_mano/features/home_page/screens/home_screen1.dart';
+import 'package:dame_una_mano/features/perfil/sceens/perfil_userscreen.dart';
 
 class Sidebar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-
     return Drawer(
       child: Container(
-        color: Colors.white,
+        color: const Color(0xf1f1f1f1),
         child: Column(
           children: [
             Container(
-              color: Colors.lightBlue, // Fondo celeste
-              padding: EdgeInsets.symmetric(vertical: 20),
-              child: Center(
-                child: Text(
-                  'Dame una mano', // Texto modificado
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 24,
+              height: 100,
+              color: const Color(0xFF43c7ff), // Fondo celeste
+              padding: const EdgeInsets.symmetric(vertical: 20),
+              child: const Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'Dame una mano',
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.white,
+                      fontFamily: "Monserrat",
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
-                ),
+                  SizedBox(width: 8),
+                  Icon(
+                    Icons.handshake,
+                    color: Color.fromARGB(255, 249, 249, 249),
+                    size: 24,
+                  ),
+                ],
               ),
             ),
             Expanded(
@@ -30,42 +43,48 @@ class Sidebar extends StatelessWidget {
                 padding: EdgeInsets.zero,
                 children: [
                   ListTile(
-                    leading: Icon(Icons.person),
-                    title: Text('Perfil'),
+                    leading: const Icon(Icons.person),
+                    title: const Text('Perfil'),
                     onTap: () {
                       Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => UserProfileScreen()));
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => UserProfileScreen(),
+                        ),
+                      );
                     },
                   ),
                   ListTile(
-                    leading: Icon(Icons.settings),
-                    title: Text('Configuración'),
+                    leading: const Icon(Icons.home),
+                    title: const Text('Inicio'),
                     onTap: () {
-                      // Acción al seleccionar configuración
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const HomeScreen(),
+                        ),
+                      );
                     },
                   ),
                   ListTile(
-                    leading: Icon(Icons.info),
-                    title: Text('About Us'),
+                    leading: const Icon(Icons.info),
+                    title: const Text('About Us'),
                     onTap: () {
                       // Acción al seleccionar sobre nosotros
                     },
                   ),
                   ListTile(
-                    leading: Icon(Icons.logout),
-                    title: Text('Cerrar Sesión'),
+                    leading: const Icon(Icons.logout),
+                    title: const Text('Cerrar Sesión'),
                     onTap: () async {
                       // Acción al seleccionar cerrar sesión
                       try {
-                        await FirebaseAuth.instance
-                            .signOut(); // Cierra sesión con Firebase
+                        await FirebaseAuth.instance.signOut();
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                              builder: (context) =>
-                                  FirstScreen()), // Lleva a la pantalla de inicio
+                            builder: (context) => const FirstScreen(),
+                          ),
                         );
                       } catch (e) {
                         print('Error al cerrar sesión: $e');
