@@ -3,7 +3,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dame_una_mano/features/authentication/providers/providers.dart';
 import 'package:dame_una_mano/features/authentication/screens/perfil_edit_screen.dart';
-import 'package:dame_una_mano/features/utils/app_bar.dart';
+import 'package:dame_una_mano/features/utils/side_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

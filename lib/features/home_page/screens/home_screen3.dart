@@ -5,13 +5,13 @@ import 'package:dame_una_mano/features/home_page/widgets/trabajadores.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:dame_una_mano/features/perfil/sceens/wokers_profile.dart';
 
-class BarrioScreen extends StatefulWidget {
+class MapScreen extends StatefulWidget {
   final String selectedOption;
   final String currentAddress;
   final LatLng initialCameraPosition;
   final bool isLocationLoaded;
 
-  BarrioScreen({
+  MapScreen({
     required this.selectedOption,
     required this.currentAddress,
     required this.initialCameraPosition,
@@ -19,10 +19,10 @@ class BarrioScreen extends StatefulWidget {
   });
 
   @override
-  _BarrioScreenState createState() => _BarrioScreenState();
+  _MapScreenState createState() => _MapScreenState();
 }
 
-class _BarrioScreenState extends State<BarrioScreen> {
+class _MapScreenState extends State<MapScreen> {
   final LocationController _locationController = LocationController();
   List<Trabajador> trabajadores = [];
 
@@ -64,7 +64,6 @@ class _BarrioScreenState extends State<BarrioScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF5f5f5),
       appBar: AppBar(
         title: Text(widget.selectedOption),
       ),
@@ -80,20 +79,20 @@ class _BarrioScreenState extends State<BarrioScreen> {
             const SizedBox(height: 20),
             widget.isLocationLoaded
                 ? SizedBox(
-              height: 300,
-              child: GoogleMap(
-                initialCameraPosition: CameraPosition(
-                  target: widget.initialCameraPosition,
-                  zoom: 16,
-                ),
-                markers: {
-                  Marker(
-                    markerId: const MarkerId('userLocation'),
-                    position: widget.initialCameraPosition,
-                  ),
-                },
-              ),
-            )
+                    height: 300,
+                    child: GoogleMap(
+                      initialCameraPosition: CameraPosition(
+                        target: widget.initialCameraPosition,
+                        zoom: 16,
+                      ),
+                      markers: {
+                        Marker(
+                          markerId: const MarkerId('userLocation'),
+                          position: widget.initialCameraPosition,
+                        ),
+                      },
+                    ),
+                  )
                 : const Center(child: CircularProgressIndicator()),
             const SizedBox(height: 20),
             ElevatedButton(
