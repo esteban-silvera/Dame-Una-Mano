@@ -19,7 +19,7 @@ class UserProfileScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: const Color(0xf1f1f1f1),
       appBar: AppBar(
-        backgroundColor: const Color(0xf1f1f1f1),
+        backgroundColor: const Color(0xff43c7ff).withOpacity(0.9),
         title: const Text("Perfil"),
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(2.0),
@@ -37,7 +37,7 @@ class UserProfileScreen extends StatelessWidget {
             .get(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return  Center(
+            return Center(
               child: CircularProgressIndicator(
                 color: Color(0xFF43c7ff).withOpacity(0.8),
               ),
@@ -98,7 +98,9 @@ class UserProfileScreen extends StatelessWidget {
                       .snapshots(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return CircularProgressIndicator(color: Color(0xFF43c7ff).withOpacity(0.7),);
+                      return CircularProgressIndicator(
+                        color: Color(0xFF43c7ff).withOpacity(0.7),
+                      );
                     }
                     if (!snapshot.hasData || snapshot.data == null) {
                       return const Text('No hay calificaciones');
