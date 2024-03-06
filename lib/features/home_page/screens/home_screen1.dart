@@ -47,7 +47,11 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         backgroundColor: const Color(0xff43c7ff).withOpacity(0.9),
         title: const Text(
-          "Dame una mano",
+          "Dame una mano",style: TextStyle(
+              fontSize: 22,
+              fontWeight: FontWeight.w400,
+              color: Color.fromARGB(255, 0, 0, 0),
+            ),
           textAlign: TextAlign.center,
         ),
         bottom: PreferredSize(

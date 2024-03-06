@@ -101,7 +101,12 @@ class _BarrioScreenState extends State<BarrioScreen> {
       backgroundColor: const Color(0xf1f1f1f1),
       appBar: AppBar(
         backgroundColor: Color(0xFF43c7ff).withOpacity(0.9),
-        title: Text(widget.selectedProfession),
+        title: Text(widget.selectedProfession,
+            style: TextStyle(
+              fontSize: 22,
+              fontWeight: FontWeight.w400,
+              color: Color.fromARGB(255, 0, 0, 0),
+            )),
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(2.0),
           child: Container(
@@ -417,8 +422,9 @@ class _BarrioScreenState extends State<BarrioScreen> {
                   child: const Text(
                     'Cambiar a ubicación actual',
                     style: TextStyle(
-                      fontSize: 16,
-                      color: Color.fromARGB(255, 16, 16, 16), // Color del texto
+                      fontSize: 20,
+                      fontWeight: FontWeight.w200,
+                      color: Color.fromARGB(255, 0, 0, 0), // Color del texto
                       decoration: TextDecoration.underline, // Subrayado
                     ),
                   ),

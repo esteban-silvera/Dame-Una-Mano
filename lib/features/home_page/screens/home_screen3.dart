@@ -72,7 +72,12 @@ class _MapScreenState extends State<MapScreen> {
       backgroundColor: Color(0xfff1f1f1),
       appBar: AppBar(
         backgroundColor: Color(0xff43c7ff).withOpacity(0.9),
-        title: Text(widget.selectedOption),
+        title: Text(widget.selectedOption,
+            style: TextStyle(
+              fontSize: 22,
+              fontWeight: FontWeight.w400,
+              color: Color.fromARGB(255, 0, 0, 0),
+            )),
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(2.0),
           child: Container(
@@ -224,8 +229,9 @@ class _MapScreenState extends State<MapScreen> {
                 child: const Text(
                   'Cambiar a otro barrio',
                   style: TextStyle(
-                      color: Color.fromARGB(255, 12, 12, 12),
-                      fontSize: 16, // Tamaño de fuente ajustable
+                      color: Color.fromARGB(255, 0, 0, 0),
+                      fontSize: 20,
+                      fontWeight: FontWeight.w200,
                       fontFamily: "monserrat",
                       decoration: TextDecoration.underline),
                 ),
