@@ -1,7 +1,8 @@
 import 'package:dame_una_mano/features/authentication/providers/providers.dart';
 import 'package:dame_una_mano/features/authentication/screens/screens.dart';
 import 'package:dame_una_mano/features/authentication/widgets/widgets.dart';
-import 'package:dame_una_mano/features/home_page/screens/home_screen1.dart';import 'package:flutter/material.dart';
+import 'package:dame_una_mano/features/home_page/screens/home_screen1.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class AuthenticationTabs extends StatefulWidget {
@@ -145,7 +146,9 @@ class _AuthenticationTabsState extends State<AuthenticationTabs>
                   ),
                   textStyle: const TextStyle(color: Colors.black),
                 ),
-                child: const Text('Iniciar Sesión'),
+                child: const Text(
+                  'Iniciar Sesión',
+                ),
               ),
               const SizedBox(height: 30),
               const CustomText(
@@ -205,7 +208,10 @@ class _AuthenticationTabsState extends State<AuthenticationTabs>
                     borderRadius: BorderRadius.circular(20),
                   ),
                 ),
-                child: const Text('Registrarse'),
+                child: const Text(
+                  'Registrarse',
+                  style: TextStyle(color: Color.fromARGB(255, 14, 0, 0)),
+                ),
               ),
               const SizedBox(height: 30),
               GestureDetector(

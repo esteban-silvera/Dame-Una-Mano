@@ -43,7 +43,11 @@ class _WorkerProfileScreenState extends State<WorkerProfileScreen> {
         backgroundColor: const Color(0xff43c7ff),
         title: const Text(
           "Dame una mano",
-          style: TextStyle(color: Color(0xf1f1f1f1)),
+          style: TextStyle(
+            fontSize: 22,
+            fontWeight: FontWeight.w400,
+            color: Color.fromARGB(255, 0, 0, 0),
+          ),
         ),
         bottom: PreferredSize(
           preferredSize: Size.fromHeight(2.0),
@@ -181,15 +185,22 @@ class _WorkerProfileScreenState extends State<WorkerProfileScreen> {
                                     },
                                     child: const Text(
                                       'Ver más',
-                                      style:
-                                          TextStyle(color: Color(0xffFA7701)),
+                                      style: TextStyle(
+                                        color: Color(0xffFA7701),
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w200,
+                                      ),
                                     ),
                                   ),
                               ],
                             )
                       : const Text(
                           'Sin descripción disponible',
-                          style: TextStyle(fontSize: 18),
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w200,
+                            color: Color.fromARGB(255, 0, 0, 0),
+                          ),
                           textAlign: TextAlign.center,
                         ),
                 ],
@@ -236,7 +247,11 @@ class _WorkerProfileScreenState extends State<WorkerProfileScreen> {
                   const SizedBox(height: 10),
                   Text(
                     'Promedio de calificación: ${averageRating.toStringAsFixed(2)}',
-                    style: const TextStyle(fontSize: 16),
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w200,
+                      color: Color.fromARGB(255, 0, 0, 0),
+                    ),
                   ),
                   const SizedBox(height: 20),
                   ElevatedButton.icon(
@@ -333,7 +348,7 @@ class _WorkerProfileScreenState extends State<WorkerProfileScreen> {
                                         borderRadius: BorderRadius.circular(10),
                                         boxShadow: [
                                           BoxShadow(
-                                            color: Colors.grey.withOpacity(0.2),
+                                            color: Colors.grey.withOpacity(0.1),
                                             spreadRadius: 0.1,
                                             blurRadius: 10,
                                             offset: const Offset(0, 1),
@@ -425,7 +440,7 @@ class _WorkerProfileScreenState extends State<WorkerProfileScreen> {
                         borderRadius:
                             BorderRadius.circular(12), // Radio del borde
                         side: const BorderSide(
-                          color: Color(0xFF43c7ff),
+                          color: Color(0xFFFA7701),
                           width: 1, // Grosor del borde
                         ),
                       ),

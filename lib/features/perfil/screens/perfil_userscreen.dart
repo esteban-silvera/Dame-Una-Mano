@@ -20,7 +20,14 @@ class UserProfileScreen extends StatelessWidget {
       backgroundColor: const Color(0xf1f1f1f1),
       appBar: AppBar(
         backgroundColor: const Color(0xff43c7ff).withOpacity(0.9),
-        title: const Text("Perfil"),
+        title: const Text(
+          "Perfil",
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.w400,
+            color: Color.fromARGB(255, 0, 0, 0),
+          ),
+        ),
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(2.0),
           child: Container(
@@ -86,7 +93,7 @@ class UserProfileScreen extends StatelessWidget {
                   'Email: ${userData['email']}',
                   style: const TextStyle(
                     fontSize: 16,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.w400,
                   ),
                 ),
                 const SizedBox(height: 10),
@@ -110,6 +117,8 @@ class UserProfileScreen extends StatelessWidget {
                       'Calificaciones hechas por el usuario: $ratings',
                       style: const TextStyle(
                         fontSize: 16,
+                        fontWeight: FontWeight.w300,
+                        color: Color.fromARGB(255, 0, 0, 0),
                       ),
                     );
                   },
