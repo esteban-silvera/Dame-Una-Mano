@@ -22,7 +22,7 @@ class _WorkerProfileScreenState extends State<WorkerProfileScreen> {
     'emilio herrera': 'emilio_herrera.png',
     'nico torrez': 'nico_torrez.png',
     'tom hanks': 'lucia_lopez.png',
-    'daniela rojas': 'danielamecanica.jpg'
+    'isabel acosta': 'isabelacosta.jpg'
   };
   final Map<String, String> portadaImages = {
     'sebastian judini': 'electricista.png',
@@ -41,7 +41,10 @@ class _WorkerProfileScreenState extends State<WorkerProfileScreen> {
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         backgroundColor: const Color(0xff43c7ff),
-        title: const Text("Perfil del trabajador",style: TextStyle(color: Color(0xf1f1f1f1)),),
+        title: const Text(
+          "Dame una mano",
+          style: TextStyle(color: Color(0xf1f1f1f1)),
+        ),
         bottom: PreferredSize(
           preferredSize: Size.fromHeight(2.0),
           child: Container(

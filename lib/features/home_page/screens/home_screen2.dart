@@ -64,16 +64,13 @@ class _ServiceSelectionWidgetState extends State<ServiceSelectionWidget> {
           borderRadius: BorderRadius.circular(10),
           color: const Color(0xFFf1f1f1),
           child: Padding(
-            padding: const EdgeInsets.all(20.0),
+            padding: const EdgeInsets.all(15.0),
             child: SingleChildScrollView(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                  ),
-                  const SizedBox(
-                    height: 10,
                   ),
                   const Text(
                     '¿Para dónde deseas el servicio?',
@@ -84,7 +81,7 @@ class _ServiceSelectionWidgetState extends State<ServiceSelectionWidget> {
                       decoration: TextDecoration.none,
                     ),
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 10),
                   ElevatedButton(
                     onPressed: () {
                       _getLocation();
@@ -130,7 +127,7 @@ class _ServiceSelectionWidgetState extends State<ServiceSelectionWidget> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 9),
                   ElevatedButton(
                     onPressed: () {
                       Navigator.push(
@@ -178,6 +175,9 @@ class _ServiceSelectionWidgetState extends State<ServiceSelectionWidget> {
                       ),
                     ),
                   ),
+                  SizedBox(
+                    height: 40,
+                  )
                 ],
               ),
             ),
