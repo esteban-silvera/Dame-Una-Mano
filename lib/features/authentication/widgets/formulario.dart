@@ -256,7 +256,7 @@ class _AuthenticationTabsState extends State<AuthenticationTabs>
             context, 'Email o contraseña incorrectas: pruebe de nuevo ');
       }
     } else {
-      AppDialogs.showDialog1(context, 'Los campos son obligatorios');
+      AppDialogs.showDialog1(context, 'Por favor complete los campos');
     }
   }
 

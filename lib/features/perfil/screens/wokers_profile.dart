@@ -21,9 +21,16 @@ class _WorkerProfileScreenState extends State<WorkerProfileScreen> {
     'sebastian judini': 'sebastian_judini.png',
     'emilio herrera': 'emilio_herrera.png',
     'nico torrez': 'nico_torrez.png',
-    'lucia lopez': 'lucia_lopez.png',
+    'tom hanks': 'lucia_lopez.png',
     'daniela rojas': 'danielamecanica.jpg'
-    // Agrega más nombres de usuario y nombres de archivo de imágenes de perfil según sea necesario
+  };
+  final Map<String, String> portadaImages = {
+    'sebastian judini': 'electricista.png',
+    'emilio herrera': 'portada.png',
+    'nico torrez': 'nico_torrez.png',
+    'sofía alvez': 'cerrajero.png',
+    'daniela rojas': 'portada.jpg',
+    'isabel acosta': 'electricistaportada.png'
   };
 
   @override
@@ -33,8 +40,8 @@ class _WorkerProfileScreenState extends State<WorkerProfileScreen> {
       backgroundColor: Color(0xf1f1f1f1),
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        backgroundColor: const Color(0xf1f1f1f1),
-        title: const Text("Perfil del trabajador"),
+        backgroundColor: const Color(0xff43c7ff),
+        title: const Text("Perfil del trabajador",style: TextStyle(color: Color(0xf1f1f1f1)),),
         bottom: PreferredSize(
           preferredSize: Size.fromHeight(2.0),
           child: Container(
@@ -48,46 +55,48 @@ class _WorkerProfileScreenState extends State<WorkerProfileScreen> {
               child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Stack(
-            children: [
-              Container(
-                height: 200,
-                decoration: const BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage('assets/portada.jpg'),
-                    fit: BoxFit.cover,
+          FutureBuilder<DocumentSnapshot>(
+            future: FirebaseFirestore.instance
+                .collection('professionals')
+                .doc(widget.workerId)
+                .get(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return CircularProgressIndicator(
+                  color: Color(0xFF43c7ff).withOpacity(0.8),
+                );
+              }
+              if (snapshot.hasError) {
+                return const Text('Error al cargar los datos del trabajador');
+              }
+
+              var workerData = snapshot.data!.data() as Map<String, dynamic>;
+              var name = workerData['name'] ?? 'Nombre no encontrado';
+              var lastname = workerData['lastname'] ?? 'Apellido no encontrado';
+              // Obtener el nombre de archivo de la imagen de perfil desde el mapa
+              String profileImageName = '$name $lastname'.toLowerCase();
+              String profileImagePath =
+                  profileImages.containsKey(profileImageName)
+                      ? 'assets/${profileImages[profileImageName]}'
+                      : 'assets/default.jpg';
+              String portadaImageName = '$name $lastname'.toLowerCase();
+              String portadaImagePath =
+                  portadaImages.containsKey(portadaImageName)
+                      ? 'assets/${portadaImages[portadaImageName]}'
+                      : 'assets/default.jpg';
+
+              return Stack(
+                children: [
+                  Container(
+                    height: 200,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage(portadaImagePath),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
                   ),
-                ),
-              ),
-              FutureBuilder<DocumentSnapshot>(
-                future: FirebaseFirestore.instance
-                    .collection('professionals')
-                    .doc(widget.workerId)
-                    .get(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return CircularProgressIndicator(
-                      color: Color(0xFF43c7ff).withOpacity(0.8),
-                    );
-                  }
-                  if (snapshot.hasError) {
-                    return const Text(
-                        'Error al cargar los datos del trabajador');
-                  }
-
-                  var workerData =
-                      snapshot.data!.data() as Map<String, dynamic>;
-                  var name = workerData['name'] ?? 'Nombre no encontrado';
-                  var lastname =
-                      workerData['lastname'] ?? 'Apellido no encontrado';
-                  // Obtener el nombre de archivo de la imagen de perfil desde el mapa
-                  String profileImageName = '$name $lastname'.toLowerCase();
-                  String profileImagePath =
-                      profileImages.containsKey(profileImageName)
-                          ? 'assets/${profileImages[profileImageName]}'
-                          : 'assets/default.jpg';
-
-                  return Positioned(
+                  Positioned(
                     top: 70,
                     left: MediaQuery.of(context).size.width / 2 - 60,
                     child: Container(
@@ -103,10 +112,10 @@ class _WorkerProfileScreenState extends State<WorkerProfileScreen> {
                         backgroundImage: AssetImage(profileImagePath),
                       ),
                     ),
-                  );
-                },
-              ),
-            ],
+                  ),
+                ],
+              );
+            },
           ),
           FutureBuilder<DocumentSnapshot>(
             future: FirebaseFirestore.instance
@@ -270,7 +279,7 @@ class _WorkerProfileScreenState extends State<WorkerProfileScreen> {
 
                           return SingleChildScrollView(
                             child: Container(
-                              color: Color(0xf5f5f5f5),
+                              color: Color(0xf1f1f1f1),
                               padding: const EdgeInsets.all(20),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -330,7 +339,7 @@ class _WorkerProfileScreenState extends State<WorkerProfileScreen> {
                                       ),
                                       child: Icon(
                                         Icons.star,
-                                        color: Colors.amber,
+                                        color: Color(0xFFFa7701),
                                         size: starSize,
                                       ),
                                     ),
@@ -355,15 +364,10 @@ class _WorkerProfileScreenState extends State<WorkerProfileScreen> {
                                         'rating': rating,
                                         'comment': _commentController.text,
                                       });
-
-                                      // Actualizar la interfaz de usuario
                                     },
                                     itemSize: starSize,
                                     unratedColor: Colors.grey,
                                     updateOnDrag: true,
-                                    glow: true,
-                                    glowColor: Colors.amber.withOpacity(0.5),
-                                    glowRadius: 10,
                                     allowHalfRating: true,
                                   ),
                                   const SizedBox(height: 20),
@@ -409,11 +413,11 @@ class _WorkerProfileScreenState extends State<WorkerProfileScreen> {
                       setState(() {});
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.transparent, // Color de fondo
+                      backgroundColor: Color(0xfff6f6f6), // Color de fondo
                       padding: const EdgeInsets.symmetric(
                         vertical: 12,
                         horizontal: 60,
-                      ), // Ajusta el padding para hacer el botón más grande
+                      ),
                       shape: RoundedRectangleBorder(
                         borderRadius:
                             BorderRadius.circular(12), // Radio del borde

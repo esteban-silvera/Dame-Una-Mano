@@ -5,7 +5,7 @@ import 'package:dame_una_mano/features/home_page/screens/home_screen2.dart';
 import 'package:dame_una_mano/features/authentication/data/icon_storage.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({super.key});
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -45,10 +45,10 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       backgroundColor: const Color(0xf1f1f1f1),
       appBar: AppBar(
-        backgroundColor: const Color(0xf1f1f1f1),
+        backgroundColor: const Color(0xff43c7ff).withOpacity(0.9),
         title: const Text(
           "Dame una mano",
-          textAlign: TextAlign.justify,
+          textAlign: TextAlign.center,
         ),
         bottom: PreferredSize(
           preferredSize: Size.fromHeight(2.0), // Altura de la línea
@@ -85,9 +85,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         .contains(selectedProfession?.toLowerCase())) {
                       showErrorMessage = true;
                       _showDialog('La profesión buscada no está disponible.');
-                    } else {
-                      showErrorMessage = false;
-                      _navigateToScreen(selectedProfession!);
                     }
                   });
                 },
@@ -162,7 +159,8 @@ class _HomeScreenState extends State<HomeScreen> {
         setState(() {
           selectedProfession = profession;
         });
-        _navigateToScreen(profession);
+        _showModal(
+            profession); // Llama al método _showModal con la profesión seleccionada
       },
       child: FutureBuilder<String>(
         future:
@@ -206,7 +204,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         end: Alignment.bottomCenter,
                         colors: [
                           Colors.transparent,
-                          const Color.fromARGB(255, 17, 49, 63).withOpacity(0.5)
+                          const Color.fromARGB(255, 17, 49, 63).withOpacity(0.7)
                         ],
                       ),
                     ),
@@ -241,12 +239,24 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  void _navigateToScreen(String profession) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => HomeScreen2(selectedOption: profession),
-      ),
+  void _showModal(String profession) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (BuildContext context) {
+        return SingleChildScrollView(
+          padding: EdgeInsets.only(
+            bottom: MediaQuery.of(context).viewInsets.bottom,
+          ),
+          child: Container(
+            constraints: BoxConstraints(
+              maxHeight: MediaQuery.of(context).size.height *
+                  0.3, // Define el tamaño máximo
+            ),
+            child: ServiceSelectionWidget(selectedOption: profession),
+          ),
+        );
+      },
     );
   }
 

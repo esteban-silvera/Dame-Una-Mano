@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:dame_una_mano/features/authentication/widgets/widgets.dart';
 import 'package:dame_una_mano/features/first_page.dart';
 import 'package:dame_una_mano/features/home_page/screens/home_screen1.dart';
 import 'package:dame_una_mano/features/perfil/screens/perfil_userscreen.dart';
@@ -15,16 +14,17 @@ class Sidebar extends StatelessWidget {
           children: [
             Container(
               height: 100,
-              color: const Color(0xFF43c7ff), // Fondo celeste
+              color: Color(0xff43c7ff).withOpacity(0.9),
               padding: const EdgeInsets.symmetric(vertical: 20),
               child: const Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
                     'Dame una mano',
+                    textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 18,
-                      color: Colors.white,
+                      color: Color.fromARGB(255, 3, 3, 3),
                       fontFamily: "Monserrat",
                       fontWeight: FontWeight.w700,
                     ),
@@ -32,7 +32,7 @@ class Sidebar extends StatelessWidget {
                   SizedBox(width: 8),
                   Icon(
                     Icons.handshake,
-                    color: Color.fromARGB(255, 249, 249, 249),
+                    color: Color.fromARGB(255, 3, 3, 3),
                     size: 24,
                   ),
                 ],
@@ -67,19 +67,13 @@ class Sidebar extends StatelessWidget {
                     },
                   ),
                   ListTile(
-                    leading: const Icon(Icons.info),
-                    title: const Text('About Us'),
-                    onTap: () {
-                      // Acción al seleccionar sobre nosotros
-                    },
-                  ),
-                  ListTile(
                     leading: const Icon(Icons.logout),
                     title: const Text('Cerrar Sesión'),
                     onTap: () async {
                       // Acción al seleccionar cerrar sesión
                       try {
                         await FirebaseAuth.instance.signOut();
+                        // ignore: use_build_context_synchronously
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
