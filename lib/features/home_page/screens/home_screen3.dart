@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dame_una_mano/features/controllers/location_controller.dart';
 import 'package:dame_una_mano/features/home_page/widgets/trabajadores.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:dame_una_mano/features/perfil/screens/wokers_profile.dart';
 
@@ -153,15 +154,6 @@ class _MapScreenState extends State<MapScreen> {
                                   'Error al cargar los datos del trabajador');
                             }
 
-                            var ratings = snapshot.data!.docs
-                                .map((doc) => (doc["rating"] as num).toDouble())
-                                .toList();
-
-                            double averageRating = ratings.isEmpty
-                                ? 0.0
-                                : ratings.reduce((a, b) => a + b) /
-                                    ratings.length;
-
                             return SimpleDialogOption(
                               onPressed: () {
                                 Navigator.push(
@@ -179,14 +171,56 @@ class _MapScreenState extends State<MapScreen> {
                                 title: Text(
                                   '${trabajador.nombre} ${trabajador.apellido}',
                                 ),
-                                subtitle: Row(
-                                  children: [
-                                    Text('Barrio: ${trabajador.barrio}'),
-                                    const SizedBox(width: 8),
-                                    Text(
-                                      'Calificación: ${averageRating.toStringAsFixed(1)}',
-                                    ),
-                                  ],
+                                subtitle: FutureBuilder<QuerySnapshot>(
+                                  future: FirebaseFirestore.instance
+                                      .collection('professionals')
+                                      .doc(trabajador.id)
+                                      .collection('ratings')
+                                      .get(),
+                                  builder: (context, snapshot) {
+                                    if (snapshot.connectionState ==
+                                        ConnectionState.waiting) {
+                                      return CircularProgressIndicator(
+                                        color: const Color(0xFF43c7ff)
+                                            .withOpacity(0.8),
+                                      );
+                                    }
+                                    if (snapshot.hasError) {
+                                      return const Text(
+                                          'Error al cargar los datos del trabajador');
+                                    }
+
+                                    var ratings = snapshot.data!.docs
+                                        .map((doc) =>
+                                            (doc["rating"] as num).toDouble())
+                                        .toList();
+                                    double averageRating = ratings.isEmpty
+                                        ? 0.0
+                                        : ratings.reduce((a, b) => a + b) /
+                                            ratings.length;
+
+                                    return Row(
+                                      children: [
+                                        RatingBarIndicator(
+                                          rating: averageRating,
+                                          itemBuilder: (context, index) => Icon(
+                                            Icons.star,
+                                            color: const Color(0xFFFA7701),
+                                            size: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.05,
+                                          ),
+                                          itemCount: 5,
+                                          itemSize: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.05,
+                                          direction: Axis.horizontal,
+                                        ),
+                                      ],
+                                    );
+                                  },
                                 ),
                               ),
                             );

@@ -100,9 +100,9 @@ class _BarrioScreenState extends State<BarrioScreen> {
     return Scaffold(
       backgroundColor: const Color(0xf1f1f1f1),
       appBar: AppBar(
-        backgroundColor: Color(0xFF43c7ff).withOpacity(0.9),
+        backgroundColor: const Color(0xFF43c7ff).withOpacity(0.9),
         title: Text(widget.selectedProfession,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 22,
               fontWeight: FontWeight.w400,
               color: Color.fromARGB(255, 0, 0, 0),
@@ -126,8 +126,8 @@ class _BarrioScreenState extends State<BarrioScreen> {
             ),
             const SizedBox(height: 40),
             Container(
-              margin: EdgeInsets.fromLTRB(30, 0, 30, 70),
-              padding: EdgeInsets.fromLTRB(20, 50, 10, 0),
+              margin: const EdgeInsets.fromLTRB(30, 0, 30, 70),
+              padding: const EdgeInsets.fromLTRB(20, 50, 10, 0),
               decoration: BoxDecoration(
                 color: const Color(0xff1f1f1f1),
                 borderRadius: BorderRadius.circular(10),
@@ -165,14 +165,31 @@ class _BarrioScreenState extends State<BarrioScreen> {
                     ],
                   ),
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 30, 20, 20),
+                    padding: EdgeInsets.fromLTRB(
+                      MediaQuery.of(context).size.width *
+                          0.03, // 2% del ancho de la pantalla
+                      MediaQuery.of(context).size.width *
+                          0.02, // 1% del ancho de la pantalla
+                      MediaQuery.of(context).size.width *
+                          0.03, // 2% del ancho de la pantalla
+                      MediaQuery.of(context).size.width *
+                          0.05, // 2% del ancho de la pantalla
+                    ),
                     child: Container(
                       decoration: BoxDecoration(
                         border: Border.all(color: const Color(0xFF43c7ff)),
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        padding: EdgeInsets.fromLTRB(
+                          MediaQuery.of(context).size.width *
+                              0.03, // 2% del ancho de la pantalla
+                          MediaQuery.of(context).size.width *
+                              0.02, // 1% del ancho de la pantalla
+                          MediaQuery.of(context).size.width *
+                              0.03, // 2% del ancho de la pantalla
+                          MediaQuery.of(context).size.width * 0.02,
+                        ), // Ajusta este padding
                         child: Theme(
                           data: Theme.of(context).copyWith(
                             scrollbarTheme: ScrollbarThemeData(
@@ -190,16 +207,21 @@ class _BarrioScreenState extends State<BarrioScreen> {
                           ),
                           child: Row(
                             children: [
+                              Icon(
+                                Icons.search,
+                                color: const Color(0xFFFa7701),
+                                size:
+                                    iconSize, // Usando el tamaño del icono calculado
+                              ),
+                              const SizedBox(
+                                  width:
+                                      4), // Espacio entre el icono y el texto
                               Expanded(
                                 child: DropdownButtonHideUnderline(
                                   child: DropdownButton<String>(
-                                    icon: Icon(
-                                      Icons.search,
-                                      color: Color(0xFFFa7701),
-                                      size:
-                                          iconSize, // Usando el tamaño del icono calculado
-                                    ),
-                                    hint: Text(
+                                    icon:
+                                        null, // Eliminar la flecha hacia abajo
+                                    hint: const Text(
                                       'Seleccionar Barrio',
                                       style: TextStyle(
                                         fontSize: 18,
@@ -295,8 +317,7 @@ class _BarrioScreenState extends State<BarrioScreen> {
                                                 future: FirebaseFirestore
                                                     .instance
                                                     .collection('professionals')
-                                                    .doc(trabajador
-                                                        .id) // Usar la ID del trabajador
+                                                    .doc(trabajador.id)
                                                     .collection('ratings')
                                                     .get(),
                                                 builder: (context, snapshot) {
@@ -333,13 +354,22 @@ class _BarrioScreenState extends State<BarrioScreen> {
                                                         rating: averageRating,
                                                         itemBuilder:
                                                             (context, index) =>
-                                                                const Icon(
+                                                                Icon(
                                                           Icons.star,
                                                           color:
-                                                              Color(0xFFFA7701),
+                                                              const Color(0xFFFA7701),
+                                                          size: MediaQuery.of(
+                                                                      context)
+                                                                  .size
+                                                                  .width *
+                                                              0.09,
                                                         ),
                                                         itemCount: 5,
-                                                        itemSize: 20.0,
+                                                        itemSize: MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .width *
+                                                            0.05,
                                                         direction:
                                                             Axis.horizontal,
                                                       ),
@@ -394,7 +424,7 @@ class _BarrioScreenState extends State<BarrioScreen> {
                         }
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xFF6f6f6f6),
+                        backgroundColor: const Color(0xFF6f6f6f6),
                         foregroundColor: Colors.black, // Texto negro
                         side: const BorderSide(
                           color: Color(0xffFA7701),
