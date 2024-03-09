@@ -47,18 +47,20 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         backgroundColor: const Color(0xff43c7ff).withOpacity(0.9),
         title: const Text(
-          "Dame una mano",style: TextStyle(
-              fontSize: 22,
-              fontWeight: FontWeight.w400,
-              color: Color.fromARGB(255, 0, 0, 0),
-            ),
+          "Dame una mano",
+          style: TextStyle(
+            fontSize: 22,
+            fontFamily: 'Monserrat',
+            fontWeight: FontWeight.w400,
+            color: Color.fromARGB(255, 0, 0, 0),
+          ),
           textAlign: TextAlign.center,
         ),
         bottom: PreferredSize(
-          preferredSize: Size.fromHeight(2.0), // Altura de la línea
+          preferredSize: Size.fromHeight(2.0),
           child: Container(
-            color: const Color(0xFF43c7ff).withOpacity(0.5), // Color celeste
-            height: 1.0, // Grosor de la línea
+            color: const Color(0xFF43c7ff).withOpacity(0.5),
+            height: 1.0,
           ),
         ),
       ),
@@ -82,11 +84,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   });
                 },
                 onSubmitted: (String value) {
+                  final selectedProfession = _mapProfession(value);
                   setState(() {
-                    selectedProfession = _mapProfession(value);
-                    if (!professions
+                    if (professions
                         .map((profession) => profession.toLowerCase())
-                        .contains(selectedProfession?.toLowerCase())) {
+                        .contains(selectedProfession.toLowerCase())) {
+                      showErrorMessage = false;
+                      _showModal(selectedProfession);
+                    } else {
                       showErrorMessage = true;
                       _showDialog('La profesión buscada no está disponible.');
                     }
@@ -102,6 +107,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Text(
                   'La profesión seleccionada no está disponible.',
                   style: TextStyle(
+                    fontFamily: 'Monserrat',
                     color: Color.fromARGB(2, 54, 181, 244),
                   ),
                 ),
@@ -157,14 +163,33 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  void _showModal(String profession) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (BuildContext context) {
+        return SingleChildScrollView(
+          padding: EdgeInsets.only(
+            bottom: MediaQuery.of(context).viewInsets.bottom,
+          ),
+          child: Container(
+            constraints: BoxConstraints(
+              maxHeight: MediaQuery.of(context).size.height * 0.3,
+            ),
+            child: ServiceSelectionWidget(selectedOption: profession),
+          ),
+        );
+      },
+    );
+  }
+
   Widget _buildIcon(String profession, int index) {
     return GestureDetector(
       onTap: () {
         setState(() {
           selectedProfession = profession;
         });
-        _showModal(
-            profession); // Llama al método _showModal con la profesión seleccionada
+        _showModal(profession);
       },
       child: FutureBuilder<String>(
         future:
@@ -223,6 +248,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
+                        fontFamily: 'Monserrat',
                         fontSize: 16,
                         shadows: [
                           Shadow(
@@ -240,27 +266,6 @@ class _HomeScreenState extends State<HomeScreen> {
           }
         },
       ),
-    );
-  }
-
-  void _showModal(String profession) {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      builder: (BuildContext context) {
-        return SingleChildScrollView(
-          padding: EdgeInsets.only(
-            bottom: MediaQuery.of(context).viewInsets.bottom,
-          ),
-          child: Container(
-            constraints: BoxConstraints(
-              maxHeight: MediaQuery.of(context).size.height *
-                  0.3, // Define el tamaño máximo
-            ),
-            child: ServiceSelectionWidget(selectedOption: profession),
-          ),
-        );
-      },
     );
   }
 
