@@ -56,6 +56,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     'Dame una mano',
                     style: TextStyle(
                       fontSize: 24,
+                      fontFamily: 'Monserrat',
                       fontWeight: FontWeight.bold,
                       color: Color.fromARGB(255, 10, 10, 10),
                     ),

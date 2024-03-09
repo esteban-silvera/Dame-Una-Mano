@@ -44,6 +44,7 @@ class _WorkerProfileScreenState extends State<WorkerProfileScreen> {
         title: const Text(
           "Dame una mano",
           style: TextStyle(
+            fontFamily: 'Monserrat',
             fontSize: 22,
             fontWeight: FontWeight.w400,
             color: Color.fromARGB(255, 0, 0, 0),
@@ -154,7 +155,8 @@ class _WorkerProfileScreenState extends State<WorkerProfileScreen> {
                   Text(
                     '$name $lastname',
                     style: const TextStyle(
-                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Monserrat',
+                      fontWeight: FontWeight.w600,
                       fontSize: 20,
                     ),
                   ),
@@ -163,7 +165,8 @@ class _WorkerProfileScreenState extends State<WorkerProfileScreen> {
                       ? _showFullDescription
                           ? Text(
                               description,
-                              style: const TextStyle(fontSize: 18),
+                              style: const TextStyle(
+                                  fontSize: 18, fontFamily: 'Monserrat'),
                               textAlign: TextAlign.center,
                             )
                           : Column(
@@ -186,6 +189,7 @@ class _WorkerProfileScreenState extends State<WorkerProfileScreen> {
                                     child: const Text(
                                       'Ver más',
                                       style: TextStyle(
+                                        fontFamily: 'Monserrat',
                                         color: Color(0xffFA7701),
                                         fontSize: 20,
                                         fontWeight: FontWeight.w200,
@@ -248,7 +252,8 @@ class _WorkerProfileScreenState extends State<WorkerProfileScreen> {
                   Text(
                     'Promedio de calificación: ${averageRating.toStringAsFixed(2)}',
                     style: const TextStyle(
-                      fontSize: 18,
+                      fontSize: 16,
+                      fontFamily: 'Monserrat',
                       fontWeight: FontWeight.w200,
                       color: Color.fromARGB(255, 0, 0, 0),
                     ),
@@ -278,6 +283,7 @@ class _WorkerProfileScreenState extends State<WorkerProfileScreen> {
                     label: const Text(
                       'Contactame',
                       style: TextStyle(
+                        fontFamily: 'Monserrat',
                         fontSize: 20, // Ajusta el tamaño del texto
                         color: Colors.white, // Color del texto
                       ),
@@ -305,13 +311,16 @@ class _WorkerProfileScreenState extends State<WorkerProfileScreen> {
                                     .min, // Usar el tamaño mínimo verticalmente
                                 children: [
                                   const Icon(
+                                    color: Color(0xFFFA7701),
                                     Icons.handshake, // Icono handshake
-                                    size: 50, // Tamaño del icono
+                                    size: 50,
+                                    // Tamaño del icono
                                   ),
                                   const SizedBox(height: 10), // Espaciador
                                   const Text(
                                     'Dame una mano', // Texto mediano
                                     style: TextStyle(
+                                      fontFamily: 'Monserrat',
                                       fontSize: 30, // Tamaño del texto
                                       color:
                                           Color(0xFFFA7701), // Color del texto
@@ -324,6 +333,7 @@ class _WorkerProfileScreenState extends State<WorkerProfileScreen> {
                                     textAlign:
                                         TextAlign.center, // Alineación centrada
                                     style: TextStyle(
+                                      fontFamily: 'Monserrat',
                                       color: Color(0xFF43c7ff),
                                       fontSize: 20,
                                     ), // Tamaño del texto
@@ -333,6 +343,7 @@ class _WorkerProfileScreenState extends State<WorkerProfileScreen> {
                                     'Por favor, déjanos tu review de este usuario.', // Texto explicativo
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
+                                      fontFamily: 'Monserrat',
                                       fontSize: 18,
                                     ),
                                   ), // Tamaño del texto
@@ -449,6 +460,7 @@ class _WorkerProfileScreenState extends State<WorkerProfileScreen> {
                     child: const Text(
                       'Calificar',
                       style: TextStyle(
+                        fontFamily: 'Monserrat',
                         fontSize: 20, // texto
                         color: Colors.black,
                       ),

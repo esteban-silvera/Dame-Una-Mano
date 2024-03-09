@@ -70,11 +70,11 @@ class _MapScreenState extends State<MapScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xfff1f1f1),
+      backgroundColor: const Color(0xfff1f1f1),
       appBar: AppBar(
-        backgroundColor: Color(0xff43c7ff).withOpacity(0.9),
+        backgroundColor: const Color(0xff43c7ff).withOpacity(0.9),
         title: Text(widget.selectedOption,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 22,
               fontWeight: FontWeight.w400,
               color: Color.fromARGB(255, 0, 0, 0),
@@ -98,6 +98,7 @@ class _MapScreenState extends State<MapScreen> {
               Text(
                 'Ubicación actual: ${_removeBarriosFromAddress(widget.currentAddress)}',
                 textAlign: TextAlign.center,
+                style: const TextStyle(fontFamily: 'Monserrrat'),
               ),
               const SizedBox(height: 20),
               widget.isLocationLoaded
@@ -121,17 +122,21 @@ class _MapScreenState extends State<MapScreen> {
                     )
                   : Center(
                       child: CircularProgressIndicator(
-                        color: Color(0xff43c7ff).withOpacity(0.8),
+                        color: const Color(0xff43c7ff).withOpacity(0.8),
                       ),
                     ),
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
                   showDialog(
-                    barrierColor: Color(0xf5f5f5f5),
+                    barrierColor: const Color(0xf5f5f5f5),
                     context: context,
                     builder: (context) => SimpleDialog(
-                      title: const Text('Profesionales cercanos'),
+                      title: const Text(
+                        'Profesionales cercanos',
+                        style: TextStyle(fontFamily: 'Monserrat'),
+                        textAlign: TextAlign.center,
+                      ),
                       children: trabajadores.map((trabajador) {
                         return FutureBuilder<QuerySnapshot>(
                           future: FirebaseFirestore.instance
@@ -242,6 +247,7 @@ class _MapScreenState extends State<MapScreen> {
                   'Encuentra!',
                   style: TextStyle(
                     fontSize: 20,
+                    fontFamily: 'Monserrat',
                     color: Color.fromARGB(255, 16, 16, 16), // Color del texto
                     // Subrayado
                   ),
@@ -266,7 +272,7 @@ class _MapScreenState extends State<MapScreen> {
                       color: Color.fromARGB(255, 0, 0, 0),
                       fontSize: 20,
                       fontWeight: FontWeight.w200,
-                      fontFamily: "monserrat",
+                      fontFamily: "Monserrat",
                       decoration: TextDecoration.underline),
                 ),
               ),

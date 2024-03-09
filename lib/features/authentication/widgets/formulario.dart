@@ -1,7 +1,6 @@
 import 'package:dame_una_mano/features/authentication/providers/providers.dart';
 import 'package:dame_una_mano/features/authentication/screens/screens.dart';
 import 'package:dame_una_mano/features/authentication/widgets/widgets.dart';
-import 'package:dame_una_mano/features/home_page/screens/home_screen1.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -119,11 +118,14 @@ class _AuthenticationTabsState extends State<AuthenticationTabs>
           child: Column(
             children: [
               const SizedBox(height: 20),
-              const CustomText(
-                text: 'Bienvenido otra vez',
-                color: Color.fromARGB(255, 10, 10, 10),
-                fontSize: 24.0,
-                fontWeight: FontWeight.w400,
+              const Text(
+                'Bienvenido otra vez',
+                style: TextStyle(
+                  fontFamily: 'Monserrat',
+                  color: Color.fromARGB(255, 10, 10, 10),
+                  fontSize: 24.0,
+                  fontWeight: FontWeight.w300,
+                ),
               ),
               const SizedBox(height: 10),
               const CustomText(
@@ -148,6 +150,8 @@ class _AuthenticationTabsState extends State<AuthenticationTabs>
                 ),
                 child: const Text(
                   'Iniciar Sesión',
+                  style:
+                      TextStyle(color: Colors.black, fontFamily: 'Monserrat'),
                 ),
               ),
               const SizedBox(height: 30),

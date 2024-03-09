@@ -76,6 +76,7 @@ class _ServiceSelectionWidgetState extends State<ServiceSelectionWidget> {
                     '¿Para dónde deseas el servicio?',
                     style: TextStyle(
                       fontSize: 20,
+                      fontFamily: 'Monserrat',
                       color: Color(0xFF000000),
                       fontWeight: FontWeight.bold,
                       decoration: TextDecoration.none,

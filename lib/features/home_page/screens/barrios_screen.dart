@@ -225,6 +225,7 @@ class _BarrioScreenState extends State<BarrioScreen> {
                                       'Seleccionar Barrio',
                                       style: TextStyle(
                                         fontSize: 18,
+                                        fontFamily: 'Monserrat',
                                         color: Colors.black,
                                       ),
                                     ),
@@ -293,7 +294,10 @@ class _BarrioScreenState extends State<BarrioScreen> {
                               context: context,
                               builder: (BuildContext context) {
                                 return AlertDialog(
-                                  title: const Text('Trabajadores cercanos'),
+                                  title: const Text(
+                                    'Trabajadores cercanos',
+                                    style: TextStyle(fontFamily: 'Monserrat'),
+                                  ),
                                   content: SingleChildScrollView(
                                     child: Column(
                                       crossAxisAlignment:
@@ -308,6 +312,7 @@ class _BarrioScreenState extends State<BarrioScreen> {
                                               Text(
                                                 '${trabajador.nombre} ${trabajador.apellido}',
                                                 style: const TextStyle(
+                                                  fontFamily: 'Monserrat',
                                                   fontSize: 18,
                                                   color: Color.fromARGB(
                                                       239, 0, 0, 0),
@@ -356,8 +361,8 @@ class _BarrioScreenState extends State<BarrioScreen> {
                                                             (context, index) =>
                                                                 Icon(
                                                           Icons.star,
-                                                          color:
-                                                              const Color(0xFFFA7701),
+                                                          color: const Color(
+                                                              0xFFFA7701),
                                                           size: MediaQuery.of(
                                                                       context)
                                                                   .size
@@ -434,7 +439,7 @@ class _BarrioScreenState extends State<BarrioScreen> {
                       ),
                       child: const Text(
                         'Encuentra!',
-                        style: TextStyle(fontSize: 20),
+                        style: TextStyle(fontSize: 20, fontFamily: 'Monserrat'),
                       ),
                     ),
                   ),
@@ -452,6 +457,7 @@ class _BarrioScreenState extends State<BarrioScreen> {
                   child: const Text(
                     'Cambiar a ubicación actual',
                     style: TextStyle(
+                      fontFamily: 'Monserrat',
                       fontSize: 20,
                       fontWeight: FontWeight.w200,
                       color: Color.fromARGB(255, 0, 0, 0), // Color del texto
