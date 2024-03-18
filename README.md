@@ -80,8 +80,7 @@ We have integrated a button on the login screen that toggles between the login a
 Upon logging in, both users and workers are provided with their own profile pages to input their respective information. For workers, we require specific details such as job title, a description of their work, as well as location information including department, city, and neighborhood.
 
 <p align="center">
-  <img width="200" alt="image" src="https://github.com/esteban-silvera/Dame-Una-Mano/assets/108559276/c8bd3939-5fa7-4bf3-a198-c8e271aadfa7">
-  <img width="200" alt="image" src="https://github.com/esteban-silvera/Dame-Una-Mano/assets/108559276/1b7c960d-bfa4-4e7c-ba41-de57f3d9e444">
+  <img width="200" alt="image" src="https://cdn.discordapp.com/attachments/1016723767659073657/1219432611731214468/image.png?ex=660b481e&is=65f8d31e&hm=55ad259a0ff527e0bcba937647cc61b63728d8790cf2fb9fc028c485522cede4&">
 </p>
 
 On the subsequent screen, users will encounter the home pages, where they will interact with various options of professionals to choose from. Upon selecting a professional, the next screen will prompt users to choose between two options: live location or neighborhood selection.
