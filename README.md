@@ -111,6 +111,37 @@ The following screen will display a live Google Maps API, showcasing real-time u
 - [Google Cloud](https://cloud.google.com/why-google-cloud/) - Backend Services and Infrastructure Support for Firebase 
 
 <a id="item-five"></a>
+
+### Installation Instructions
+
+To install and run "Dame Una Mano" on your Android device, follow these steps:
+
+1. Clone this repository to your local machine:
+
+    ```bash
+    git clone https://github.com/esteban-silvera/Dame-Una-Mano.git
+    ```
+
+2. Open the project in your preferred development IDE, such as Android Studio or VSCode.
+
+3. Configure your Android device or an emulator to run the application. Make sure you have USB debugging enabled on your device and that it is properly connected to your computer.
+
+4. Make sure you have Flutter and Dart installed on your system. You can follow the installation instructions in the [official Flutter documentation](https://flutter.dev/docs/get-started/install).
+
+5. Install all project dependencies by running the following command in the project root:
+
+    ```bash
+    flutter pub get
+    ```
+
+6. Once the dependencies downloads are complete, run the app on your device or emulator using the following command:
+
+    ```bash
+    flutter run
+    ```
+
+7. The app will be compiled and installed on your device/emulator. Once the installation is complete, you can open "Dame Una Mano" and start exploring its features.
+
 ### Future
 
 For future development, we plan to implement:
