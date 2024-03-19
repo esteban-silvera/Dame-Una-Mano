@@ -1,4 +1,4 @@
-# Dame Una Mano
+![image](https://github.com/esteban-silvera/Dame-Una-Mano/assets/135216365/5252e627-16cb-4ee7-a16c-a871251effc9)# Dame Una Mano
 
 <p align="left">
   <img width="473" alt="image" src="https://github.com/esteban-silvera/Dame-Una-Mano/assets/108559276/83b8b370-3230-4190-b237-99dc49c10bbd">
@@ -63,11 +63,11 @@ The challenges we encountered included dedicating ample time to understand the n
 <a id="item-three"></a>
 ### Features
 
-The initial screen of "Dame Una Mano" presents three distinct options. The first path, "¿Qué estás buscando?" enables users to access the application without signing in and explore the available services. The second path, "Ofrezco servicio," caters to professionals seeking to broaden the reach of their business. The final path is designed for users in search of professional assistance for everyday issues. This option allows them to register and log in, facilitating their journey in finding a suitable professional.
+The initial screen of "Dame Una Mano" presents the option for the user to log in or register in order to access to the app
 
 
 <p align="center">
-  <img width="200" alt="image" src="https://github.com/esteban-silvera/Dame-Una-Mano/assets/108559276/0dcb7b9f-5721-49c9-8df6-89db4222ef4b">
+  <img width="200" alt="image" src="https://i.ibb.co/2Fgtms1/Screenshot-1709556149.png">
 </p>
 
 We have integrated a button on the login screen that toggles between the login and registration states. Below, you can see an example of how these changes are implemented.
@@ -93,7 +93,7 @@ On the subsequent screen, users will encounter the home pages, where they will i
 The following screen will display a live Google Maps API, showcasing real-time usage of one of our team members. Meanwhile, another screen will demonstrate how the worker's profile appears to the user, featuring a real-time responsive rating system.
 
 <p align="center">
-  <img width="200" alt="image" src="https://ibb.co/j3HjdLW">
+  <img width="200" alt="image" src="https://i.ibb.co/bN7Gxr2/Screenshot-1709766410.png">
   <img width="200" alt="image" src="https://i.ibb.co/428LWHD/Screenshot-1710146124.png">
 </p>
 
