@@ -86,7 +86,7 @@ Upon logging in, both users and workers are provided with their own profile page
 On the subsequent screen, users will encounter the home pages, where they will interact with various options of professionals to choose from. Upon selecting a professional, the next screen will prompt users to choose between two options: live location or neighborhood selection.
 
 <p align="center">
-  <img width="200" alt="image" src="https://i.ibb.co/mbCmcBJ/Screenshot-1710145332.png">
+  <img width="200" alt="image" src="https://i.ibb.co/KqFfC4T/Screenshot-1709709900.png">
   <img width="200" alt="image" src="https://i.ibb.co/qn2VnGH/Screenshot-1710147240.png">
 </p>
 
