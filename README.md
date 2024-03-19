@@ -149,7 +149,7 @@ For future development, we plan to implement:
 
 <a id="item-six"></a>
 ### Authors
-* Project Manager/ Front End Developer - Lucia Puppo : https://github.com/LuciaPuppo897
+* Project Manager/ Full Stack Developer UX UI - Lucia Puppo : https://github.com/LuciaPuppo897
 * Fullstack Devloper - Esteban Silvera : https://github.com/esteban-silvera
 * Backend Developer - Yetzabeth Hernandez : https://github.com/yetzabeth
 * Backend Developer - Carlos Franco : https://github.com/cfranco87
