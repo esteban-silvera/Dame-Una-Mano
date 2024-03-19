@@ -1,4 +1,4 @@
-![image](https://github.com/esteban-silvera/Dame-Una-Mano/assets/135216365/5252e627-16cb-4ee7-a16c-a871251effc9)# Dame Una Mano
+# Dame Una Mano
 
 <p align="left">
   <img width="473" alt="image" src="https://github.com/esteban-silvera/Dame-Una-Mano/assets/108559276/83b8b370-3230-4190-b237-99dc49c10bbd">
