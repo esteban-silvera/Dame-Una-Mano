@@ -86,15 +86,15 @@ Upon logging in, both users and workers are provided with their own profile page
 On the subsequent screen, users will encounter the home pages, where they will interact with various options of professionals to choose from. Upon selecting a professional, the next screen will prompt users to choose between two options: live location or neighborhood selection.
 
 <p align="center">
-  <img width="200" alt="image" src="https://github.com/esteban-silvera/Dame-Una-Mano/assets/108559276/3f287ab7-7bf8-435d-b616-e699eea93c75">
-  <img width="200" alt="image" src="https://github.com/esteban-silvera/Dame-Una-Mano/assets/108559276/1e3d8951-a846-4842-8878-47c647a42079">
+  <img width="200" alt="image" src="https://i.ibb.co/mbCmcBJ/Screenshot-1710145332.png">
+  <img width="200" alt="image" src="https://i.ibb.co/qn2VnGH/Screenshot-1710147240.png">
 </p>
 
 The following screen will display a live Google Maps API, showcasing real-time usage of one of our team members. Meanwhile, another screen will demonstrate how the worker's profile appears to the user, featuring a real-time responsive rating system.
 
 <p align="center">
-  <img width="200" alt="image" src="https://github.com/esteban-silvera/Dame-Una-Mano/assets/108559276/80a2baa4-b8de-4c28-8dbb-0ddbafc1cb41">
-  <img width="200" alt="image" src="https://github.com/esteban-silvera/Dame-Una-Mano/assets/108559276/deee65de-f02c-46fa-84ec-0696d9b63dd1">
+  <img width="200" alt="image" src="https://ibb.co/j3HjdLW">
+  <img width="200" alt="image" src="https://i.ibb.co/428LWHD/Screenshot-1710146124.png">
 </p>
 
 <a id="item-four"></a>
